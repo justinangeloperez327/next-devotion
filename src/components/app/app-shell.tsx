@@ -8,12 +8,14 @@ import {
   MobileNavigation,
 } from "@/components/app/app-navigation";
 import { buttonVariants } from "@/components/ui/button";
+import { UserAvatar } from "@/components/user/user-avatar";
 import { cn } from "@/lib/utils";
 
 type AppShellUser = {
   name: string;
   username: string;
   email: string;
+  avatarUrl?: string | null;
 };
 
 type AppShellProps = {
@@ -21,18 +23,7 @@ type AppShellProps = {
   children: ReactNode;
 };
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
-
 export function AppShell({ user, children }: AppShellProps) {
-  const userInitials = initials(user.name) || "ND";
-
   return (
     <div className="min-h-svh bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-sidebar/95 backdrop-blur supports-[backdrop-filter]:bg-sidebar/90">
@@ -64,9 +55,12 @@ export function AppShell({ user, children }: AppShellProps) {
 
             <details className="group relative">
               <summary className="flex h-9 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-card px-2.5 text-sm text-foreground transition-colors hover:bg-accent [&::-webkit-details-marker]:hidden">
-                <span className="flex size-6 items-center justify-center rounded-full bg-secondary text-[10px] font-semibold text-secondary-foreground">
-                  {userInitials}
-                </span>
+                <UserAvatar
+                  name={user.name}
+                  avatarUrl={user.avatarUrl}
+                  size="sm"
+                  className="size-6 text-[9px]"
+                />
                 <span className="hidden max-w-28 truncate md:block">
                   {user.name}
                 </span>

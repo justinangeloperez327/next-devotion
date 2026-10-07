@@ -1,17 +1,39 @@
 import type { Metadata } from "next";
 
-import { FeaturePlaceholder } from "@/components/app/feature-placeholder";
+import { ProfileSettingsForm } from "@/components/profile/profile-settings-form";
+import { requireUser } from "@/lib/auth/session";
 
 export const metadata: Metadata = {
   title: "Settings",
 };
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const user = await requireUser();
+
   return (
-    <FeaturePlaceholder
-      eyebrow="Settings"
-      title="Account and devotion preferences."
-      description="Profile editing, account controls, privacy defaults, and future notification preferences will be managed here."
-    />
+    <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="border-b border-border pb-7">
+        <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+          Settings
+        </p>
+        <h1 className="mt-2 text-3xl font-medium tracking-[-0.025em] text-foreground">
+          Profile
+        </h1>
+        <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
+          Manage the public identity shown beside your devotions and comments.
+        </p>
+      </div>
+
+      <section className="py-7">
+        <ProfileSettingsForm
+          user={{
+            name: user.name,
+            username: user.username,
+            bio: user.bio,
+            avatarUrl: user.avatarUrl,
+          }}
+        />
+      </section>
+    </main>
   );
 }

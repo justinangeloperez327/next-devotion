@@ -58,6 +58,61 @@ export async function createDevotionAction(
   formData: FormData,
 ): Promise<DevotionFormState> {
   const user = await requireUser();
+  const parsed = parseDevotion(formData);
+  const error = validationError(parsed);
+
+  if (error || !parsed.success) {
+    return (
+      error ?? {
+        status: "error",
+        message: "Unable to validate the devotion.",
+      }
+    );
+  }
+
+  try {
+    const database = getPrisma();
+    const devotion = await database.devotion.create({
+      data: {
+        userId: user.id,
+        scriptureReference: parsed.data.scriptureReference,
+        scriptureText: parsed.data.scriptureText || null,
+        observation: parsed.data.observation,
+        application: parsed.data.application,
+        prayer: parsed.data.prayer,
+        visibility: parsed.data.visibility,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    revalidateDevotionLists(user.username);
+    redirect(`/devotions/${devotion.id}`);
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "digest" in error &&
+      typeof error.digest === "string" &&
+      error.digest.startsWith("NEXT_REDIRECT")
+    ) {
+      throw error;
+    }
+
+    return {
+      status: "error",
+      message: "The devotion could not be posted. Please try again.",
+    };
+  }
+}
+
+export async function updateDevotionAction(
+  devotionId: string,
+  _previousState: DevotionFormState,
+  formData: FormData,
+): Promise<DevotionFormState> {
+  const user = await requireUser();
 
   if (!isUuid(devotionId)) {
     return {
@@ -70,74 +125,57 @@ export async function createDevotionAction(
   const error = validationError(parsed);
 
   if (error || !parsed.success) {
-    return error ?? {
-      status: "error",
-      message: "Unable to validate the devotion.",
-    };
+    return (
+      error ?? {
+        status: "error",
+        message: "Unable to validate the devotion.",
+      }
+    );
   }
 
-  const database = getPrisma();
-  const devotion = await database.devotion.create({
-    data: {
-      userId: user.id,
-      scriptureReference: parsed.data.scriptureReference,
-      scriptureText: parsed.data.scriptureText || null,
-      observation: parsed.data.observation,
-      application: parsed.data.application,
-      prayer: parsed.data.prayer,
-      visibility: parsed.data.visibility,
-    },
-    select: {
-      id: true,
-    },
-  });
+  try {
+    const database = getPrisma();
+    const result = await database.devotion.updateMany({
+      where: {
+        id: devotionId,
+        userId: user.id,
+      },
+      data: {
+        scriptureReference: parsed.data.scriptureReference,
+        scriptureText: parsed.data.scriptureText || null,
+        observation: parsed.data.observation,
+        application: parsed.data.application,
+        prayer: parsed.data.prayer,
+        visibility: parsed.data.visibility,
+      },
+    });
 
-  revalidateDevotionLists(user.username);
-  redirect(`/devotions/${devotion.id}`);
-}
+    if (result.count !== 1) {
+      return {
+        status: "error",
+        message: "This devotion could not be updated.",
+      };
+    }
 
-export async function updateDevotionAction(
-  devotionId: string,
-  _previousState: DevotionFormState,
-  formData: FormData,
-): Promise<DevotionFormState> {
-  const user = await requireUser();
-  const parsed = parseDevotion(formData);
-  const error = validationError(parsed);
+    revalidatePath(`/devotions/${devotionId}`);
+    revalidateDevotionLists(user.username);
+    redirect(`/devotions/${devotionId}`);
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "digest" in error &&
+      typeof error.digest === "string" &&
+      error.digest.startsWith("NEXT_REDIRECT")
+    ) {
+      throw error;
+    }
 
-  if (error || !parsed.success) {
-    return error ?? {
-      status: "error",
-      message: "Unable to validate the devotion.",
-    };
-  }
-
-  const database = getPrisma();
-  const result = await database.devotion.updateMany({
-    where: {
-      id: devotionId,
-      userId: user.id,
-    },
-    data: {
-      scriptureReference: parsed.data.scriptureReference,
-      scriptureText: parsed.data.scriptureText || null,
-      observation: parsed.data.observation,
-      application: parsed.data.application,
-      prayer: parsed.data.prayer,
-      visibility: parsed.data.visibility,
-    },
-  });
-
-  if (result.count !== 1) {
     return {
       status: "error",
-      message: "This devotion could not be updated.",
+      message: "The devotion could not be saved. Please try again.",
     };
   }
-
-  revalidatePath(`/devotions/${devotionId}`);
-  revalidateDevotionLists(user.username);
-  redirect(`/devotions/${devotionId}`);
 }
 
 export async function deleteDevotionAction(

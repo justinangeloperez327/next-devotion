@@ -74,15 +74,16 @@ export function DevotionCard({
         <div className="min-w-0 flex-1">
           <Link
             href={`/profile/${author.username}`}
-            className="truncate text-sm font-medium text-foreground transition-colors hover:text-primary"
+            className="block truncate text-sm font-medium text-foreground transition-colors hover:text-primary"
           >
             {author.name}
           </Link>
-          <p className="mt-0.5 text-xs text-muted-foreground">
-            @{author.username} ·{" "}
+          <p className="mt-0.5 flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
+            <span className="max-w-[10rem] truncate">@{author.username}</span>
+            <span aria-hidden="true">·</span>
             <Link
               href={`/devotions/${id}`}
-              className="transition-colors hover:text-foreground"
+              className="shrink-0 transition-colors hover:text-foreground"
             >
               {time}
             </Link>
@@ -129,7 +130,7 @@ export function DevotionCard({
         />
         <Link
           href={`/devotions/${id}#comments`}
-          className="flex h-11 items-center justify-center gap-2 border-l border-border text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="flex h-12 min-w-0 items-center justify-center gap-1.5 border-l border-border px-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:h-11 sm:gap-2"
         >
           <MessageCircle className="size-4" />
           <span className="hidden sm:inline">Comments</span>

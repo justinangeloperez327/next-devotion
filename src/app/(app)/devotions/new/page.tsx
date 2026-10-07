@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { createDevotionAction } from "@/actions/devotions";
 import { DevotionComposer } from "@/components/devotion/devotion-composer";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export default function NewDevotionPage() {
   return (
     <main className="mx-auto w-full max-w-[1180px] px-4 py-6 sm:px-6 sm:py-8 xl:px-8">
-      <DevotionComposer />
+      <DevotionComposer action={createDevotionAction} />
     </main>
   );
 }

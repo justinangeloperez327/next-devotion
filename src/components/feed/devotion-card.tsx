@@ -130,11 +130,14 @@ export function DevotionCard({
           initialAmenCount={amenCount}
           disabled={!canAmen}
         />
-        <div className="flex h-11 items-center justify-center gap-2 border-l border-border text-xs text-muted-foreground">
+        <Link
+          href={`/devotions/${id}#comments`}
+          className="flex h-11 items-center justify-center gap-2 border-l border-border text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        >
           <MessageCircle className="size-4" />
           <span className="hidden sm:inline">Comments</span>
           <span>{commentCount}</span>
-        </div>
+        </Link>
         <div className="flex h-11 items-center justify-center gap-2 border-l border-border text-xs text-muted-foreground">
           <Bookmark className="size-4" />
           <span>Save</span>

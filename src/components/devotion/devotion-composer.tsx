@@ -149,21 +149,17 @@ export function DevotionComposer() {
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <div className="flex items-center justify-between gap-3">
-                  <Label htmlFor="scripture-reference">Reference</Label>
+                  <p className="text-sm font-medium text-foreground">
+                    Reference
+                  </p>
                   <Counter value={scriptureReference} max={MAX_REFERENCE} />
                 </div>
-                <Input
-                  id="scripture-reference"
-                  name="scriptureReference"
+                <ScriptureReferenceInput
+                  key={scriptureInputKey}
                   value={scriptureReference}
+                  onChange={setScriptureReference}
                   maxLength={MAX_REFERENCE}
-                  onChange={(event) => setScriptureReference(event.target.value)}
-                  placeholder="e.g. John 15:5"
                 />
-                <p className="text-xs leading-5 text-muted-foreground">
-                  Structured book, chapter, and verse selection comes in Group
-                  10. Manual references work here already.
-                </p>
               </div>
 
               <div className="grid gap-2">

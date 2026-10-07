@@ -6,6 +6,7 @@ import { DevotionOwnerActions } from "@/components/devotion/devotion-owner-actio
 import { DevotionCard } from "@/components/feed/devotion-card";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
+import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
 
 type DevotionPageProps = {
@@ -14,29 +15,18 @@ type DevotionPageProps = {
   }>;
 };
 
-export async function generateMetadata({
-  params,
-}: DevotionPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const database = getPrisma();
-
-  const devotion = await database.devotion.findUnique({
-    where: {
-      id,
-    },
-    select: {
-      scriptureReference: true,
-    },
-  });
-
-  return {
-    title: devotion?.scriptureReference ?? "Devotion",
-  };
-}
+export const metadata: Metadata = {
+  title: "Devotion",
+};
 
 export default async function DevotionPage({ params }: DevotionPageProps) {
   const user = await requireUser();
   const { id } = await params;
+
+  if (!isUuid(id)) {
+    notFound();
+  }
+
   const database = getPrisma();
 
   const devotion = await database.devotion.findUnique({

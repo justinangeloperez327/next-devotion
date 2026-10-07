@@ -46,7 +46,9 @@ export function SaveDevotionButton({
         )}
       >
         <Bookmark className={cn("size-4", saved && "fill-current")} />
-        <span>{saved ? "Saved" : "Save"}</span>
+        <span aria-live="polite" aria-atomic="true">
+          {saved ? "Saved" : "Save"}
+        </span>
       </button>
     </form>
   );

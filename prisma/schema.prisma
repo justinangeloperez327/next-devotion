@@ -108,6 +108,7 @@ model SavedDevotion {
   devotion Devotion @relation(fields: [devotionId], references: [id], onDelete: Cascade)
 
   @@id([userId, devotionId])
+  @@index([userId, createdAt, devotionId])
   @@index([devotionId])
   @@map("saved_devotions")
 }

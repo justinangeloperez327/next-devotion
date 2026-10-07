@@ -37,6 +37,10 @@ export async function updateProfileAction(
     };
   }
 
+  const avatarUrl = parsed.data.avatarUrl
+    ? new URL(parsed.data.avatarUrl).toString()
+    : null;
+
   try {
     await getPrisma().user.update({
       where: {
@@ -45,7 +49,7 @@ export async function updateProfileAction(
       data: {
         name: parsed.data.name,
         bio: parsed.data.bio || null,
-        avatarUrl: parsed.data.avatarUrl || null,
+        avatarUrl,
       },
     });
   } catch {

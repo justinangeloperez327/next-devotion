@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { updateDevotionAction } from "@/actions/devotions";
 import { DevotionComposer } from "@/components/devotion/devotion-composer";
 import { requireUser } from "@/lib/auth/session";
+import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
 
 type EditDevotionPageProps = {
@@ -21,6 +22,11 @@ export default async function EditDevotionPage({
 }: EditDevotionPageProps) {
   const user = await requireUser();
   const { id } = await params;
+
+  if (!isUuid(id)) {
+    notFound();
+  }
+
   const database = getPrisma();
 
   const devotion = await database.devotion.findFirst({

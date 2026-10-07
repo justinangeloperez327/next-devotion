@@ -15,12 +15,12 @@ export function DevotionOwnerActions({
   const deleteAction = deleteDevotionAction.bind(null, devotionId);
 
   return (
-    <div className="flex items-start gap-2">
+    <div className="flex w-full items-start gap-2 sm:w-auto">
       <Link
         href={`/devotions/${devotionId}/edit`}
         className={cn(
           buttonVariants({ variant: "secondary", size: "sm" }),
-          "gap-2",
+          "min-h-10 flex-1 gap-2 sm:flex-none",
         )}
       >
         <Pencil className="size-3.5" />
@@ -31,14 +31,14 @@ export function DevotionOwnerActions({
         <summary
           className={cn(
             buttonVariants({ variant: "ghost", size: "sm" }),
-            "cursor-pointer list-none gap-2 text-destructive hover:text-destructive [&::-webkit-details-marker]:hidden",
+            "min-h-10 cursor-pointer list-none gap-2 text-destructive hover:text-destructive [&::-webkit-details-marker]:hidden",
           )}
         >
           <Trash2 className="size-3.5" />
           Delete
         </summary>
 
-        <div className="absolute right-0 z-20 mt-2 w-72 rounded-lg border border-border bg-popover p-4 shadow-lg shadow-black/20">
+        <div className="absolute right-0 z-20 mt-2 w-[min(18rem,calc(100vw-2rem))] rounded-lg border border-border bg-popover p-4 shadow-lg shadow-black/20">
           <p className="text-sm font-medium text-foreground">
             Delete this devotion?
           </p>

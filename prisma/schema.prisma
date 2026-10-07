@@ -65,7 +65,7 @@ model Devotion {
   savedBy  SavedDevotion[]
 
   @@index([userId, createdAt])
-  @@index([visibility, createdAt])
+  @@index([visibility, createdAt, id])
   @@map("devotions")
 }
 

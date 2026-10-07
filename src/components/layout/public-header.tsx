@@ -17,7 +17,7 @@ export function PublicHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
+    <header className="sticky top-0 z-50 border-b border-border/80 bg-background">
       <Container className="flex h-16 items-center justify-between">
         <Link
           href="/"
@@ -59,7 +59,7 @@ export function PublicHeader() {
 
         <button
           type="button"
-          className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:bg-accent md:hidden"
+          className="inline-flex size-11 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:bg-accent md:hidden"
           aria-expanded={open}
           aria-controls="mobile-navigation"
           aria-label={open ? "Close navigation" : "Open navigation"}

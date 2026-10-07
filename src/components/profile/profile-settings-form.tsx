@@ -27,16 +27,16 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
 
   return (
     <form action={formAction} className="grid gap-6">
-      <div className="flex items-center gap-4 border-b border-border pb-6">
+      <div className="flex items-start gap-4 border-b border-border pb-6">
         <UserAvatar
           name={user.name}
           avatarUrl={user.avatarUrl}
           size="lg"
           className="ring-1 ring-border"
         />
-        <div>
-          <p className="text-sm font-medium text-foreground">{user.name}</p>
-          <p className="mt-1 text-xs text-muted-foreground">@{user.username}</p>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium text-foreground">{user.name}</p>
+          <p className="mt-1 truncate text-xs text-muted-foreground">@{user.username}</p>
           <p className="mt-2 text-xs text-muted-foreground">
             Username changes are not enabled yet.
           </p>
@@ -115,7 +115,7 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
           {state.message ?? "Your public profile updates across the app."}
         </p>
 
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending} className="w-full sm:w-auto">
           {pending ? "Saving..." : "Save profile"}
         </Button>
       </div>

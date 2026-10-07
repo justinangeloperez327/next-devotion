@@ -2,28 +2,19 @@ import Link from "next/link";
 import { BookOpenText, PenLine } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
+import { UserAvatar } from "@/components/user/user-avatar";
 import { cn } from "@/lib/utils";
 
 type FeedComposerProps = {
   name: string;
+  avatarUrl?: string | null;
 };
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
-
-export function FeedComposer({ name }: FeedComposerProps) {
+export function FeedComposer({ name, avatarUrl }: FeedComposerProps) {
   return (
     <section className="rounded-lg border border-border bg-card p-4 sm:p-5">
       <div className="flex items-start gap-3">
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-secondary-foreground">
-          {initials(name) || "ND"}
-        </div>
+        <UserAvatar name={name} avatarUrl={avatarUrl} />
 
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-foreground">

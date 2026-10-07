@@ -1,7 +1,7 @@
 "use client";
 
 import { BookOpenText, Keyboard } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -56,15 +56,6 @@ export function ScriptureReferenceInput({
         : [],
     [selectedBook],
   );
-
-  useEffect(() => {
-    setMode("structured");
-    setBook("");
-    setChapter("");
-    setVerseStart("");
-    setVerseEnd("");
-    setManualReference("");
-  }, [resetKey]);
 
   function updateStructuredReference(
     nextBook = book,

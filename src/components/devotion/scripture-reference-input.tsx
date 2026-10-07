@@ -87,6 +87,7 @@ export function ScriptureReferenceInput({
   return (
     <div className="grid gap-4">
       <div
+        role="group"
         className="inline-grid w-fit grid-cols-2 rounded-md border border-border bg-background p-1"
         aria-label="Scripture reference input mode"
       >

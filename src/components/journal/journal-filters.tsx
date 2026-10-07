@@ -53,7 +53,7 @@ export function JournalFilters({
           id="journal-visibility"
           name="visibility"
           defaultValue={visibility}
-          className="h-10 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus:border-primary/70 focus:ring-2 focus:ring-ring/20"
+          className="h-11 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus:border-primary/70 focus:ring-2 focus:ring-ring/20"
         >
           <option value="all">All</option>
           <option value="public">Public</option>
@@ -62,7 +62,7 @@ export function JournalFilters({
       </div>
 
       <div className="flex gap-2">
-        <Button type="submit" className="flex-1 sm:flex-none">
+        <Button type="submit" className="h-11 flex-1 sm:h-9 sm:flex-none">
           Apply
         </Button>
         {active ? (
@@ -71,7 +71,7 @@ export function JournalFilters({
             aria-label="Clear journal filters"
             className={cn(
               buttonVariants({ variant: "ghost", size: "icon" }),
-              "shrink-0",
+              "size-11 shrink-0 sm:size-9",
             )}
           >
             <X className="size-4" />

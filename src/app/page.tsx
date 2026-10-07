@@ -46,10 +46,10 @@ export default function Home() {
               and share your daily devotion with a community growing in faith.
             </p>
 
-            <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
+            <div className="mt-9 flex w-full max-w-xs flex-col items-stretch gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:items-center">
               <Link
                 href="/register"
-                className={cn(buttonVariants({ size: "lg" }), "min-w-44")}
+                className={cn(buttonVariants({ size: "lg" }), "w-full sm:min-w-44 sm:w-auto")}
               >
                 Start your devotion
               </Link>
@@ -57,7 +57,7 @@ export default function Home() {
                 href="/login"
                 className={cn(
                   buttonVariants({ variant: "secondary", size: "lg" }),
-                  "min-w-32",
+                  "w-full sm:min-w-32 sm:w-auto",
                 )}
               >
                 Log in

@@ -76,6 +76,15 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           },
           take: 1,
         },
+        savedBy: {
+          where: {
+            userId: viewer.id,
+          },
+          select: {
+            userId: true,
+          },
+          take: 1,
+        },
         _count: {
           select: {
             amens: true,
@@ -173,6 +182,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                 amenCount={devotion._count.amens}
                 commentCount={devotion._count.comments}
                 hasAmen={devotion.amens.length > 0}
+                isSaved={devotion.savedBy.length > 0}
               />
             ))}
           </div>

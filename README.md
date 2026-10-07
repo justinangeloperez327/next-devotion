@@ -13,6 +13,8 @@ A modern devotion application built with Next.js, TypeScript, Tailwind CSS, shad
 - Prisma ORM 7.10
 - bcrypt.js 3
 - Zod 4
+- Vitest 5
+- Playwright 1.63
 
 ## Development
 
@@ -85,3 +87,31 @@ Add components with:
 ```bash
 npx shadcn@latest add button
 ```
+
+## Testing
+
+Unit tests cover validation, privacy rules, Scripture reference helpers, UUID validation, and feed/journal/saved cursor encoding.
+
+```bash
+npm run test
+npm run test:unit
+npm run test:unit:watch
+```
+
+Browser tests use Playwright. Install Chromium once on a development machine:
+
+```bash
+npm run test:e2e:install
+```
+
+Then run:
+
+```bash
+npm run test:e2e
+```
+
+The public browser suite runs without an authenticated account. The authenticated lifecycle test is opt-in: configure a dedicated non-production test account through `E2E_EMAIL` and `E2E_PASSWORD`, make sure `DATABASE_URL` points to the intended test/development database, generate Prisma Client, and apply the required migrations before running Playwright.
+
+`PLAYWRIGHT_BASE_URL` can point the browser tests at an already-running deployment. When it is unset, Playwright starts `npm run dev` automatically.
+
+GitHub Actions runs unit tests and the public Playwright suite on `main` pushes and pull requests. Authenticated browser tests are intentionally not run in CI until a dedicated test database and credentials are configured.

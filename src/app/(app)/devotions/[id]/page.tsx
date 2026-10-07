@@ -9,6 +9,7 @@ import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
+import { canViewDevotion } from "@/lib/privacy/access";
 
 type DevotionPageProps = {
   params: Promise<{
@@ -102,7 +103,7 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
 
   const isOwner = devotion.userId === user.id;
 
-  if (devotion.visibility === "PRIVATE" && !isOwner) {
+  if (!canViewDevotion(user.id, devotion)) {
     notFound();
   }
 

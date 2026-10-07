@@ -71,6 +71,7 @@ export const getCurrentUser = cache(async () => {
           email: true,
           avatarUrl: true,
           bio: true,
+          defaultDevotionVisibility: true,
         },
       },
     },

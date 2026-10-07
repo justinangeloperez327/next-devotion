@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { DevotionCard } from "@/components/feed/devotion-card";
 import { ProfileHeader } from "@/components/profile/profile-header";
+import { EmptyState } from "@/components/states/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
@@ -187,16 +188,17 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             ))}
           </div>
         ) : (
-          <div className="mt-5 rounded-lg border border-border bg-card px-5 py-12 text-center">
-            <p className="text-sm font-medium text-foreground">
-              No public devotions yet.
-            </p>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-              {isOwner
+          <EmptyState
+            className="mt-5"
+            title="No public devotions yet."
+            description={
+              isOwner
                 ? "Your private journal remains private. Share a devotion publicly when you want it to appear here."
-                : "This person has not shared a public devotion yet."}
-            </p>
-          </div>
+                : "This person has not shared a public devotion yet."
+            }
+            actionHref={isOwner ? "/devotions/new" : undefined}
+            actionLabel={isOwner ? "Write devotion" : undefined}
+          />
         )}
 
         {devotionCount > devotions.length ? (

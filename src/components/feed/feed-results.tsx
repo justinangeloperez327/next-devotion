@@ -82,6 +82,7 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
         select: {
           name: true,
           username: true,
+          avatarUrl: true,
         },
       },
       amens: {

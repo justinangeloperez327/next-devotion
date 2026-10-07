@@ -2,13 +2,14 @@ import Link from "next/link";
 import { Bookmark, Heart, MessageCircle, MoreHorizontal } from "lucide-react";
 
 type DevotionCardProps = {
+  id: string;
   author: {
     name: string;
     username: string;
   };
   time: string;
   scriptureReference: string;
-  scriptureText?: string;
+  scriptureText?: string | null;
   observation: string;
   application: string;
   prayer: string;
@@ -45,6 +46,7 @@ function DevotionSection({
 }
 
 export function DevotionCard({
+  id,
   author,
   time,
   scriptureReference,
@@ -74,25 +76,33 @@ export function DevotionCard({
             {author.name}
           </Link>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            @{author.username} · {time}
+            @{author.username} ·{" "}
+            <Link
+              href={`/devotions/${id}`}
+              className="transition-colors hover:text-foreground"
+            >
+              {time}
+            </Link>
           </p>
         </div>
 
-        <button
-          type="button"
-          aria-label="More options"
-          disabled
-          className="flex size-8 items-center justify-center rounded-md text-muted-foreground opacity-60"
+        <Link
+          href={`/devotions/${id}`}
+          aria-label="View devotion"
+          className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         >
           <MoreHorizontal className="size-4" />
-        </button>
+        </Link>
       </header>
 
       <div className="px-4 pb-5 pt-5 sm:px-5">
         <div className="border-l-2 border-primary/70 pl-4">
-          <p className="text-xs font-medium tracking-[0.16em] text-primary uppercase">
+          <Link
+            href={`/devotions/${id}`}
+            className="text-xs font-medium tracking-[0.16em] text-primary uppercase transition-colors hover:text-primary/80"
+          >
             {scriptureReference}
-          </p>
+          </Link>
           {scriptureText ? (
             <blockquote className="scripture mt-3 text-xl leading-8 text-foreground sm:text-[22px]">
               “{scriptureText}”

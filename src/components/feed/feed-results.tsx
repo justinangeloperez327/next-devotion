@@ -94,6 +94,15 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
         },
         take: 1,
       },
+      savedBy: {
+        where: {
+          userId: user.id,
+        },
+        select: {
+          userId: true,
+        },
+        take: 1,
+      },
       _count: {
         select: {
           amens: true,
@@ -186,6 +195,7 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
             amenCount={devotion._count.amens}
             commentCount={devotion._count.comments}
             hasAmen={devotion.amens.length > 0}
+            isSaved={devotion.savedBy.length > 0}
           />
         ))}
       </div>

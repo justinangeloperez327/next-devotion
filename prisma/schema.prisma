@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum DevotionVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  avatarUrl    String?
+  bio          String?  @db.VarChar(280)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  devotions      Devotion[]
+  amens          Amen[]
+  comments       Comment[]
+  savedDevotions SavedDevotion[]
+
+  @@index([createdAt])
+  @@map("users")
+}
+
+model Devotion {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  scriptureReference String
+  scriptureText      String?            @db.Text
+  observation        String             @db.Text
+  application        String             @db.Text
+  prayer             String             @db.Text
+  visibility         DevotionVisibility @default(PUBLIC)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amens    Amen[]
+  comments Comment[]
+  savedBy  SavedDevotion[]
+
+  @@index([userId, createdAt])
+  @@index([visibility, createdAt])
+  @@map("devotions")
+}
+
+model Amen {
+  userId     String   @db.Uuid
+  devotionId String   @db.Uuid
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  devotion Devotion @relation(fields: [devotionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, devotionId])
+  @@index([devotionId, createdAt])
+  @@map("amens")
+}
+
+model Comment {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  devotionId String   @db.Uuid
+  body       String   @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  devotion Devotion @relation(fields: [devotionId], references: [id], onDelete: Cascade)
+
+  @@index([devotionId, createdAt])
+  @@index([userId, createdAt])
+  @@map("comments")
+}
+
+model SavedDevotion {
+  userId     String   @db.Uuid
+  devotionId String   @db.Uuid
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  devotion Devotion @relation(fields: [devotionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, devotionId])
+  @@index([devotionId])
+  @@map("saved_devotions")
+}

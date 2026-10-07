@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ProfileSettingsForm } from "@/components/profile/profile-settings-form";
+import { PrivacySettingsForm } from "@/components/settings/privacy-settings-form";
 import { requireUser } from "@/lib/auth/session";
 
 export const metadata: Metadata = {
@@ -32,6 +33,12 @@ export default async function SettingsPage() {
             bio: user.bio,
             avatarUrl: user.avatarUrl,
           }}
+        />
+      </section>
+
+      <section className="border-t border-border py-7">
+        <PrivacySettingsForm
+          defaultVisibility={user.defaultDevotionVisibility}
         />
       </section>
     </main>

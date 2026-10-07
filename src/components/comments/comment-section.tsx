@@ -4,6 +4,7 @@ import { MessageCircle, Trash2 } from "lucide-react";
 import { deleteCommentAction } from "@/actions/comments";
 import { CommentForm } from "@/components/comments/comment-form";
 import { buttonVariants } from "@/components/ui/button";
+import { UserAvatar } from "@/components/user/user-avatar";
 import { formatRelativeDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ type CommentItem = {
   user: {
     name: string;
     username: string;
+    avatarUrl?: string | null;
   };
 };
 
@@ -23,15 +25,6 @@ type CommentSectionProps = {
   currentUserId: string;
   comments: CommentItem[];
 };
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
 
 export function CommentSection({
   devotionId,
@@ -81,10 +74,13 @@ export function CommentSection({
               <article key={comment.id} className="flex gap-3 px-4 py-5 sm:px-5">
                 <Link
                   href={`/profile/${comment.user.username}`}
-                  className="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary text-[10px] font-semibold text-secondary-foreground"
                   aria-label={`View ${comment.user.name}'s profile`}
                 >
-                  {initials(comment.user.name) || "ND"}
+                  <UserAvatar
+                    name={comment.user.name}
+                    avatarUrl={comment.user.avatarUrl}
+                    size="sm"
+                  />
                 </Link>
 
                 <div className="min-w-0 flex-1">

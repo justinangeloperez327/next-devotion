@@ -166,7 +166,7 @@ export function DevotionComposer({
     setObservation("");
     setApplication("");
     setPrayer("");
-    setVisibility("PUBLIC");
+    setVisibility(initialValues.visibility);
   }
 
   return (

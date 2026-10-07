@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Globe2, Lock } from "lucide-react";
 
+import { CommentSection } from "@/components/comments/comment-section";
 import { DevotionOwnerActions } from "@/components/devotion/devotion-owner-actions";
 import { DevotionCard } from "@/components/feed/devotion-card";
 import { requireUser } from "@/lib/auth/session";
@@ -58,6 +59,23 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
         },
         take: 1,
       },
+      comments: {
+        orderBy: {
+          createdAt: "asc",
+        },
+        select: {
+          id: true,
+          userId: true,
+          body: true,
+          createdAt: true,
+          user: {
+            select: {
+              name: true,
+              username: true,
+            },
+          },
+        },
+      },
       _count: {
         select: {
           amens: true,
@@ -106,6 +124,12 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
         amenCount={devotion._count.amens}
         commentCount={devotion._count.comments}
         hasAmen={devotion.amens.length > 0}
+      />
+
+      <CommentSection
+        devotionId={devotion.id}
+        currentUserId={user.id}
+        comments={devotion.comments}
       />
     </main>
   );

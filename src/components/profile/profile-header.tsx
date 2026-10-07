@@ -38,13 +38,13 @@ export function ProfileHeader({
           name={profile.name}
           avatarUrl={profile.avatarUrl}
           size="xl"
-          className="ring-1 ring-border"
+          className="size-20 ring-1 ring-border sm:size-24"
         />
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h1 className="text-3xl font-medium tracking-[-0.03em] text-foreground">
+              <h1 className="break-words text-2xl font-medium tracking-[-0.03em] text-foreground sm:text-3xl">
                 {profile.name}
               </h1>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -80,8 +80,8 @@ export function ProfileHeader({
         </div>
       </div>
 
-      <dl className="mt-7 grid grid-cols-3 divide-x divide-border border-y border-border">
-        <div className="py-4 pr-4">
+      <dl className="mt-7 grid grid-cols-3 divide-x divide-border border-y border-border text-center sm:text-left">
+        <div className="px-2 py-4 sm:pr-4 sm:pl-0">
           <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
             Devotions
           </dt>
@@ -89,15 +89,15 @@ export function ProfileHeader({
             {stats.devotions}
           </dd>
         </div>
-        <div className="px-4 py-4">
+        <div className="px-2 py-4 sm:px-4">
           <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
-            Amens received
+            Amens
           </dt>
           <dd className="mt-1 text-xl font-medium text-foreground">
             {stats.amens}
           </dd>
         </div>
-        <div className="py-4 pl-4">
+        <div className="px-2 py-4 sm:pr-0 sm:pl-4">
           <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
             Comments
           </dt>

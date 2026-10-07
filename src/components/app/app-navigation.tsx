@@ -140,10 +140,10 @@ export function MobileNavigation({ username }: AppNavigationProps) {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-sidebar/98 lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-sidebar pb-[env(safe-area-inset-bottom)] lg:hidden"
       aria-label="Mobile application navigation"
     >
-      <div className="mx-auto grid h-16 max-w-xl grid-cols-5">
+      <div className="mx-auto grid min-h-16 max-w-xl grid-cols-5 px-1">
         {items.map((item) => {
           const active = isActive(pathname, item.href);
           const Icon = item.icon;
@@ -154,7 +154,7 @@ export function MobileNavigation({ username }: AppNavigationProps) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative flex min-w-0 flex-col items-center justify-center gap-1 text-[10px] transition-colors",
+                "relative flex min-h-16 min-w-0 flex-col items-center justify-center gap-1 px-1 text-[10px] transition-colors",
                 active ? "text-foreground" : "text-muted-foreground",
               )}
             >
@@ -172,7 +172,7 @@ export function MobileNavigation({ username }: AppNavigationProps) {
                   )}
                 />
               </span>
-              <span className={cn(item.primary && "text-primary")}>
+              <span className={cn("max-w-full truncate", item.primary && "text-primary")}>
                 {item.label}
               </span>
             </Link>

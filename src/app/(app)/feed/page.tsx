@@ -53,7 +53,7 @@ export default async function FeedPage({ searchParams }: FeedPageProps) {
             </p>
           </div>
 
-          <FeedComposer name={user.name} />
+          <FeedComposer name={user.name} avatarUrl={user.avatarUrl} />
 
           <Suspense
             key={paginationKey}

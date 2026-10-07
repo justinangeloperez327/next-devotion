@@ -48,7 +48,7 @@ export function PrivacySettingsForm({
           aria-pressed={visibility === "PUBLIC"}
           onClick={() => setVisibility("PUBLIC")}
           className={cn(
-            "rounded-md border p-4 text-left transition-colors",
+            "min-h-24 rounded-md border p-4 text-left transition-colors",
             visibility === "PUBLIC"
               ? "border-primary/70 bg-primary/5"
               : "border-border bg-card hover:bg-accent",
@@ -115,7 +115,7 @@ export function PrivacySettingsForm({
             "Changing the default does not change existing devotions."}
         </p>
 
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending} className="w-full sm:w-auto">
           {pending ? "Saving..." : "Save privacy"}
         </Button>
       </div>

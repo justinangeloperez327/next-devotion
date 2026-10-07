@@ -49,6 +49,15 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
           username: true,
         },
       },
+      amens: {
+        where: {
+          userId: user.id,
+        },
+        select: {
+          userId: true,
+        },
+        take: 1,
+      },
       _count: {
         select: {
           amens: true,
@@ -96,6 +105,7 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
         prayer={devotion.prayer}
         amenCount={devotion._count.amens}
         commentCount={devotion._count.comments}
+        hasAmen={devotion.amens.length > 0}
       />
     </main>
   );

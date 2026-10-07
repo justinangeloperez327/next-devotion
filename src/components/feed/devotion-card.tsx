@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Bookmark, MessageCircle, MoreHorizontal } from "lucide-react";
+import { MessageCircle, MoreHorizontal } from "lucide-react";
 
 import { AmenButton } from "@/components/feed/amen-button";
+import { SaveDevotionButton } from "@/components/feed/save-devotion-button";
 import { UserAvatar } from "@/components/user/user-avatar";
 
 type DevotionCardProps = {
@@ -21,6 +22,8 @@ type DevotionCardProps = {
   commentCount: number;
   hasAmen?: boolean;
   canAmen?: boolean;
+  isSaved?: boolean;
+  canSave?: boolean;
 };
 
 function DevotionSection({
@@ -55,6 +58,8 @@ export function DevotionCard({
   commentCount,
   hasAmen = false,
   canAmen = true,
+  isSaved = false,
+  canSave = true,
 }: DevotionCardProps) {
   return (
     <article className="rounded-lg border border-border bg-card">
@@ -130,10 +135,11 @@ export function DevotionCard({
           <span className="hidden sm:inline">Comments</span>
           <span>{commentCount}</span>
         </Link>
-        <div className="flex h-11 items-center justify-center gap-2 border-l border-border text-xs text-muted-foreground">
-          <Bookmark className="size-4" />
-          <span>Save</span>
-        </div>
+        <SaveDevotionButton
+          devotionId={id}
+          initialSaved={isSaved}
+          disabled={!canSave}
+        />
       </footer>
     </article>
   );

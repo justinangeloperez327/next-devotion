@@ -153,7 +153,7 @@ export function RegisterForm() {
         </div>
 
         <div className="pt-1">
-          <Button type="submit" className="h-10 w-full" disabled={pending}>
+          <Button type="submit" className="h-11 w-full" disabled={pending}>
             {pending ? "Creating account..." : "Create account"}
           </Button>
           {state.message ? (

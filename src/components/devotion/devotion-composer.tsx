@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 
+import { ScriptureReferenceInput } from "@/components/devotion/scripture-reference-input";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -88,6 +88,7 @@ function PreviewSection({
 
 export function DevotionComposer() {
   const [scriptureReference, setScriptureReference] = useState("");
+  const [scriptureInputKey, setScriptureInputKey] = useState(0);
   const [scriptureText, setScriptureText] = useState("");
   const [observation, setObservation] = useState("");
   const [application, setApplication] = useState("");
@@ -108,6 +109,7 @@ export function DevotionComposer() {
 
   function clearComposer() {
     setScriptureReference("");
+    setScriptureInputKey((value) => value + 1);
     setScriptureText("");
     setObservation("");
     setApplication("");

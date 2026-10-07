@@ -99,23 +99,31 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
   }
 
   if (pageRows.length === 0) {
+    const paginatedRequest = Boolean(after || before);
+
     return (
       <div className="rounded-lg border border-border bg-card px-5 py-12 text-center">
         <p className="text-sm font-medium text-foreground">
-          No devotions on this page.
+          {paginatedRequest
+            ? "No devotions on this page."
+            : "No public devotions yet."}
         </p>
         <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-          The feed may have changed since this page was opened.
+          {paginatedRequest
+            ? "The feed may have changed since this page was opened."
+            : "Your community feed will begin filling as people share their daily Scripture reflections."}
         </p>
-        <Link
-          href="/feed"
-          className={cn(
-            buttonVariants({ variant: "secondary", size: "sm" }),
-            "mt-5",
-          )}
-        >
-          Return to latest
-        </Link>
+        {paginatedRequest ? (
+          <Link
+            href="/feed"
+            className={cn(
+              buttonVariants({ variant: "secondary", size: "sm" }),
+              "mt-5",
+            )}
+          >
+            Return to latest
+          </Link>
+        ) : null}
       </div>
     );
   }

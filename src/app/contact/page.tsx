@@ -30,8 +30,7 @@ export default function ContactPage() {
               </h1>
               <p className="mt-6 max-w-lg text-base leading-7 text-muted-foreground">
                 Use this page for feedback, questions, or ideas about Next
-                Devotion. Keep the message simple and we will connect delivery
-                once the application backend is in place.
+                Devotion. Share feedback, questions, or ideas about Next Devotion.
               </p>
             </div>
 
@@ -82,8 +81,7 @@ export default function ContactPage() {
                     id="contact-status"
                     className="max-w-md text-xs leading-5 text-muted-foreground"
                   >
-                    Message delivery is not connected yet. The form is ready for
-                    the backend integration phase.
+                    Contact messaging is temporarily unavailable.
                   </p>
                   <Button type="submit" disabled className="w-full sm:w-auto">
                     Send message

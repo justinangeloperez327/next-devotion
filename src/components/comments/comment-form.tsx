@@ -55,7 +55,7 @@ export function CommentForm({ devotionId }: CommentFormProps) {
             "Keep the conversation thoughtful, relevant, and encouraging."}
         </p>
 
-        <Button type="submit" size="sm" disabled={pending} className="gap-2">
+        <Button type="submit" size="sm" disabled={pending} className="w-full gap-2 sm:w-auto">
           <Send className="size-3.5" />
           {pending ? "Posting..." : "Comment"}
         </Button>

@@ -11,6 +11,8 @@ A modern devotion application built with Next.js, TypeScript, Tailwind CSS, shad
 - shadcn 4
 - PostgreSQL
 - Prisma ORM 7.10
+- bcrypt.js 3
+- Zod 4
 
 ## Development
 
@@ -46,6 +48,19 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Authentication
+
+Authentication is database-backed.
+
+- Passwords are hashed with bcrypt.
+- Login sessions use cryptographically random opaque tokens.
+- Only SHA-256 hashes of session tokens are stored in PostgreSQL.
+- Session cookies are HttpOnly, SameSite=Lax, and Secure in production.
+- Sessions expire after 30 days.
+- Authenticated routes live inside the `(app)` route group and use a server-side session guard.
+
+No separate authentication secret is required for the current opaque-session design.
+
 ## Database commands
 
 ```bash
@@ -58,6 +73,8 @@ npm run db:studio
 ```
 
 Prisma Client is generated into `src/generated/prisma` and is intentionally ignored by Git.
+
+Whenever `prisma/schema.prisma` changes, regenerate the client and create a development migration before deploying.
 
 ## shadcn/ui
 

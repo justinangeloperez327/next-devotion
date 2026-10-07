@@ -70,8 +70,10 @@ export async function createDevotionAction(
     );
   }
 
+  const database = getPrisma();
+  let devotionId: string;
+
   try {
-    const database = getPrisma();
     const devotion = await database.devotion.create({
       data: {
         userId: user.id,
@@ -87,24 +89,16 @@ export async function createDevotionAction(
       },
     });
 
-    revalidateDevotionLists(user.username);
-    redirect(`/devotions/${devotion.id}`);
-  } catch (error) {
-    if (
-      error &&
-      typeof error === "object" &&
-      "digest" in error &&
-      typeof error.digest === "string" &&
-      error.digest.startsWith("NEXT_REDIRECT")
-    ) {
-      throw error;
-    }
-
+    devotionId = devotion.id;
+  } catch {
     return {
       status: "error",
       message: "The devotion could not be posted. Please try again.",
     };
   }
+
+  revalidateDevotionLists(user.username);
+  redirect(`/devotions/${devotionId}`);
 }
 
 export async function updateDevotionAction(
@@ -133,8 +127,10 @@ export async function updateDevotionAction(
     );
   }
 
+  const database = getPrisma();
+  let updated = false;
+
   try {
-    const database = getPrisma();
     const result = await database.devotion.updateMany({
       where: {
         id: devotionId,
@@ -150,32 +146,24 @@ export async function updateDevotionAction(
       },
     });
 
-    if (result.count !== 1) {
-      return {
-        status: "error",
-        message: "This devotion could not be updated.",
-      };
-    }
-
-    revalidatePath(`/devotions/${devotionId}`);
-    revalidateDevotionLists(user.username);
-    redirect(`/devotions/${devotionId}`);
-  } catch (error) {
-    if (
-      error &&
-      typeof error === "object" &&
-      "digest" in error &&
-      typeof error.digest === "string" &&
-      error.digest.startsWith("NEXT_REDIRECT")
-    ) {
-      throw error;
-    }
-
+    updated = result.count === 1;
+  } catch {
     return {
       status: "error",
       message: "The devotion could not be saved. Please try again.",
     };
   }
+
+  if (!updated) {
+    return {
+      status: "error",
+      message: "This devotion could not be updated.",
+    };
+  }
+
+  revalidatePath(`/devotions/${devotionId}`);
+  revalidateDevotionLists(user.username);
+  redirect(`/devotions/${devotionId}`);
 }
 
 export async function deleteDevotionAction(

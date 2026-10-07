@@ -26,11 +26,11 @@ type AppShellProps = {
 export function AppShell({ user, children }: AppShellProps) {
   return (
     <div className="min-h-svh bg-background">
-      <header className="sticky top-0 z-40 border-b border-border bg-sidebar/95 backdrop-blur supports-[backdrop-filter]:bg-sidebar/90">
-        <div className="grid h-16 grid-cols-[1fr_auto] items-center px-4 sm:px-6 lg:grid-cols-[240px_1fr_auto] lg:px-0">
+      <header className="sticky top-0 z-40 border-b border-border bg-sidebar">
+        <div className="grid h-14 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 sm:h-16 sm:px-6 lg:grid-cols-[240px_minmax(0,1fr)_auto] lg:px-0">
           <Link
             href="/feed"
-            className="text-sm font-semibold tracking-[0.18em] text-foreground uppercase lg:border-r lg:border-sidebar-border lg:px-5"
+            className="truncate text-[13px] font-semibold tracking-[0.16em] text-foreground uppercase sm:text-sm sm:tracking-[0.18em] lg:border-r lg:border-sidebar-border lg:px-5"
           >
             Next Devotion
           </Link>
@@ -65,7 +65,7 @@ export function AppShell({ user, children }: AppShellProps) {
                 </span>
               </summary>
 
-              <div className="absolute right-0 mt-2 w-64 rounded-lg border border-border bg-popover p-2 shadow-lg shadow-black/20">
+              <div className="absolute right-0 mt-2 w-[min(16rem,calc(100vw-1.5rem))] rounded-lg border border-border bg-popover p-2 shadow-lg shadow-black/20">
                 <div className="border-b border-border px-2 py-2">
                   <p className="truncate text-sm font-medium text-foreground">
                     {user.name}
@@ -120,7 +120,7 @@ export function AppShell({ user, children }: AppShellProps) {
           </div>
         </aside>
 
-        <div className="min-w-0 pb-20 lg:pb-0">{children}</div>
+        <div className="min-w-0 pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">{children}</div>
       </div>
 
       <MobileNavigation username={user.username} />

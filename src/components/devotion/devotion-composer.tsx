@@ -7,7 +7,7 @@ import {
   Lock,
   RotateCcw,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,7 +43,7 @@ function EditorSection({
   number: string;
   title: string;
   description: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <section className="border-t border-border pt-7 first:border-t-0 first:pt-0">

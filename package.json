@@ -13,7 +13,14 @@
     "db:deploy": "prisma migrate deploy --config ./prisma7.config.ts",
     "db:studio": "prisma studio --config ./prisma7.config.ts",
     "db:validate": "prisma validate --config ./prisma7.config.ts",
-    "db:format": "prisma format --schema ./prisma/schema.prisma"
+    "db:format": "prisma format --schema ./prisma/schema.prisma",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:install": "playwright install chromium",
+    "test:all": "npm run test:unit && npm run test:e2e"
   },
   "engines": {
     "node": ">=20.19.0"
@@ -45,6 +52,8 @@
     "prisma": "7.10.0",
     "tailwindcss": "4.3.3",
     "tsx": "4.23.15",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "@playwright/test": "1.63.0",
+    "vitest": "5.0.3"
   }
 }

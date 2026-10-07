@@ -1,8 +1,6 @@
-import Link from "next/link";
-
 import { DevotionCard } from "@/components/feed/devotion-card";
 import { FeedPagination } from "@/components/feed/feed-pagination";
-import { buttonVariants } from "@/components/ui/button";
+import { EmptyState } from "@/components/states/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import {
@@ -10,7 +8,6 @@ import {
   encodeFeedCursor,
 } from "@/lib/feed-pagination";
 import { getPrisma } from "@/lib/prisma";
-import { cn } from "@/lib/utils";
 
 const PAGE_SIZE = 10;
 
@@ -123,29 +120,20 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
     const paginatedRequest = Boolean(after || before);
 
     return (
-      <div className="rounded-lg border border-border bg-card px-5 py-12 text-center">
-        <p className="text-sm font-medium text-foreground">
-          {paginatedRequest
+      <EmptyState
+        title={
+          paginatedRequest
             ? "No devotions on this page."
-            : "No public devotions yet."}
-        </p>
-        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-          {paginatedRequest
+            : "No public devotions yet."
+        }
+        description={
+          paginatedRequest
             ? "The feed may have changed since this page was opened."
-            : "Your community feed will begin filling as people share their daily Scripture reflections."}
-        </p>
-        {paginatedRequest ? (
-          <Link
-            href="/feed"
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "sm" }),
-              "mt-5",
-            )}
-          >
-            Return to latest
-          </Link>
-        ) : null}
-      </div>
+            : "Your community feed will begin filling as people share their daily Scripture reflections."
+        }
+        actionHref={paginatedRequest ? "/feed" : undefined}
+        actionLabel={paginatedRequest ? "Return to latest" : undefined}
+      />
     );
   }
 

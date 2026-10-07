@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/session";
 import type { DevotionFormState } from "@/lib/devotion/types";
 import { devotionSchema } from "@/lib/devotion/validation";
+import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
 
 function firstError(errors: string[] | undefined) {
@@ -57,6 +58,14 @@ export async function createDevotionAction(
   formData: FormData,
 ): Promise<DevotionFormState> {
   const user = await requireUser();
+
+  if (!isUuid(devotionId)) {
+    return {
+      status: "error",
+      message: "This devotion could not be updated.",
+    };
+  }
+
   const parsed = parseDevotion(formData);
   const error = validationError(parsed);
 
@@ -136,6 +145,11 @@ export async function deleteDevotionAction(
   _formData: FormData,
 ) {
   const user = await requireUser();
+
+  if (!isUuid(devotionId)) {
+    redirect("/my-devotions");
+  }
+
   const database = getPrisma();
 
   await database.devotion.deleteMany({

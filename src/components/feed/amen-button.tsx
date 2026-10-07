@@ -69,7 +69,11 @@ export function AmenButton({
           )}
         />
         <span>Amen</span>
-        <span aria-label={`${optimistic.count} Amens`}>
+        <span
+          aria-live="polite"
+          aria-atomic="true"
+          aria-label={`${optimistic.count} Amens`}
+        >
           {optimistic.count}
         </span>
       </button>

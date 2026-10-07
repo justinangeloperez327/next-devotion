@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth/session";
 import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
+import { canViewDevotion } from "@/lib/privacy/access";
 
 export async function toggleSavedDevotionAction(devotionId: string) {
   const user = await requireUser();
@@ -33,7 +34,7 @@ export async function toggleSavedDevotionAction(devotionId: string) {
     return;
   }
 
-  if (devotion.visibility === "PRIVATE" && devotion.userId !== user.id) {
+  if (!canViewDevotion(user.id, devotion)) {
     return;
   }
 

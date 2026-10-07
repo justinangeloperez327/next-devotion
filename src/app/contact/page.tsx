@@ -30,7 +30,7 @@ export default function ContactPage() {
               </h1>
               <p className="mt-6 max-w-lg text-base leading-7 text-muted-foreground">
                 Use this page for feedback, questions, or ideas about Next
-                Devotion. Share feedback, questions, or ideas about Next Devotion.
+                Devotion.
               </p>
             </div>
 
@@ -108,7 +108,7 @@ export default function ContactPage() {
                 Support
               </p>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                Report an account or application issue once the service is live.
+                Report an account or application issue.
               </p>
             </div>
             <div>

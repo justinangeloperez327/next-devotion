@@ -68,6 +68,7 @@ export async function toggleAmenAction(devotionId: string) {
   }
 
   revalidatePath("/feed");
+  revalidatePath("/saved");
   revalidatePath(`/devotions/${devotionId}`);
   revalidatePath(`/profile/${devotion.user.username}`);
 }

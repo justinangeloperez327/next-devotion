@@ -62,13 +62,19 @@ function Counter({ value, max }: { value: string; max: number }) {
   );
 }
 
-function FieldError({ children }: { children?: string }) {
+function FieldError({
+  children,
+  id,
+}: {
+  children?: string;
+  id?: string;
+}) {
   if (!children) {
     return null;
   }
 
   return (
-    <p className="text-xs leading-5 text-destructive" role="alert">
+    <p id={id} className="text-xs leading-5 text-destructive" role="alert">
       {children}
     </p>
   );
@@ -214,8 +220,15 @@ export function DevotionComposer({
                   value={scriptureReference}
                   onChange={setScriptureReference}
                   maxLength={MAX_REFERENCE}
+                  ariaDescribedBy={
+                    state.errors?.scriptureReference
+                      ? "scripture-reference-error"
+                      : undefined
+                  }
                 />
-                <FieldError>{state.errors?.scriptureReference}</FieldError>
+                <FieldError id="scripture-reference-error">
+                  {state.errors?.scriptureReference}
+                </FieldError>
               </div>
 
               <div className="grid gap-2">
@@ -232,8 +245,15 @@ export function DevotionComposer({
                   className="scripture min-h-32 text-base leading-7"
                   placeholder="Paste or type the passage here..."
                   aria-invalid={Boolean(state.errors?.scriptureText)}
+                  aria-describedby={
+                    state.errors?.scriptureText
+                      ? "scripture-text-error"
+                      : undefined
+                  }
                 />
-                <FieldError>{state.errors?.scriptureText}</FieldError>
+                <FieldError id="scripture-text-error">
+                  {state.errors?.scriptureText}
+                </FieldError>
               </div>
             </div>
           </EditorSection>
@@ -256,9 +276,14 @@ export function DevotionComposer({
                 className="min-h-44"
                 placeholder="Write what you notice before trying to solve or apply it..."
                 aria-invalid={Boolean(state.errors?.observation)}
+                aria-describedby={
+                  state.errors?.observation ? "observation-error" : undefined
+                }
                 required
               />
-              <FieldError>{state.errors?.observation}</FieldError>
+              <FieldError id="observation-error">
+                {state.errors?.observation}
+              </FieldError>
             </div>
           </EditorSection>
 
@@ -280,9 +305,14 @@ export function DevotionComposer({
                 className="min-h-40"
                 placeholder="How will you live this out today?"
                 aria-invalid={Boolean(state.errors?.application)}
+                aria-describedby={
+                  state.errors?.application ? "application-error" : undefined
+                }
                 required
               />
-              <FieldError>{state.errors?.application}</FieldError>
+              <FieldError id="application-error">
+                {state.errors?.application}
+              </FieldError>
             </div>
           </EditorSection>
 
@@ -304,9 +334,12 @@ export function DevotionComposer({
                 className="min-h-40"
                 placeholder="Write your prayer..."
                 aria-invalid={Boolean(state.errors?.prayer)}
+                aria-describedby={
+                  state.errors?.prayer ? "prayer-error" : undefined
+                }
                 required
               />
-              <FieldError>{state.errors?.prayer}</FieldError>
+              <FieldError id="prayer-error">{state.errors?.prayer}</FieldError>
             </div>
           </EditorSection>
 
@@ -316,7 +349,14 @@ export function DevotionComposer({
             description="Choose whether this devotion will be shared with the community or kept in your private journal."
           >
             <input type="hidden" name="visibility" value={visibility} />
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div
+              role="group"
+              aria-label="Devotion visibility"
+              aria-describedby={
+                state.errors?.visibility ? "visibility-error" : undefined
+              }
+              className="grid gap-3 sm:grid-cols-2"
+            >
               <button
                 type="button"
                 aria-pressed={visibility === "PUBLIC"}
@@ -371,7 +411,9 @@ export function DevotionComposer({
                 </span>
               </button>
             </div>
-            <FieldError>{state.errors?.visibility}</FieldError>
+            <FieldError id="visibility-error">
+              {state.errors?.visibility}
+            </FieldError>
           </EditorSection>
         </div>
 
@@ -398,7 +440,12 @@ export function DevotionComposer({
                   : "Save changes"}
             </Button>
             {state.message ? (
-              <p className="text-[11px] text-destructive" role="alert">
+              <p
+                className="text-[11px] text-destructive"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+              >
                 {state.message}
               </p>
             ) : (

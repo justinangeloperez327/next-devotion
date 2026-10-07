@@ -16,7 +16,6 @@ type ScriptureReferenceInputProps = {
   value: string;
   onChange: (value: string) => void;
   maxLength?: number;
-  resetKey?: number;
 };
 
 type Mode = "structured" | "manual";
@@ -39,7 +38,6 @@ export function ScriptureReferenceInput({
   value,
   onChange,
   maxLength = 120,
-  resetKey = 0,
 }: ScriptureReferenceInputProps) {
   const [mode, setMode] = useState<Mode>("structured");
   const [book, setBook] = useState("");

@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <div className="min-h-svh bg-background">
       <PublicHeader />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Container className="flex min-h-[calc(100svh-4rem)] items-center py-16 sm:py-24">
           <section className="w-full max-w-2xl border-y border-border py-10">
             <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">

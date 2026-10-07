@@ -3,6 +3,7 @@ import Link from "next/link";
 import { DevotionCard } from "@/components/feed/devotion-card";
 import { FeedPagination } from "@/components/feed/feed-pagination";
 import { buttonVariants } from "@/components/ui/button";
+import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import {
   decodeFeedCursor,
@@ -19,6 +20,7 @@ type FeedResultsProps = {
 };
 
 export async function FeedResults({ after, before }: FeedResultsProps) {
+  const user = await requireUser();
   const database = getPrisma();
   const afterCursor = decodeFeedCursor(after);
   const beforeCursor = afterCursor ? null : decodeFeedCursor(before);
@@ -81,6 +83,15 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
           name: true,
           username: true,
         },
+      },
+      amens: {
+        where: {
+          userId: user.id,
+        },
+        select: {
+          userId: true,
+        },
+        take: 1,
       },
       _count: {
         select: {
@@ -173,6 +184,7 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
             prayer={devotion.prayer}
             amenCount={devotion._count.amens}
             commentCount={devotion._count.comments}
+            hasAmen={devotion.amens.length > 0}
           />
         ))}
       </div>

@@ -2,12 +2,14 @@ import Link from "next/link";
 import { Bookmark, MessageCircle, MoreHorizontal } from "lucide-react";
 
 import { AmenButton } from "@/components/feed/amen-button";
+import { UserAvatar } from "@/components/user/user-avatar";
 
 type DevotionCardProps = {
   id: string;
   author: {
     name: string;
     username: string;
+    avatarUrl?: string | null;
   };
   time: string;
   scriptureReference: string;
@@ -20,15 +22,6 @@ type DevotionCardProps = {
   hasAmen?: boolean;
   canAmen?: boolean;
 };
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
 
 function DevotionSection({
   label,
@@ -68,10 +61,9 @@ export function DevotionCard({
       <header className="flex items-start gap-3 px-4 pt-4 sm:px-5 sm:pt-5">
         <Link
           href={`/profile/${author.username}`}
-          className="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-secondary-foreground"
           aria-label={`View ${author.name}'s profile`}
         >
-          {initials(author.name) || "ND"}
+          <UserAvatar name={author.name} avatarUrl={author.avatarUrl} />
         </Link>
 
         <div className="min-w-0 flex-1">

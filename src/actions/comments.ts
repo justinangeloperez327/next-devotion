@@ -7,6 +7,7 @@ import type { CommentFormState } from "@/lib/comment/types";
 import { commentSchema } from "@/lib/comment/validation";
 import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
+import { canViewDevotion } from "@/lib/privacy/access";
 
 function revalidateCommentViews(devotionId: string, username: string) {
   revalidatePath("/feed");
@@ -64,7 +65,7 @@ export async function createCommentAction(
     };
   }
 
-  if (devotion.visibility === "PRIVATE" && devotion.userId !== user.id) {
+  if (!canViewDevotion(user.id, devotion)) {
     return {
       status: "error",
       message: "This devotion is not available.",

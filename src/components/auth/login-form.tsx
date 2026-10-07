@@ -63,7 +63,7 @@ export function LoginForm() {
         </div>
 
         <div className="pt-1">
-          <Button type="submit" className="h-10 w-full" disabled={pending}>
+          <Button type="submit" className="h-11 w-full" disabled={pending}>
             {pending ? "Logging in..." : "Log in"}
           </Button>
           {state.message ? (

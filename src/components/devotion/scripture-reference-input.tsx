@@ -39,12 +39,12 @@ export function ScriptureReferenceInput({
   onChange,
   maxLength = 120,
 }: ScriptureReferenceInputProps) {
-  const [mode, setMode] = useState<Mode>("structured");
+  const [mode, setMode] = useState<Mode>(() => (value ? "manual" : "structured"));
   const [book, setBook] = useState("");
   const [chapter, setChapter] = useState("");
   const [verseStart, setVerseStart] = useState("");
   const [verseEnd, setVerseEnd] = useState("");
-  const [manualReference, setManualReference] = useState("");
+  const [manualReference, setManualReference] = useState(value);
 
   const selectedBook = useMemo(() => getBibleBook(book), [book]);
   const chapters = useMemo(

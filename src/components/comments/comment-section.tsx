@@ -3,6 +3,7 @@ import { MessageCircle, Trash2 } from "lucide-react";
 
 import { deleteCommentAction } from "@/actions/comments";
 import { CommentForm } from "@/components/comments/comment-form";
+import { EmptyState } from "@/components/states/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { UserAvatar } from "@/components/user/user-avatar";
 import { formatRelativeDate } from "@/lib/date";
@@ -145,14 +146,11 @@ export function CommentSection({
           })}
         </div>
       ) : (
-        <div className="px-5 py-10 text-center">
-          <p className="text-sm font-medium text-foreground">
-            No comments yet.
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Be the first to add to this reflection.
-          </p>
-        </div>
+        <EmptyState
+          compact
+          title="No comments yet."
+          description="Be the first to add to this reflection."
+        />
       )}
     </section>
   );

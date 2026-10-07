@@ -19,6 +19,7 @@ import {
 } from "@/lib/journal-pagination";
 import { getPrisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
+import type { Prisma } from "@/generated/prisma/client";
 
 export const metadata: Metadata = {
   title: "My Devotions",
@@ -84,14 +85,14 @@ export default async function MyDevotionsPage({
   const cursor = afterCursor ?? beforeCursor;
   const movingNewer = Boolean(beforeCursor);
 
-  const visibilityCondition =
+  const visibilityCondition: Prisma.DevotionWhereInput =
     visibility === "public"
       ? { visibility: "PUBLIC" as const }
       : visibility === "private"
         ? { visibility: "PRIVATE" as const }
         : {};
 
-  const searchCondition = query
+  const searchCondition: Prisma.DevotionWhereInput = query
     ? {
         OR: [
           {
@@ -128,7 +129,7 @@ export default async function MyDevotionsPage({
       }
     : {};
 
-  const cursorCondition = cursor
+  const cursorCondition: Prisma.DevotionWhereInput = cursor
     ? movingNewer
       ? {
           OR: [
@@ -163,7 +164,7 @@ export default async function MyDevotionsPage({
     : {};
 
   const database = getPrisma();
-  const filterWhere = {
+  const filterWhere: Prisma.DevotionWhereInput = {
     userId: user.id,
     ...visibilityCondition,
     ...searchCondition,

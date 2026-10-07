@@ -4,11 +4,11 @@ A modern devotion application built with Next.js, TypeScript, Tailwind CSS, and 
 
 ## Stack
 
-- Next.js 16
-- React 19
+- Next.js 16.4
+- React 19.3
 - TypeScript 7
-- Tailwind CSS 4
-- shadcn/ui
+- Tailwind CSS 4.3
+- shadcn 4
 
 ## Development
 
@@ -21,7 +21,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## shadcn/ui
 
-The shadcn registry is configured through `components.json`.
+The shadcn registry is configured through `components.json` using the current `base-nova` style.
 
 Add components with:
 

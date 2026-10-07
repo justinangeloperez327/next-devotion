@@ -4,6 +4,7 @@ import { Bookmark, BookOpenText } from "lucide-react";
 
 import { DevotionCard } from "@/components/feed/devotion-card";
 import { SavedPagination } from "@/components/saved/saved-pagination";
+import { EmptyState } from "@/components/states/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
@@ -240,28 +241,22 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
           />
         </div>
       ) : (
-        <div className="py-16 text-center">
-          <Bookmark className="mx-auto size-5 text-muted-foreground" />
-          <p className="mt-4 text-sm font-medium text-foreground">
-            {total === 0
+        <EmptyState
+          className="mt-6"
+          icon={<Bookmark className="size-4" />}
+          title={
+            total === 0
               ? "You have not saved any devotions yet."
-              : "No saved devotions on this page."}
-          </p>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            {total === 0
+              : "No saved devotions on this page."
+          }
+          description={
+            total === 0
               ? "Save a reflection from the feed when you want to return to it later."
-              : "Your saved collection may have changed since this page was opened."}
-          </p>
-          <Link
-            href={total === 0 ? "/feed" : "/saved"}
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "sm" }),
-              "mt-5",
-            )}
-          >
-            {total === 0 ? "Browse feed" : "Return to latest"}
-          </Link>
-        </div>
+              : "Your saved collection may have changed since this page was opened."
+          }
+          actionHref={total === 0 ? "/feed" : "/saved"}
+          actionLabel={total === 0 ? "Browse feed" : "Return to latest"}
+        />
       )}
     </main>
   );

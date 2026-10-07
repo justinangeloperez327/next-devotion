@@ -16,6 +16,7 @@ type ScriptureReferenceInputProps = {
   value: string;
   onChange: (value: string) => void;
   maxLength?: number;
+  ariaDescribedBy?: string;
 };
 
 type Mode = "structured" | "manual";
@@ -38,6 +39,7 @@ export function ScriptureReferenceInput({
   value,
   onChange,
   maxLength = 120,
+  ariaDescribedBy,
 }: ScriptureReferenceInputProps) {
   const [mode, setMode] = useState<Mode>(() => (value ? "manual" : "structured"));
   const [book, setBook] = useState("");
@@ -130,6 +132,7 @@ export function ScriptureReferenceInput({
                 id="scripture-book"
                 className={selectClassName}
                 value={book}
+                aria-describedby={ariaDescribedBy}
                 onChange={(event) => {
                   const nextBook = event.target.value;
                   setBook(nextBook);
@@ -256,6 +259,7 @@ export function ScriptureReferenceInput({
             id="scripture-reference-manual"
             value={manualReference}
             maxLength={maxLength}
+            aria-describedby={ariaDescribedBy}
             onChange={(event) => {
               const nextValue = event.target.value;
               setManualReference(nextValue);

@@ -7,15 +7,43 @@ import {
   Lock,
   RotateCcw,
 } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
+import {
+  useActionState,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 
 import { ScriptureReferenceInput } from "@/components/devotion/scripture-reference-input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  initialDevotionFormState,
+  type DevotionFormState,
+  type DevotionFormValues,
+} from "@/lib/devotion/types";
 import { cn } from "@/lib/utils";
 
 type Visibility = "PUBLIC" | "PRIVATE";
+
+type DevotionComposerProps = {
+  action: (
+    previousState: DevotionFormState,
+    formData: FormData,
+  ) => Promise<DevotionFormState>;
+  initialValues?: DevotionFormValues;
+  mode?: "create" | "edit";
+};
+
+const EMPTY_VALUES: DevotionFormValues = {
+  scriptureReference: "",
+  scriptureText: "",
+  observation: "",
+  application: "",
+  prayer: "",
+  visibility: "PUBLIC",
+};
 
 const MAX_REFERENCE = 120;
 const MAX_SCRIPTURE = 1200;
@@ -31,6 +59,18 @@ function Counter({ value, max }: { value: string; max: number }) {
     >
       {value.length}/{max}
     </span>
+  );
+}
+
+function FieldError({ children }: { children?: string }) {
+  if (!children) {
+    return null;
+  }
+
+  return (
+    <p className="text-xs leading-5 text-destructive" role="alert">
+      {children}
+    </p>
   );
 }
 
@@ -86,14 +126,26 @@ function PreviewSection({
   );
 }
 
-export function DevotionComposer() {
-  const [scriptureReference, setScriptureReference] = useState("");
+export function DevotionComposer({
+  action,
+  initialValues = EMPTY_VALUES,
+  mode = "create",
+}: DevotionComposerProps) {
+  const [state, formAction, pending] = useActionState(
+    action,
+    initialDevotionFormState,
+  );
+  const [scriptureReference, setScriptureReference] = useState(
+    initialValues.scriptureReference,
+  );
   const [scriptureInputKey, setScriptureInputKey] = useState(0);
-  const [scriptureText, setScriptureText] = useState("");
-  const [observation, setObservation] = useState("");
-  const [application, setApplication] = useState("");
-  const [prayer, setPrayer] = useState("");
-  const [visibility, setVisibility] = useState<Visibility>("PUBLIC");
+  const [scriptureText, setScriptureText] = useState(initialValues.scriptureText);
+  const [observation, setObservation] = useState(initialValues.observation);
+  const [application, setApplication] = useState(initialValues.application);
+  const [prayer, setPrayer] = useState(initialValues.prayer);
+  const [visibility, setVisibility] = useState<Visibility>(
+    initialValues.visibility,
+  );
 
   const hasContent = useMemo(
     () =>
@@ -118,13 +170,16 @@ export function DevotionComposer() {
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,720px)_320px] xl:items-start xl:justify-center">
+    <form
+      action={formAction}
+      className="grid gap-6 xl:grid-cols-[minmax(0,720px)_320px] xl:items-start xl:justify-center"
+    >
       <div className="rounded-lg border border-border bg-card">
         <div className="border-b border-border px-4 py-5 sm:px-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
-                New Devotion
+                {mode === "create" ? "New Devotion" : "Edit Devotion"}
               </p>
               <h1 className="mt-2 text-2xl font-medium tracking-[-0.02em] text-foreground sm:text-3xl">
                 Scripture. Observation. Application. Prayer.
@@ -151,9 +206,7 @@ export function DevotionComposer() {
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-medium text-foreground">
-                    Reference
-                  </p>
+                  <p className="text-sm font-medium text-foreground">Reference</p>
                   <Counter value={scriptureReference} max={MAX_REFERENCE} />
                 </div>
                 <ScriptureReferenceInput
@@ -162,6 +215,7 @@ export function DevotionComposer() {
                   onChange={setScriptureReference}
                   maxLength={MAX_REFERENCE}
                 />
+                <FieldError>{state.errors?.scriptureReference}</FieldError>
               </div>
 
               <div className="grid gap-2">
@@ -177,7 +231,9 @@ export function DevotionComposer() {
                   onChange={(event) => setScriptureText(event.target.value)}
                   className="scripture min-h-32 text-base leading-7"
                   placeholder="Paste or type the passage here..."
+                  aria-invalid={Boolean(state.errors?.scriptureText)}
                 />
+                <FieldError>{state.errors?.scriptureText}</FieldError>
               </div>
             </div>
           </EditorSection>
@@ -199,7 +255,10 @@ export function DevotionComposer() {
                 onChange={(event) => setObservation(event.target.value)}
                 className="min-h-44"
                 placeholder="Write what you notice before trying to solve or apply it..."
+                aria-invalid={Boolean(state.errors?.observation)}
+                required
               />
+              <FieldError>{state.errors?.observation}</FieldError>
             </div>
           </EditorSection>
 
@@ -220,7 +279,10 @@ export function DevotionComposer() {
                 onChange={(event) => setApplication(event.target.value)}
                 className="min-h-40"
                 placeholder="How will you live this out today?"
+                aria-invalid={Boolean(state.errors?.application)}
+                required
               />
+              <FieldError>{state.errors?.application}</FieldError>
             </div>
           </EditorSection>
 
@@ -241,7 +303,10 @@ export function DevotionComposer() {
                 onChange={(event) => setPrayer(event.target.value)}
                 className="min-h-40"
                 placeholder="Write your prayer..."
+                aria-invalid={Boolean(state.errors?.prayer)}
+                required
               />
+              <FieldError>{state.errors?.prayer}</FieldError>
             </div>
           </EditorSection>
 
@@ -250,6 +315,7 @@ export function DevotionComposer() {
             title="Visibility"
             description="Choose whether this devotion will be shared with the community or kept in your private journal."
           >
+            <input type="hidden" name="visibility" value={visibility} />
             <div className="grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
@@ -305,6 +371,7 @@ export function DevotionComposer() {
                 </span>
               </button>
             </div>
+            <FieldError>{state.errors?.visibility}</FieldError>
           </EditorSection>
         </div>
 
@@ -313,7 +380,7 @@ export function DevotionComposer() {
             type="button"
             variant="ghost"
             onClick={clearComposer}
-            disabled={!hasContent}
+            disabled={!hasContent || pending}
             className="gap-2"
           >
             <RotateCcw className="size-4" />
@@ -321,12 +388,26 @@ export function DevotionComposer() {
           </Button>
 
           <div className="flex flex-col items-stretch gap-2 sm:items-end">
-            <Button type="button" disabled>
-              Post devotion
+            <Button type="submit" disabled={pending}>
+              {pending
+                ? mode === "create"
+                  ? "Posting..."
+                  : "Saving..."
+                : mode === "create"
+                  ? "Post devotion"
+                  : "Save changes"}
             </Button>
-            <p className="text-[11px] text-muted-foreground">
-              Publishing will be connected to Prisma in Group 11.
-            </p>
+            {state.message ? (
+              <p className="text-[11px] text-destructive" role="alert">
+                {state.message}
+              </p>
+            ) : (
+              <p className="text-[11px] text-muted-foreground">
+                {visibility === "PUBLIC"
+                  ? "This devotion will be visible in the community feed."
+                  : "This devotion will stay in your private journal."}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -390,6 +471,6 @@ export function DevotionComposer() {
           </p>
         </div>
       </aside>
-    </div>
+    </form>
   );
 }

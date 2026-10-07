@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Container } from "@/components/layout/container";
+import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -164,12 +165,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-border">
-        <Container className="flex flex-col gap-4 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>Next Devotion</p>
-          <p>Read. Reflect. Apply. Pray.</p>
-        </Container>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

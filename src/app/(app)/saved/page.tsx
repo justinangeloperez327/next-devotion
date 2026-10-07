@@ -13,6 +13,7 @@ import {
 } from "@/lib/saved-pagination";
 import { getPrisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
+import type { Prisma } from "@/generated/prisma/client";
 
 export const metadata: Metadata = {
   title: "Saved Devotions",
@@ -41,7 +42,7 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
   const cursor = afterCursor ?? beforeCursor;
   const movingNewer = Boolean(beforeCursor);
 
-  const cursorCondition = cursor
+  const cursorCondition: Prisma.SavedDevotionWhereInput = cursor
     ? movingNewer
       ? {
           OR: [
@@ -75,7 +76,7 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
         }
     : {};
 
-  const visibilityCondition = {
+  const visibilityCondition: Prisma.SavedDevotionWhereInput = {
     devotion: {
       is: {
         OR: [

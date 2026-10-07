@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { AppShell } from "@/components/app/app-shell";
 import { requireUser } from "@/lib/auth/session";
 
 export default async function AuthenticatedLayout({
@@ -7,7 +8,7 @@ export default async function AuthenticatedLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  await requireUser();
+  const user = await requireUser();
 
-  return children;
+  return <AppShell user={user}>{children}</AppShell>;
 }

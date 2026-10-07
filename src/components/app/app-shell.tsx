@@ -54,7 +54,7 @@ export function AppShell({ user, children }: AppShellProps) {
             </Link>
 
             <details className="group relative">
-              <summary className="flex h-9 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-card px-2.5 text-sm text-foreground transition-colors hover:bg-accent [&::-webkit-details-marker]:hidden">
+              <summary aria-label="Open account menu" className="flex h-9 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-card px-2.5 text-sm text-foreground transition-colors hover:bg-accent [&::-webkit-details-marker]:hidden">
                 <UserAvatar
                   name={user.name}
                   avatarUrl={user.avatarUrl}
@@ -120,7 +120,7 @@ export function AppShell({ user, children }: AppShellProps) {
           </div>
         </aside>
 
-        <div className="min-w-0 pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">{children}</div>
+        <div id="main-content" tabIndex={-1} className="min-w-0 pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">{children}</div>
       </div>
 
       <MobileNavigation username={user.username} />

@@ -29,7 +29,9 @@ export function CommentForm({ devotionId }: CommentFormProps) {
   return (
     <form ref={formRef} action={formAction} className="grid gap-3">
       <Textarea
+        id="comment-body"
         name="body"
+        aria-label="Comment"
         maxLength={2000}
         placeholder="Add to the reflection..."
         className="min-h-24 resize-y bg-background"
@@ -48,7 +50,9 @@ export function CommentForm({ devotionId }: CommentFormProps) {
               ? "text-xs text-destructive"
               : "text-xs text-muted-foreground"
           }
-          role={state.status === "error" ? "alert" : undefined}
+          role={state.status === "error" ? "alert" : "status"}
+          aria-live="polite"
+          aria-atomic="true"
         >
           {state.error ??
             state.message ??

@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { Bookmark, Heart, MessageCircle, MoreHorizontal } from "lucide-react";
+import { Bookmark, MessageCircle, MoreHorizontal } from "lucide-react";
+
+import { AmenButton } from "@/components/feed/amen-button";
 
 type DevotionCardProps = {
   id: string;
@@ -15,6 +17,8 @@ type DevotionCardProps = {
   prayer: string;
   amenCount: number;
   commentCount: number;
+  hasAmen?: boolean;
+  canAmen?: boolean;
 };
 
 function initials(name: string) {
@@ -56,6 +60,8 @@ export function DevotionCard({
   prayer,
   amenCount,
   commentCount,
+  hasAmen = false,
+  canAmen = true,
 }: DevotionCardProps) {
   return (
     <article className="rounded-lg border border-border bg-card">
@@ -118,11 +124,12 @@ export function DevotionCard({
       </div>
 
       <footer className="grid grid-cols-3 border-t border-border">
-        <div className="flex h-11 items-center justify-center gap-2 text-xs text-muted-foreground">
-          <Heart className="size-4 text-devotion-sage" />
-          <span>Amen</span>
-          <span>{amenCount}</span>
-        </div>
+        <AmenButton
+          devotionId={id}
+          initialHasAmen={hasAmen}
+          initialAmenCount={amenCount}
+          disabled={!canAmen}
+        />
         <div className="flex h-11 items-center justify-center gap-2 border-l border-border text-xs text-muted-foreground">
           <MessageCircle className="size-4" />
           <span className="hidden sm:inline">Comments</span>

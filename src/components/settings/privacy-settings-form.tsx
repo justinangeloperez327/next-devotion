@@ -33,16 +33,16 @@ export function PrivacySettingsForm({
       />
 
       <div>
-        <h2 className="text-base font-medium text-foreground">
+        <h2 id="privacy-default-heading" className="text-base font-medium text-foreground">
           Default devotion visibility
         </h2>
-        <p className="mt-1 text-sm leading-6 text-muted-foreground">
+        <p id="privacy-default-description" className="mt-1 text-sm leading-6 text-muted-foreground">
           New devotions start with this visibility. You can still change it
           before posting or later when editing a devotion.
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div role="group" aria-labelledby="privacy-default-heading" aria-describedby="privacy-default-description" className="grid gap-3 sm:grid-cols-2">
         <button
           type="button"
           aria-pressed={visibility === "PUBLIC"}
@@ -76,7 +76,7 @@ export function PrivacySettingsForm({
           aria-pressed={visibility === "PRIVATE"}
           onClick={() => setVisibility("PRIVATE")}
           className={cn(
-            "rounded-md border p-4 text-left transition-colors",
+            "min-h-24 rounded-md border p-4 text-left transition-colors",
             visibility === "PRIVATE"
               ? "border-primary/70 bg-primary/5"
               : "border-border bg-card hover:bg-accent",
@@ -109,7 +109,9 @@ export function PrivacySettingsForm({
                 ? "text-xs text-devotion-sage"
                 : "text-xs text-muted-foreground"
           }
-          role={state.status === "error" ? "alert" : undefined}
+          role={state.status === "error" ? "alert" : "status"}
+          aria-live="polite"
+          aria-atomic="true"
         >
           {state.message ??
             "Changing the default does not change existing devotions."}

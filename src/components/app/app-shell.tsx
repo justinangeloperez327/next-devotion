@@ -58,8 +58,7 @@ export function AppShell({ user, children }: AppShellProps) {
                 <UserAvatar
                   name={user.name}
                   avatarUrl={user.avatarUrl}
-                  size="sm"
-                  className="size-6 text-[9px]"
+                  size="xs"
                 />
                 <span className="hidden max-w-28 truncate md:block">
                   {user.name}

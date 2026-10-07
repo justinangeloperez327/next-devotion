@@ -2,20 +2,30 @@
   "name": "next-devotion",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:generate": "prisma generate --config ./prisma7.config.ts",
+    "db:migrate": "prisma migrate dev --config ./prisma7.config.ts",
+    "db:deploy": "prisma migrate deploy --config ./prisma7.config.ts",
+    "db:studio": "prisma studio --config ./prisma7.config.ts",
+    "db:validate": "prisma validate --config ./prisma7.config.ts",
+    "db:format": "prisma format --schema ./prisma/schema.prisma"
   },
   "engines": {
     "node": ">=20.19.0"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
     "class-variance-authority": "0.7.1",
     "cn": "0.3.1",
     "lucide-react": "1.52.0",
     "next": "16.4.0",
+    "pg": "8.23.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "shadcn": "4.21.1",
@@ -24,11 +34,15 @@
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "26.6.4",
+    "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "dotenv": "18.0.5",
     "eslint": "10.0.1",
     "eslint-config-next": "16.4.0",
+    "prisma": "7.10.0",
     "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
     "typescript": "7.0.2"
   }
 }

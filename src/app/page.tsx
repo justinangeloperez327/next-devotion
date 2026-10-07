@@ -30,7 +30,7 @@ export default function Home() {
     <div className="min-h-svh bg-background">
       <PublicHeader />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <section className="border-b border-border">
           <Container className="flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center py-20 text-center sm:py-28">
             <p className="mb-6 text-xs font-medium tracking-[0.24em] text-primary uppercase">

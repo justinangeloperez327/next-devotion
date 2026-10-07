@@ -85,7 +85,7 @@ export default function ContactPage() {
                     Message delivery is not connected yet. The form is ready for
                     the backend integration phase.
                   </p>
-                  <Button type="submit" disabled>
+                  <Button type="submit" disabled className="w-full sm:w-auto">
                     Send message
                   </Button>
                 </div>

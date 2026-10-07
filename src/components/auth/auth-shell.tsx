@@ -17,7 +17,7 @@ export function AuthShell({
   children,
 }: AuthShellProps) {
   return (
-    <main className="min-h-svh bg-background">
+    <main id="main-content" tabIndex={-1} className="min-h-svh bg-background">
       <div className="grid min-h-svh lg:grid-cols-[0.95fr_1.05fr]">
         <section className="relative hidden border-r border-border bg-sidebar lg:flex">
           <div className="flex w-full flex-col justify-between px-10 py-10 xl:px-16 xl:py-12">

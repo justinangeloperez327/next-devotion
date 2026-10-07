@@ -60,6 +60,15 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
         },
         take: 1,
       },
+      savedBy: {
+        where: {
+          userId: user.id,
+        },
+        select: {
+          userId: true,
+        },
+        take: 1,
+      },
       comments: {
         orderBy: {
           createdAt: "asc",
@@ -126,6 +135,7 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
         amenCount={devotion._count.amens}
         commentCount={devotion._count.comments}
         hasAmen={devotion.amens.length > 0}
+        isSaved={devotion.savedBy.length > 0}
       />
 
       <CommentSection

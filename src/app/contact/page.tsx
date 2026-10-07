@@ -18,7 +18,7 @@ export default function ContactPage() {
     <div className="min-h-svh bg-background">
       <PublicHeader />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <section className="border-b border-border">
           <Container className="grid gap-12 py-20 sm:py-28 lg:grid-cols-[0.8fr_1.2fr]">
             <div>

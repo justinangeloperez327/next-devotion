@@ -52,10 +52,11 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
           maxLength={80}
           autoComplete="name"
           aria-invalid={Boolean(state.errors?.name)}
+          aria-describedby={state.errors?.name ? "profile-name-error" : undefined}
           required
         />
         {state.errors?.name ? (
-          <p className="text-xs text-destructive">{state.errors.name}</p>
+          <p id="profile-name-error" className="text-xs text-destructive">{state.errors.name}</p>
         ) : null}
       </div>
 
@@ -74,9 +75,10 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
           className="min-h-28"
           placeholder="A short introduction for your devotion profile..."
           aria-invalid={Boolean(state.errors?.bio)}
+          aria-describedby={state.errors?.bio ? "profile-bio-error" : undefined}
         />
         {state.errors?.bio ? (
-          <p className="text-xs text-destructive">{state.errors.bio}</p>
+          <p id="profile-bio-error" className="text-xs text-destructive">{state.errors.bio}</p>
         ) : null}
       </div>
 
@@ -91,11 +93,12 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
           maxLength={2048}
           placeholder="https://example.com/avatar.jpg"
           aria-invalid={Boolean(state.errors?.avatarUrl)}
+          aria-describedby={state.errors?.avatarUrl ? "profile-avatar-error" : "profile-avatar-help"}
         />
         {state.errors?.avatarUrl ? (
-          <p className="text-xs text-destructive">{state.errors.avatarUrl}</p>
+          <p id="profile-avatar-error" className="text-xs text-destructive">{state.errors.avatarUrl}</p>
         ) : (
-          <p className="text-xs leading-5 text-muted-foreground">
+          <p id="profile-avatar-help" className="text-xs leading-5 text-muted-foreground">
             HTTPS images only. Direct image upload can be added with storage later.
           </p>
         )}
@@ -110,7 +113,9 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
                 ? "text-xs text-devotion-sage"
                 : "text-xs text-muted-foreground"
           }
-          role={state.status === "error" ? "alert" : undefined}
+          role={state.status === "error" ? "alert" : "status"}
+          aria-live="polite"
+          aria-atomic="true"
         >
           {state.message ?? "Your public profile updates across the app."}
         </p>

@@ -110,13 +110,13 @@ export function CommentSection({
                 {canDelete ? (
                   <details className="relative shrink-0">
                     <summary
-                      className="flex size-8 cursor-pointer list-none items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-destructive [&::-webkit-details-marker]:hidden"
+                      className="flex size-10 cursor-pointer list-none items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-destructive sm:size-8 [&::-webkit-details-marker]:hidden"
                       aria-label="Delete comment"
                     >
                       <Trash2 className="size-3.5" />
                     </summary>
 
-                    <div className="absolute right-0 z-20 mt-2 w-64 rounded-lg border border-border bg-popover p-4 shadow-lg shadow-black/20">
+                    <div className="absolute right-0 z-20 mt-2 w-[min(16rem,calc(100vw-2rem))] rounded-lg border border-border bg-popover p-4 shadow-lg shadow-black/20">
                       <p className="text-sm font-medium text-foreground">
                         Delete this comment?
                       </p>

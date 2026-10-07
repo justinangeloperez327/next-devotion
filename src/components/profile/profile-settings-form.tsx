@@ -38,7 +38,7 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
           <p className="truncate text-sm font-medium text-foreground">{user.name}</p>
           <p className="mt-1 truncate text-xs text-muted-foreground">@{user.username}</p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Username changes are not enabled yet.
+            Your username is used in your profile URL and cannot be changed here.
           </p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
           <p id="profile-avatar-error" className="text-xs text-destructive">{state.errors.avatarUrl}</p>
         ) : (
           <p id="profile-avatar-help" className="text-xs leading-5 text-muted-foreground">
-            HTTPS images only. Direct image upload can be added with storage later.
+            Use a direct HTTPS image URL.
           </p>
         )}
       </div>

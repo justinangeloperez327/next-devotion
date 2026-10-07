@@ -109,7 +109,7 @@ export function ScriptureReferenceInput({
           onClick={() => changeMode("manual")}
           aria-pressed={mode === "manual"}
           className={cn(
-            "flex h-8 items-center gap-2 rounded-sm px-3 text-xs transition-colors",
+            "flex h-10 items-center gap-2 rounded-sm px-3 text-xs transition-colors",
             mode === "manual"
               ? "bg-secondary text-foreground"
               : "text-muted-foreground hover:text-foreground",

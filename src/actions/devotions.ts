@@ -49,6 +49,7 @@ function validationError(
 
 function revalidateDevotionLists(username: string) {
   revalidatePath("/feed");
+  revalidatePath("/saved");
   revalidatePath("/my-devotions");
   revalidatePath(`/profile/${username}`);
 }

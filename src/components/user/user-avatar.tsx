@@ -3,11 +3,12 @@ import { cn } from "@/lib/utils";
 type UserAvatarProps = {
   name: string;
   avatarUrl?: string | null;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
 };
 
 const sizeClasses = {
+  xs: "size-6 text-[9px]",
   sm: "size-8 text-[10px]",
   md: "size-9 text-xs",
   lg: "size-16 text-lg",

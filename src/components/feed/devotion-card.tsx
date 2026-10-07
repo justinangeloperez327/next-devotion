@@ -93,7 +93,7 @@ export function DevotionCard({
         <Link
           href={`/devotions/${id}`}
           aria-label="View devotion"
-          className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="flex size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:size-8"
         >
           <MoreHorizontal className="size-4" />
         </Link>
@@ -130,6 +130,7 @@ export function DevotionCard({
         />
         <Link
           href={`/devotions/${id}#comments`}
+          aria-label={`View ${commentCount} ${commentCount === 1 ? "comment" : "comments"}`}
           className="flex h-12 min-w-0 items-center justify-center gap-1.5 border-l border-border px-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:h-11 sm:gap-2"
         >
           <MessageCircle className="size-4" />

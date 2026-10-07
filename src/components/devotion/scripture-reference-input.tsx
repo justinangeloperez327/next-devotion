@@ -21,7 +21,7 @@ type ScriptureReferenceInputProps = {
 type Mode = "structured" | "manual";
 
 const selectClassName =
-  "h-10 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus:border-primary/70 focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50";
+  "h-11 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus:border-primary/70 focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50";
 
 function sanitizeVerse(value: string) {
   const digits = value.replace(/\D/g, "");
@@ -95,7 +95,7 @@ export function ScriptureReferenceInput({
           onClick={() => changeMode("structured")}
           aria-pressed={mode === "structured"}
           className={cn(
-            "flex h-8 items-center gap-2 rounded-sm px-3 text-xs transition-colors",
+            "flex h-10 items-center gap-2 rounded-sm px-3 text-xs transition-colors",
             mode === "structured"
               ? "bg-secondary text-foreground"
               : "text-muted-foreground hover:text-foreground",

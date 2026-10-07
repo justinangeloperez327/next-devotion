@@ -322,7 +322,7 @@ export function DevotionComposer({
                 aria-pressed={visibility === "PUBLIC"}
                 onClick={() => setVisibility("PUBLIC")}
                 className={cn(
-                  "rounded-md border p-4 text-left transition-colors",
+                  "min-h-24 rounded-md border p-4 text-left transition-colors",
                   visibility === "PUBLIC"
                     ? "border-primary/70 bg-primary/5"
                     : "border-border bg-background hover:bg-accent",
@@ -381,14 +381,14 @@ export function DevotionComposer({
             variant="ghost"
             onClick={clearComposer}
             disabled={!hasContent || pending}
-            className="gap-2"
+            className="w-full gap-2 sm:w-auto"
           >
             <RotateCcw className="size-4" />
             Clear
           </Button>
 
           <div className="flex flex-col items-stretch gap-2 sm:items-end">
-            <Button type="submit" disabled={pending}>
+            <Button type="submit" disabled={pending} className="w-full sm:w-auto">
               {pending
                 ? mode === "create"
                   ? "Posting..."

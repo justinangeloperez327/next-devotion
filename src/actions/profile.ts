@@ -60,6 +60,7 @@ export async function updateProfileAction(
   }
 
   revalidatePath("/feed");
+  revalidatePath("/saved");
   revalidatePath("/settings");
   revalidatePath("/my-devotions");
   revalidatePath(`/profile/${user.username}`);

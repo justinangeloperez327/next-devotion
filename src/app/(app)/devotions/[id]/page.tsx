@@ -48,6 +48,7 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
         select: {
           name: true,
           username: true,
+          avatarUrl: true,
         },
       },
       amens: {
@@ -72,6 +73,7 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
             select: {
               name: true,
               username: true,
+              avatarUrl: true,
             },
           },
         },

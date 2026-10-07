@@ -10,6 +10,7 @@ import { getPrisma } from "@/lib/prisma";
 
 function revalidateCommentViews(devotionId: string, username: string) {
   revalidatePath("/feed");
+  revalidatePath("/saved");
   revalidatePath(`/devotions/${devotionId}`);
   revalidatePath(`/profile/${username}`);
 }

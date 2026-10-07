@@ -10,6 +10,7 @@ import {
 
 import { JournalFilters } from "@/components/journal/journal-filters";
 import { JournalPagination } from "@/components/journal/journal-pagination";
+import { EmptyState } from "@/components/states/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
@@ -407,34 +408,36 @@ export default async function MyDevotionsPage({
           />
         </>
       ) : (
-        <div className="py-16 text-center">
-          <p className="text-sm font-medium text-foreground">
-            {total === 0
+        <EmptyState
+          title={
+            total === 0
               ? "Your journal is empty."
               : hasFilters
                 ? "No devotions match these filters."
-                : "No devotions on this page."}
-          </p>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            {total === 0
+                : "No devotions on this page."
+          }
+          description={
+            total === 0
               ? "Begin with one passage and write what you observe, how you will respond, and what you want to pray."
               : hasFilters
                 ? "Try another Scripture reference, reflection keyword, or visibility."
-                : "Your journal may have changed since this page was opened."}
-          </p>
-
-          {total > 0 ? (
-            <Link
-              href={hasFilters ? "/my-devotions" : filteredHref}
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "sm" }),
-                "mt-5",
-              )}
-            >
-              {hasFilters ? "Clear filters" : "Return to latest"}
-            </Link>
-          ) : null}
-        </div>
+                : "Your journal may have changed since this page was opened."
+          }
+          actionHref={
+            total === 0
+              ? "/devotions/new"
+              : hasFilters
+                ? "/my-devotions"
+                : filteredHref
+          }
+          actionLabel={
+            total === 0
+              ? "Write devotion"
+              : hasFilters
+                ? "Clear filters"
+                : "Return to latest"
+          }
+        />
       )}
     </main>
   );

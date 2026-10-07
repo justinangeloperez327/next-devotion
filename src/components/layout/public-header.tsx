@@ -70,7 +70,7 @@ export function PublicHeader() {
       </Container>
 
       {open ? (
-        <div id="mobile-navigation" className="border-t border-border bg-sidebar md:hidden">
+        <nav id="mobile-navigation" aria-label="Mobile navigation" className="border-t border-border bg-sidebar md:hidden">
           <Container className="grid gap-1 py-3">
             {navigation.map((item) => (
               <Link
@@ -98,7 +98,7 @@ export function PublicHeader() {
               Register
             </Link>
           </Container>
-        </div>
+        </nav>
       ) : null}
     </header>
   );

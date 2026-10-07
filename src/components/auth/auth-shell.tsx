@@ -48,11 +48,11 @@ export function AuthShell({
         </section>
 
         <section className="flex min-h-svh items-center">
-          <Container className="max-w-xl py-10 sm:px-8 lg:px-12 xl:px-16">
-            <div className="mb-14 flex items-center justify-between lg:hidden">
+          <Container className="max-w-xl py-6 sm:px-8 sm:py-10 lg:px-12 xl:px-16">
+            <div className="mb-10 flex items-center justify-between gap-4 sm:mb-14 lg:hidden">
               <Link
                 href="/"
-                className="text-sm font-semibold tracking-[0.18em] text-foreground uppercase"
+                className="truncate text-[13px] font-semibold tracking-[0.16em] text-foreground uppercase sm:text-sm sm:tracking-[0.18em]"
               >
                 Next Devotion
               </Link>
@@ -68,7 +68,7 @@ export function AuthShell({
               <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">
                 {eyebrow}
               </p>
-              <h1 className="mt-4 text-4xl font-medium tracking-[-0.035em] text-foreground sm:text-5xl">
+              <h1 className="mt-4 text-3xl font-medium tracking-[-0.035em] text-foreground sm:text-5xl">
                 {title}
               </h1>
               <p className="mt-4 text-sm leading-6 text-muted-foreground sm:text-base">

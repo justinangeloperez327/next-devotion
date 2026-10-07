@@ -24,7 +24,7 @@ export function AmenButton({
   initialAmenCount,
   disabled = false,
 }: AmenButtonProps) {
-  const [optimistic, toggleOptimistic] = useOptimistic<AmenState, void>(
+  const [optimistic, toggleOptimistic] = useOptimistic<AmenState, null>(
     {
       hasAmen: initialHasAmen,
       count: initialAmenCount,
@@ -36,7 +36,7 @@ export function AmenButton({
   );
 
   async function action() {
-    toggleOptimistic();
+    toggleOptimistic(null);
     await toggleAmenAction(devotionId);
   }
 

@@ -23,7 +23,8 @@
     "test:all": "npm run test:unit && npm run test:e2e",
     "typecheck": "tsc --noEmit",
     "check": "npm run lint && npm run typecheck && npm run test:unit",
-    "security:audit": "npm audit --omit=dev --audit-level=high"
+    "security:audit": "npm audit --omit=dev --audit-level=high",
+    "deployment:check": "node scripts/deployment-preflight.mjs"
   },
   "engines": {
     "node": "24.x"

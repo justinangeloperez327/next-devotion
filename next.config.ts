@@ -17,8 +17,9 @@ const contentSecurityPolicy = [
   "upgrade-insecure-requests",
 ].join("; ");
 
-const securityHeaders = [
-  ...(isProduction
+export function getSecurityHeaders(production: boolean) {
+  return [
+  ...(production
     ? [
         {
           key: "Content-Security-Policy",
@@ -55,7 +56,10 @@ const securityHeaders = [
     key: "Cross-Origin-Resource-Policy",
     value: "same-origin",
   },
-];
+  ];
+}
+
+const securityHeaders = getSecurityHeaders(isProduction);
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,

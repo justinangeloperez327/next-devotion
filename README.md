@@ -147,3 +147,15 @@ npm run security:audit
 ```
 
 A committed `package-lock.json` is still required for fully reproducible production installs. Once generated in a network-enabled development environment, commit it and switch CI/deployment installs from `npm install` to `npm ci`.
+
+## Deployment
+
+Production releases are manual. Automatic Vercel Git deployments are disabled.
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the complete Vercel/PostgreSQL release checklist.
+
+Before deploying:
+
+```bash
+npm run deployment:check
+```

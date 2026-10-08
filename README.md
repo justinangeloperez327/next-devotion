@@ -115,3 +115,35 @@ The public browser suite runs without an authenticated account. The authenticate
 `PLAYWRIGHT_BASE_URL` can point the browser tests at an already-running deployment. When it is unset, Playwright starts `npm run dev` automatically.
 
 GitHub Actions runs unit tests and the public Playwright suite on `main` pushes and pull requests. Authenticated browser tests are intentionally not run in CI until a dedicated test database and credentials are configured.
+
+## Production security
+
+The application applies the following production hardening:
+
+- Node.js 24 LTS is required.
+- The `x-powered-by` response header is disabled.
+- Production browser source maps are disabled.
+- Security response headers include CSP, HSTS, clickjacking protection, MIME sniffing protection, referrer restrictions, and a restrictive Permissions Policy.
+- Server Action bodies are limited to 64 KB.
+- Next.js keeps its default same-origin Server Action protection. Do not add `serverActions.allowedOrigins` unless a trusted reverse proxy requires it.
+- Production sessions use a `__Host-` cookie, HttpOnly, Secure, SameSite=Lax, path `/`, and high cookie priority.
+- Authentication responses avoid revealing whether a specific email exists, and unknown-email logins still perform bcrypt work to reduce timing differences.
+- PostgreSQL enforces the same maximum lengths used by application validation.
+- Login, registration, devotion writes, comments, Amen, saves, profile changes, and privacy changes use persistent PostgreSQL-backed rate-limit buckets.
+- Rate-limit keys are SHA-256 hashes; raw request fingerprints are not stored.
+
+The application-level limiter protects normal application abuse across serverless instances, but it is not a volumetric DDoS control. Production deployments should also enable rate limiting/firewall controls at the hosting or reverse-proxy layer.
+
+The request fingerprint used for unauthenticated rate limiting reads forwarded IP headers. Only deploy behind infrastructure that sanitizes and controls `x-forwarded-for` / `x-real-ip`; do not trust arbitrary client-supplied forwarding headers on a directly exposed custom server.
+
+Before production deployment:
+
+```bash
+npm run db:generate
+npm run db:deploy
+npm run check
+npm run build
+npm run security:audit
+```
+
+A committed `package-lock.json` is still required for fully reproducible production installs. Once generated in a network-enabled development environment, commit it and switch CI/deployment installs from `npm install` to `npm ci`.

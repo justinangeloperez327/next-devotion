@@ -114,7 +114,7 @@ The public browser suite runs without an authenticated account. The authenticate
 
 `PLAYWRIGHT_BASE_URL` can point the browser tests at an already-running deployment. When it is unset, Playwright starts `npm run dev` automatically.
 
-GitHub Actions runs unit tests and the public Playwright suite on `main` pushes and pull requests. Authenticated browser tests are intentionally not run in CI until a dedicated test database and credentials are configured.
+GitHub Actions runs Prisma Client generation, linting, TypeScript checks, unit tests, a production build, a high-severity production dependency audit, and the public Playwright suite on `main` pushes and pull requests. Authenticated browser tests are intentionally not run in CI until a dedicated test database and credentials are configured.
 
 ## Production security
 
@@ -130,7 +130,7 @@ The application applies the following production hardening:
 - Authentication responses avoid revealing whether a specific email exists, and unknown-email logins still perform bcrypt work to reduce timing differences.
 - PostgreSQL enforces the same maximum lengths used by application validation.
 - Login, registration, devotion writes, comments, Amen, saves, profile changes, and privacy changes use persistent PostgreSQL-backed rate-limit buckets.
-- Rate-limit keys are SHA-256 hashes; raw request fingerprints are not stored.
+- Rate-limit keys are SHA-256 hashes; raw IP addresses and account identifiers are not stored in rate-limit buckets.
 
 The application-level limiter protects normal application abuse across serverless instances, but it is not a volumetric DDoS control. Production deployments should also enable rate limiting/firewall controls at the hosting or reverse-proxy layer.
 

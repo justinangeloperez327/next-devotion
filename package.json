@@ -20,10 +20,13 @@
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:install": "playwright install chromium",
-    "test:all": "npm run test:unit && npm run test:e2e"
+    "test:all": "npm run test:unit && npm run test:e2e",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm run test:unit",
+    "security:audit": "npm audit --omit=dev --audit-level=high"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": "24.x"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.0",

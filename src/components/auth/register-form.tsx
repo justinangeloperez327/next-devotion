@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 
 import { registerAction } from "@/actions/auth";
+import { PasswordInput } from "@/components/auth/password-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -94,15 +95,16 @@ export function RegisterForm() {
           ) : null}
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-5">
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               autoComplete="new-password"
               placeholder="Create password"
+              minLength={8}
+              maxLength={72}
               aria-invalid={Boolean(state.errors?.password)}
               aria-describedby={
                 state.errors?.password
@@ -112,7 +114,10 @@ export function RegisterForm() {
               required
             />
             {state.errors?.password ? (
-              <p id="register-password-error" className="text-xs text-destructive">
+              <p
+                id="register-password-error"
+                className="text-xs text-destructive"
+              >
                 {state.errors.password}
               </p>
             ) : (
@@ -120,24 +125,27 @@ export function RegisterForm() {
                 id="register-password-help"
                 className="text-xs leading-5 text-muted-foreground"
               >
-                At least 8 characters.
+                Use at least 8 characters.
               </p>
             )}
           </div>
 
           <div className="grid gap-2">
             <Label htmlFor="confirm-password">Confirm password</Label>
-            <Input
+            <PasswordInput
               id="confirm-password"
               name="confirmPassword"
-              type="password"
               autoComplete="new-password"
               placeholder="Repeat password"
+              minLength={8}
+              maxLength={72}
+              showLabel="Show confirmation password"
+              hideLabel="Hide confirmation password"
               aria-invalid={Boolean(state.errors?.confirmPassword)}
               aria-describedby={
                 state.errors?.confirmPassword
                   ? "register-confirm-password-error"
-                  : undefined
+                  : "register-confirm-password-help"
               }
               required
             />
@@ -148,7 +156,14 @@ export function RegisterForm() {
               >
                 {state.errors.confirmPassword}
               </p>
-            ) : null}
+            ) : (
+              <p
+                id="register-confirm-password-help"
+                className="text-xs leading-5 text-muted-foreground"
+              >
+                Enter the same password again.
+              </p>
+            )}
           </div>
         </div>
 

@@ -28,7 +28,7 @@ describe("production security configuration", () => {
     const headers = asMap(getSecurityHeaders(true));
 
     expect(headers.get("Strict-Transport-Security")).toContain(
-      "max-age=63072000",
+      "max-age=31536000",
     );
 
     const csp = headers.get("Content-Security-Policy") ?? "";

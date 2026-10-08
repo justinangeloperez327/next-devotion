@@ -8,6 +8,7 @@ import { commentSchema } from "@/lib/comment/validation";
 import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
 import { canViewDevotion } from "@/lib/privacy/access";
+import { consumeRateLimit } from "@/lib/security/rate-limit";
 
 function revalidateCommentViews(devotionId: string, username: string) {
   revalidatePath("/feed");
@@ -22,6 +23,19 @@ export async function createCommentAction(
   formData: FormData,
 ): Promise<CommentFormState> {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "comment-create",
+    identifier: user.id,
+    limit: 30,
+    windowMs: 60 * 1000,
+  });
+
+  if (!allowed) {
+    return {
+      status: "error",
+      message: "You are commenting too frequently. Try again shortly.",
+    };
+  }
 
   if (!isUuid(devotionId)) {
     return {
@@ -101,6 +115,16 @@ export async function deleteCommentAction(
   _formData: FormData,
 ) {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "comment-delete",
+    identifier: user.id,
+    limit: 60,
+    windowMs: 60 * 1000,
+  });
+
+  if (!allowed) {
+    return;
+  }
 
   if (!isUuid(commentId) || !isUuid(devotionId)) {
     return;

@@ -2,11 +2,13 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import type { ComponentProps } from "react";
 
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 type PasswordInputProps = Omit<
-  React.ComponentProps<typeof Input>,
+  ComponentProps<typeof Input>,
   "type"
 > & {
   showLabel?: string;
@@ -26,7 +28,7 @@ export function PasswordInput({
       <Input
         {...props}
         type={visible ? "text" : "password"}
-        className={`pr-11 ${className ?? ""}`}
+        className={cn("pr-11", className)}
       />
 
       <button

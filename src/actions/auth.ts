@@ -48,8 +48,7 @@ export async function registerAction(
       OR: [{ email }, { username }],
     },
     select: {
-      email: true,
-      username: true,
+      id: true,
     },
   });
 
@@ -57,14 +56,6 @@ export async function registerAction(
     return {
       status: "error",
       message: "An account already uses these details.",
-      errors: {
-        email:
-          existing.email === email ? "This email is already registered." : undefined,
-        username:
-          existing.username === username
-            ? "This username is already taken."
-            : undefined,
-      },
     };
   }
 
@@ -129,10 +120,11 @@ export async function loginAction(
     },
   });
 
-  if (
-    !user ||
-    !(await verifyPassword(parsed.data.password, user.passwordHash))
-  ) {
+  const passwordMatches = user
+    ? await verifyPassword(parsed.data.password, user.passwordHash)
+    : (await hashPassword(parsed.data.password), false);
+
+  if (!user || !passwordMatches) {
     return {
       status: "error",
       message: "The email or password is incorrect.",

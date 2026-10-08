@@ -90,14 +90,6 @@ if (process.env.DATABASE_URL) {
   );
 }
 
-if (process.env.DIRECT_URL) {
-  pass("DIRECT_URL is available for migrations");
-} else {
-  warn(
-    "DIRECT_URL is not available locally; recommended for hosted PostgreSQL migrations",
-  );
-}
-
 console.log("");
 
 if (errors.length > 0) {

@@ -57,6 +57,19 @@ export async function consumeRateLimit({
     },
   });
 
+  if (Number.parseInt(key.slice(0, 2), 16) < 4) {
+    await database.rateLimitBucket.deleteMany({
+      where: {
+        key: {
+          not: key,
+        },
+        expiresAt: {
+          lte: new Date(now),
+        },
+      },
+    });
+  }
+
   return bucket.count <= limit;
 }
 

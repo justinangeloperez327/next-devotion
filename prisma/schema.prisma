@@ -113,3 +113,14 @@ model SavedDevotion {
   @@index([devotionId])
   @@map("saved_devotions")
 }
+
+model RateLimitBucket {
+  key       String   @id @db.Char(64)
+  count     Int      @default(1)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([expiresAt])
+  @@map("rate_limit_buckets")
+}

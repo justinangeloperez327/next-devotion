@@ -21,9 +21,15 @@ export async function getRequestFingerprint() {
     ?.split(",")[0]
     ?.trim();
   const realIp = requestHeaders.get("x-real-ip")?.trim();
+  const address = forwardedFor ?? realIp;
+
+  if (address) {
+    return hashKey(`ip:${address}`);
+  }
+
   const userAgent = requestHeaders.get("user-agent")?.slice(0, 256) ?? "unknown";
 
-  return hashKey(`${forwardedFor ?? realIp ?? "unknown"}:${userAgent}`);
+  return hashKey(`fallback:${userAgent}`);
 }
 
 export async function consumeRateLimit({

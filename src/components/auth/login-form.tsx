@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 
 import { loginAction } from "@/actions/auth";
+import { PasswordInput } from "@/components/auth/password-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,12 +44,13 @@ export function LoginForm() {
 
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input
+          <PasswordInput
             id="password"
             name="password"
-            type="password"
             autoComplete="current-password"
             placeholder="Enter your password"
+            minLength={8}
+            maxLength={72}
             aria-invalid={Boolean(state.errors?.password)}
             aria-describedby={
               state.errors?.password ? "login-password-error" : undefined

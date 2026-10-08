@@ -6,9 +6,20 @@ import { requireUser } from "@/lib/auth/session";
 import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
 import { canViewDevotion } from "@/lib/privacy/access";
+import { consumeRateLimit } from "@/lib/security/rate-limit";
 
 export async function toggleSavedDevotionAction(devotionId: string) {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "saved-toggle",
+    identifier: user.id,
+    limit: 120,
+    windowMs: 60 * 1000,
+  });
+
+  if (!allowed) {
+    return;
+  }
 
   if (!isUuid(devotionId)) {
     return;

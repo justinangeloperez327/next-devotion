@@ -8,7 +8,7 @@ on:
       - ".github/workflows/generate-release-artifacts.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
@@ -44,12 +44,14 @@ jobs:
           test -s prisma/migrations/0_init/migration.sql
           npm run db:validate
 
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: next-devotion-release-artifacts
-          path: |
-            package-lock.json
-            prisma/migrations/0_init/migration.sql
-          if-no-files-found: error
-          retention-days: 1
+      - name: Commit generated artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json prisma/migrations/0_init/migration.sql
+          if git diff --cached --quiet; then
+            echo "Release artifacts are already current."
+            exit 0
+          fi
+          git commit -m "build: add lockfile and initial Prisma migration"
+          git push

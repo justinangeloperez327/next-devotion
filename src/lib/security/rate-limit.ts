@@ -72,13 +72,3 @@ export async function consumeRateLimit({
 
   return bucket.count <= limit;
 }
-
-export async function pruneExpiredRateLimits() {
-  await getPrisma().rateLimitBucket.deleteMany({
-    where: {
-      expiresAt: {
-        lte: new Date(),
-      },
-    },
-  });
-}

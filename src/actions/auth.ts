@@ -126,22 +126,28 @@ export async function loginAction(
   }
 
   const fingerprint = await getRequestFingerprint();
-  const [requestAllowed, accountAllowed] = await Promise.all([
-    consumeRateLimit({
-      scope: "auth-login-request",
-      identifier: fingerprint,
-      limit: 30,
-      windowMs: 15 * 60 * 1000,
-    }),
-    consumeRateLimit({
-      scope: "auth-login-account",
-      identifier: parsed.data.email,
-      limit: 8,
-      windowMs: 15 * 60 * 1000,
-    }),
-  ]);
+  const requestAllowed = await consumeRateLimit({
+    scope: "auth-login-request",
+    identifier: fingerprint,
+    limit: 30,
+    windowMs: 15 * 60 * 1000,
+  });
 
-  if (!requestAllowed || !accountAllowed) {
+  if (!requestAllowed) {
+    return {
+      status: "error",
+      message: "Too many login attempts. Try again later.",
+    };
+  }
+
+  const accountAllowed = await consumeRateLimit({
+    scope: "auth-login-account",
+    identifier: parsed.data.email,
+    limit: 8,
+    windowMs: 15 * 60 * 1000,
+  });
+
+  if (!accountAllowed) {
     return {
       status: "error",
       message: "Too many login attempts. Try again later.",

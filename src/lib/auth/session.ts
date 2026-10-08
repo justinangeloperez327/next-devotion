@@ -5,7 +5,10 @@ import { redirect } from "next/navigation";
 
 import { getPrisma } from "@/lib/prisma";
 
-const SESSION_COOKIE_NAME = "next_devotion_session";
+const SESSION_COOKIE_NAME =
+  process.env.NODE_ENV === "production"
+    ? "__Host-next_devotion_session"
+    : "next_devotion_session";
 const SESSION_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
 
 function hashSessionToken(token: string) {
@@ -29,6 +32,15 @@ export async function createSession(userId: string) {
   const tokenHash = hashSessionToken(token);
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
 
+  await database.session.deleteMany({
+    where: {
+      userId,
+      expiresAt: {
+        lte: new Date(),
+      },
+    },
+  });
+
   await database.session.create({
     data: {
       userId,
@@ -45,6 +57,7 @@ export async function createSession(userId: string) {
     sameSite: "lax",
     path: "/",
     expires: expiresAt,
+    priority: "high",
   });
 }
 

@@ -6,6 +6,7 @@ import { requireUser } from "@/lib/auth/session";
 import type { ProfileFormState } from "@/lib/profile/types";
 import { profileSchema } from "@/lib/profile/validation";
 import { getPrisma } from "@/lib/prisma";
+import { consumeRateLimit } from "@/lib/security/rate-limit";
 
 function firstError(errors: string[] | undefined) {
   return errors?.[0];
@@ -16,6 +17,19 @@ export async function updateProfileAction(
   formData: FormData,
 ): Promise<ProfileFormState> {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "profile-update",
+    identifier: user.id,
+    limit: 20,
+    windowMs: 60 * 60 * 1000,
+  });
+
+  if (!allowed) {
+    return {
+      status: "error",
+      message: "You are updating your profile too frequently. Try again later.",
+    };
+  }
 
   const parsed = profileSchema.safeParse({
     name: formData.get("name"),

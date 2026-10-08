@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth/session";
 import type { PrivacyFormState } from "@/lib/privacy/types";
 import { getPrisma } from "@/lib/prisma";
+import { consumeRateLimit } from "@/lib/security/rate-limit";
 
 const VALID_VISIBILITIES = new Set(["PUBLIC", "PRIVATE"]);
 
@@ -13,6 +14,20 @@ export async function updatePrivacyAction(
   formData: FormData,
 ): Promise<PrivacyFormState> {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "privacy-update",
+    identifier: user.id,
+    limit: 20,
+    windowMs: 60 * 60 * 1000,
+  });
+
+  if (!allowed) {
+    return {
+      status: "error",
+      message: "You are changing privacy settings too frequently. Try again later.",
+    };
+  }
+
   const value = formData.get("defaultDevotionVisibility");
 
   if (typeof value !== "string" || !VALID_VISIBILITIES.has(value)) {

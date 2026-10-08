@@ -79,9 +79,10 @@ Before the first production release, apply the committed migrations against the 
 
 ```bash
 npm run db:deploy
+npm run db:status
 ```
 
-Use the production `DATABASE_URL` for this operation.
+Use the production `DATABASE_URL` for this operation. `db:status` should report that the database schema is up to date.
 
 Database migrations are deliberately not executed by the Vercel application build.
 
@@ -103,6 +104,7 @@ prisma generate --config ./prisma7.config.ts && next build
 
 After deployment verify:
 
+- `/api/health` returns HTTP 200 with `{"status":"ok","database":"ok"}`
 - `/`
 - `/register`
 - `/login`

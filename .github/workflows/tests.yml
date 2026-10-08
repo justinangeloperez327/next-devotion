@@ -53,6 +53,7 @@ jobs:
 
   public-e2e:
     name: Public browser tests
+    needs: quality
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/next_devotion?schema=public

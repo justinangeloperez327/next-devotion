@@ -13,14 +13,13 @@ npm install
 
 `npm install` must create `package-lock.json`. Commit the lockfile.
 
-Configure a development PostgreSQL database in `.env`:
+Configure a PostgreSQL connection in `.env`:
 
 ```env
 DATABASE_URL="postgresql://..."
-DIRECT_URL="postgresql://..."
 ```
 
-For a hosted/serverless PostgreSQL provider, use the pooled URL for `DATABASE_URL` and the direct connection for `DIRECT_URL`.
+Prisma Postgres on Vercel provides `DATABASE_URL` automatically when the database is connected to the project.
 
 Generate Prisma Client and create the initial migration against a development database:
 
@@ -66,8 +65,9 @@ Production requires:
 
 ```env
 DATABASE_URL="..."
-DIRECT_URL="..."
 ```
+
+The Prisma Postgres Vercel integration creates this variable automatically when connected.
 
 Do not add JWT/session secrets for the current authentication design. Sessions use random opaque tokens stored as SHA-256 hashes in PostgreSQL.
 
@@ -81,7 +81,7 @@ Before the first production release, apply the committed migrations against the 
 npm run db:deploy
 ```
 
-Use the production `DIRECT_URL`/database credentials for this operation.
+Use the production `DATABASE_URL` for this operation.
 
 Database migrations are deliberately not executed by the Vercel application build.
 
@@ -124,7 +124,6 @@ Also inspect Vercel runtime logs for database, Prisma, CSP, or Server Action err
 - [ ] Prisma migration files committed
 - [ ] Production PostgreSQL database created
 - [ ] `DATABASE_URL` configured in Vercel
-- [ ] `DIRECT_URL` configured in Vercel
 - [ ] `npm run db:deploy` applied successfully
 - [ ] `npm run deployment:check` passes
 - [ ] `npm run check` passes

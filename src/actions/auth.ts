@@ -7,6 +7,7 @@ import { createSession, deleteCurrentSession } from "@/lib/auth/session";
 import type { AuthFormState } from "@/lib/auth/types";
 import { loginSchema, registerSchema } from "@/lib/auth/validation";
 import { getPrisma } from "@/lib/prisma";
+import { consumeRateLimit, getRequestFingerprint } from "@/lib/security/rate-limit";
 
 function firstError(errors: string[] | undefined) {
   return errors?.[0];
@@ -37,6 +38,21 @@ export async function registerAction(
         password: firstError(errors.password),
         confirmPassword: firstError(errors.confirmPassword),
       },
+    };
+  }
+
+  const fingerprint = await getRequestFingerprint();
+  const registrationAllowed = await consumeRateLimit({
+    scope: "auth-register",
+    identifier: fingerprint,
+    limit: 5,
+    windowMs: 60 * 60 * 1000,
+  });
+
+  if (!registrationAllowed) {
+    return {
+      status: "error",
+      message: "Too many registration attempts. Try again later.",
     };
   }
 
@@ -106,6 +122,29 @@ export async function loginAction(
         email: firstError(errors.email),
         password: firstError(errors.password),
       },
+    };
+  }
+
+  const fingerprint = await getRequestFingerprint();
+  const [requestAllowed, accountAllowed] = await Promise.all([
+    consumeRateLimit({
+      scope: "auth-login-request",
+      identifier: fingerprint,
+      limit: 30,
+      windowMs: 15 * 60 * 1000,
+    }),
+    consumeRateLimit({
+      scope: "auth-login-account",
+      identifier: parsed.data.email,
+      limit: 8,
+      windowMs: 15 * 60 * 1000,
+    }),
+  ]);
+
+  if (!requestAllowed || !accountAllowed) {
+    return {
+      status: "error",
+      message: "Too many login attempts. Try again later.",
     };
   }
 

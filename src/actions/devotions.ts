@@ -8,6 +8,7 @@ import type { DevotionFormState } from "@/lib/devotion/types";
 import { devotionSchema } from "@/lib/devotion/validation";
 import { isUuid } from "@/lib/id";
 import { getPrisma } from "@/lib/prisma";
+import { consumeRateLimit } from "@/lib/security/rate-limit";
 
 function firstError(errors: string[] | undefined) {
   return errors?.[0];
@@ -59,6 +60,20 @@ export async function createDevotionAction(
   formData: FormData,
 ): Promise<DevotionFormState> {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "devotion-create",
+    identifier: user.id,
+    limit: 30,
+    windowMs: 60 * 60 * 1000,
+  });
+
+  if (!allowed) {
+    return {
+      status: "error",
+      message: "You are posting too frequently. Try again later.",
+    };
+  }
+
   const parsed = parseDevotion(formData);
   const error = validationError(parsed);
 
@@ -108,6 +123,19 @@ export async function updateDevotionAction(
   formData: FormData,
 ): Promise<DevotionFormState> {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "devotion-update",
+    identifier: user.id,
+    limit: 60,
+    windowMs: 60 * 60 * 1000,
+  });
+
+  if (!allowed) {
+    return {
+      status: "error",
+      message: "You are updating devotions too frequently. Try again later.",
+    };
+  }
 
   if (!isUuid(devotionId)) {
     return {
@@ -172,6 +200,16 @@ export async function deleteDevotionAction(
   _formData: FormData,
 ) {
   const user = await requireUser();
+  const allowed = await consumeRateLimit({
+    scope: "devotion-delete",
+    identifier: user.id,
+    limit: 30,
+    windowMs: 60 * 60 * 1000,
+  });
+
+  if (!allowed) {
+    return;
+  }
 
   if (!isUuid(devotionId)) {
     redirect("/my-devotions");

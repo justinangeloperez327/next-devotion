@@ -83,7 +83,9 @@ export function ScriptureReferenceInput({
       return;
     }
 
-    updateStructuredReference();
+    if (book && chapter) {
+      updateStructuredReference();
+    }
   }
 
   return (

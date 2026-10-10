@@ -19,6 +19,7 @@ import {
   encodeDateIdCursor,
 } from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
+import { firstSearchParam } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 import type { Prisma } from "@/generated/prisma/client";
 
@@ -38,10 +39,6 @@ type MyDevotionsPageProps = {
     before?: string | string[];
   }>;
 };
-
-function firstParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
 
 function parseVisibility(value: string | undefined): JournalVisibility {
   if (value === "public" || value === "private") {
@@ -75,10 +72,10 @@ export default async function MyDevotionsPage({
 }: MyDevotionsPageProps) {
   const user = await requireUser();
   const params = await searchParams;
-  const query = (firstParam(params.q) ?? "").trim().slice(0, 120);
-  const visibility = parseVisibility(firstParam(params.visibility));
-  const afterValue = firstParam(params.after);
-  const beforeValue = afterValue ? undefined : firstParam(params.before);
+  const query = (firstSearchParam(params.q) ?? "").trim().slice(0, 120);
+  const visibility = parseVisibility(firstSearchParam(params.visibility));
+  const afterValue = firstSearchParam(params.after);
+  const beforeValue = afterValue ? undefined : firstSearchParam(params.before);
   const afterCursor = decodeDateIdCursor(afterValue);
   const beforeCursor = afterCursor
     ? null

@@ -13,6 +13,7 @@ import {
   encodeDateIdCursor,
 } from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
+import { firstSearchParam } from "@/lib/search-params";
 import { canViewDevotion } from "@/lib/privacy/access";
 
 const COMMENT_PAGE_SIZE = 20;
@@ -26,10 +27,6 @@ type DevotionPageProps = {
     commentsBefore?: string | string[];
   }>;
 };
-
-function firstParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
 
 export const metadata: Metadata = {
   title: "Devotion",
@@ -47,10 +44,10 @@ export default async function DevotionPage({
     notFound();
   }
 
-  const afterValue = firstParam(query.commentsAfter);
+  const afterValue = firstSearchParam(query.commentsAfter);
   const beforeValue = afterValue
     ? undefined
-    : firstParam(query.commentsBefore);
+    : firstSearchParam(query.commentsBefore);
   const afterCursor = decodeDateIdCursor(afterValue);
   const beforeCursor = afterCursor
     ? null

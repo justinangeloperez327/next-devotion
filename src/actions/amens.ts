@@ -8,7 +8,10 @@ import { getPrisma } from "@/lib/prisma";
 import { canViewDevotion } from "@/lib/privacy/access";
 import { consumeRateLimit } from "@/lib/security/rate-limit";
 
-export async function toggleAmenAction(devotionId: string) {
+export async function setAmenAction(
+  devotionId: string,
+  shouldHaveAmen: boolean,
+) {
   const user = await requireUser();
   const allowed = await consumeRateLimit({
     scope: "amen-toggle",
@@ -17,11 +20,7 @@ export async function toggleAmenAction(devotionId: string) {
     windowMs: 60 * 1000,
   });
 
-  if (!allowed) {
-    return;
-  }
-
-  if (!isUuid(devotionId)) {
+  if (!allowed || !isUuid(devotionId)) {
     return;
   }
 
@@ -41,38 +40,27 @@ export async function toggleAmenAction(devotionId: string) {
     },
   });
 
-  if (!devotion) {
+  if (!devotion || !canViewDevotion(user.id, devotion)) {
     return;
   }
 
-  if (!canViewDevotion(user.id, devotion)) {
-    return;
-  }
-
-  const existing = await database.amen.findUnique({
-    where: {
-      userId_devotionId: {
-        userId: user.id,
-        devotionId,
-      },
-    },
-    select: {
-      userId: true,
-    },
-  });
-
-  if (existing) {
-    await database.amen.delete({
+  if (shouldHaveAmen) {
+    await database.amen.upsert({
       where: {
         userId_devotionId: {
           userId: user.id,
           devotionId,
         },
       },
+      update: {},
+      create: {
+        userId: user.id,
+        devotionId,
+      },
     });
   } else {
-    await database.amen.create({
-      data: {
+    await database.amen.deleteMany({
+      where: {
         userId: user.id,
         devotionId,
       },
@@ -81,6 +69,7 @@ export async function toggleAmenAction(devotionId: string) {
 
   revalidatePath("/feed");
   revalidatePath("/saved");
+  revalidatePath("/my-devotions");
   revalidatePath(`/devotions/${devotionId}`);
   revalidatePath(`/profile/${devotion.user.username}`);
 }

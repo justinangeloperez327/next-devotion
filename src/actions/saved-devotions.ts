@@ -21,7 +21,7 @@ export async function setSavedDevotionAction(
   });
 
   if (!allowed || !isUuid(devotionId)) {
-    return;
+    return false;
   }
 
   const database = getPrisma();
@@ -41,10 +41,11 @@ export async function setSavedDevotionAction(
   });
 
   if (!devotion || !canViewDevotion(user.id, devotion)) {
-    return;
+    return false;
   }
 
-  if (shouldBeSaved) {
+  try {
+    if (shouldBeSaved) {
     await database.savedDevotion.upsert({
       where: {
         userId_devotionId: {
@@ -58,17 +59,22 @@ export async function setSavedDevotionAction(
         devotionId,
       },
     });
-  } else {
-    await database.savedDevotion.deleteMany({
-      where: {
-        userId: user.id,
-        devotionId,
-      },
-    });
+    } else {
+      await database.savedDevotion.deleteMany({
+        where: {
+          userId: user.id,
+          devotionId,
+        },
+      });
+    }
+  } catch {
+    return false;
   }
 
   revalidatePath("/feed");
   revalidatePath("/saved");
   revalidatePath(`/devotions/${devotionId}`);
   revalidatePath(`/profile/${devotion.user.username}`);
+
+  return true;
 }

@@ -9,9 +9,9 @@ export async function GET() {
     const database = getPrisma();
 
     await Promise.all([
-      database.user.count(),
-      database.devotion.count(),
-      database.rateLimitBucket.count(),
+      database.user.findFirst({ select: { id: true } }),
+      database.devotion.findFirst({ select: { id: true } }),
+      database.rateLimitBucket.findFirst({ select: { key: true } }),
     ]);
 
     return NextResponse.json(

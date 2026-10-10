@@ -217,12 +217,16 @@ export async function deleteDevotionAction(
 
   const database = getPrisma();
 
-  await database.devotion.deleteMany({
-    where: {
-      id: devotionId,
-      userId: user.id,
-    },
-  });
+  try {
+    await database.devotion.deleteMany({
+      where: {
+        id: devotionId,
+        userId: user.id,
+      },
+    });
+  } catch {
+    return;
+  }
 
   revalidatePath(`/devotions/${devotionId}`);
   revalidateDevotionLists(user.username);

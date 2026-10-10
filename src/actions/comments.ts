@@ -157,11 +157,15 @@ export async function deleteCommentAction(
     return;
   }
 
-  await database.comment.delete({
-    where: {
-      id: comment.id,
-    },
-  });
+  try {
+    await database.comment.delete({
+      where: {
+        id: comment.id,
+      },
+    });
+  } catch {
+    return;
+  }
 
   revalidateCommentViews(devotionId, comment.devotion.user.username);
 }

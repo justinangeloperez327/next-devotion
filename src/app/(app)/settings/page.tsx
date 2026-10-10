@@ -18,14 +18,22 @@ export default async function SettingsPage() {
           Settings
         </p>
         <h1 className="mt-2 text-3xl font-medium tracking-[-0.025em] text-foreground">
-          Profile
+          Settings
         </h1>
         <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-          Manage the public identity shown beside your devotions and comments.
+          Manage your public profile and default devotion privacy.
         </p>
       </div>
 
-      <section className="py-7">
+      <section className="py-7" aria-labelledby="profile-settings-heading">
+        <div className="mb-6">
+          <h2 id="profile-settings-heading" className="text-base font-medium text-foreground">
+            Profile
+          </h2>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+            Manage the identity shown beside your devotions and comments.
+          </p>
+        </div>
         <ProfileSettingsForm
           user={{
             name: user.name,

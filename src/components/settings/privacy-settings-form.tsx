@@ -32,9 +32,9 @@ export function PrivacySettingsForm({
       />
 
       <div>
-        <h2 id="privacy-default-heading" className="text-base font-medium text-foreground">
+        <h3 id="privacy-default-heading" className="text-base font-medium text-foreground">
           Default devotion visibility
-        </h2>
+        </h3>
         <p id="privacy-default-description" className="mt-1 text-sm leading-6 text-muted-foreground">
           New devotions start with this visibility. You can still change it
           before posting or later when editing a devotion.

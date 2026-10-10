@@ -8,7 +8,10 @@ import { getPrisma } from "@/lib/prisma";
 import { canViewDevotion } from "@/lib/privacy/access";
 import { consumeRateLimit } from "@/lib/security/rate-limit";
 
-export async function toggleSavedDevotionAction(devotionId: string) {
+export async function setSavedDevotionAction(
+  devotionId: string,
+  shouldBeSaved: boolean,
+) {
   const user = await requireUser();
   const allowed = await consumeRateLimit({
     scope: "saved-toggle",
@@ -17,11 +20,7 @@ export async function toggleSavedDevotionAction(devotionId: string) {
     windowMs: 60 * 1000,
   });
 
-  if (!allowed) {
-    return;
-  }
-
-  if (!isUuid(devotionId)) {
+  if (!allowed || !isUuid(devotionId)) {
     return;
   }
 
@@ -41,38 +40,27 @@ export async function toggleSavedDevotionAction(devotionId: string) {
     },
   });
 
-  if (!devotion) {
+  if (!devotion || !canViewDevotion(user.id, devotion)) {
     return;
   }
 
-  if (!canViewDevotion(user.id, devotion)) {
-    return;
-  }
-
-  const existing = await database.savedDevotion.findUnique({
-    where: {
-      userId_devotionId: {
-        userId: user.id,
-        devotionId,
-      },
-    },
-    select: {
-      userId: true,
-    },
-  });
-
-  if (existing) {
-    await database.savedDevotion.delete({
+  if (shouldBeSaved) {
+    await database.savedDevotion.upsert({
       where: {
         userId_devotionId: {
           userId: user.id,
           devotionId,
         },
       },
+      update: {},
+      create: {
+        userId: user.id,
+        devotionId,
+      },
     });
   } else {
-    await database.savedDevotion.create({
-      data: {
+    await database.savedDevotion.deleteMany({
+      where: {
         userId: user.id,
         devotionId,
       },

@@ -54,7 +54,7 @@ export function AppShell({ user, children }: AppShellProps) {
             </Link>
 
             <details className="group relative">
-              <summary aria-label="Open account menu" className="flex h-9 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-card px-2.5 text-sm text-foreground transition-colors hover:bg-accent [&::-webkit-details-marker]:hidden">
+              <summary aria-label="Open account menu" className="flex h-11 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-card px-2.5 text-sm text-foreground transition-colors hover:bg-accent sm:h-9 [&::-webkit-details-marker]:hidden">
                 <UserAvatar
                   name={user.name}
                   avatarUrl={user.avatarUrl}

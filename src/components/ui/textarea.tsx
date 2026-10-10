@@ -11,7 +11,7 @@ function Textarea({
       data-slot="textarea"
       className={cn(
         "flex min-h-28 w-full resize-y rounded-md border border-input bg-card px-3 py-3 text-sm leading-6 text-foreground outline-none transition-colors placeholder:text-muted-foreground",
-        "focus-visible:border-primary/70 focus-visible:ring-2 focus-visible:ring-ring/20",
+        "focus-visible:border-primary/70",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}

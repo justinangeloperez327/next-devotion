@@ -45,7 +45,11 @@ export function AmenButton({
 
     startTransition(async () => {
       setOptimistic(nextHasAmen);
-      await setAmenAction(devotionId, nextHasAmen);
+      const success = await setAmenAction(devotionId, nextHasAmen);
+
+      if (!success) {
+        setOptimistic(!nextHasAmen);
+      }
     });
   }
 
@@ -62,8 +66,7 @@ export function AmenButton({
         }
         className={cn(
           "flex h-12 w-full min-w-0 items-center justify-center gap-1.5 px-1 text-xs transition-colors sm:h-11 sm:gap-2",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/60",
-          disabled
+          disabled || pending
             ? "cursor-default text-muted-foreground opacity-60"
             : "hover:bg-accent",
           optimistic.hasAmen

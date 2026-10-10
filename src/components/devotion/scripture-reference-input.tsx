@@ -22,7 +22,7 @@ type ScriptureReferenceInputProps = {
 type Mode = "structured" | "manual";
 
 const selectClassName =
-  "h-11 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus:border-primary/70 focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50";
+  "h-11 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus-visible:border-primary/70 disabled:cursor-not-allowed disabled:opacity-50";
 
 function sanitizeVerse(value: string) {
   const digits = value.replace(/\D/g, "");

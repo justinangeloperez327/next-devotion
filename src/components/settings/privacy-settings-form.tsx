@@ -5,20 +5,19 @@ import { useActionState, useState } from "react";
 
 import { updatePrivacyAction } from "@/actions/privacy";
 import { Button } from "@/components/ui/button";
+import type { DevotionVisibilityValue } from "@/lib/privacy/access";
 import { initialPrivacyFormState } from "@/lib/privacy/types";
 import { cn } from "@/lib/utils";
 
-type Visibility = "PUBLIC" | "PRIVATE";
-
 type PrivacySettingsFormProps = {
-  defaultVisibility: Visibility;
+  defaultVisibility: DevotionVisibilityValue;
 };
 
 export function PrivacySettingsForm({
   defaultVisibility,
 }: PrivacySettingsFormProps) {
   const [visibility, setVisibility] =
-    useState<Visibility>(defaultVisibility);
+    useState<DevotionVisibilityValue>(defaultVisibility);
   const [state, formAction, pending] = useActionState(
     updatePrivacyAction,
     initialPrivacyFormState,

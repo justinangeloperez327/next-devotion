@@ -43,6 +43,7 @@ export default function ContactPage() {
                     name="name"
                     autoComplete="name"
                     placeholder="Your name"
+                    disabled
                   />
                 </div>
 
@@ -54,6 +55,7 @@ export default function ContactPage() {
                     type="email"
                     autoComplete="email"
                     placeholder="you@example.com"
+                    disabled
                   />
                 </div>
 
@@ -63,6 +65,7 @@ export default function ContactPage() {
                     id="subject"
                     name="subject"
                     placeholder="How can we help?"
+                    disabled
                   />
                 </div>
 
@@ -73,6 +76,7 @@ export default function ContactPage() {
                     name="message"
                     className="min-h-44"
                     placeholder="Write your message..."
+                    disabled
                   />
                 </div>
 
@@ -81,7 +85,7 @@ export default function ContactPage() {
                     id="contact-status"
                     className="max-w-md text-xs leading-5 text-muted-foreground"
                   >
-                    Contact messaging is temporarily unavailable.
+                    Contact messaging is temporarily unavailable. The form is disabled until message delivery is connected.
                   </p>
                   <Button type="submit" disabled className="w-full sm:w-auto">
                     Send message

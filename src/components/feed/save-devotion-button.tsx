@@ -28,7 +28,11 @@ export function SaveDevotionButton({
 
     startTransition(async () => {
       setOptimisticSaved(nextSaved);
-      await setSavedDevotionAction(devotionId, nextSaved);
+      const success = await setSavedDevotionAction(devotionId, nextSaved);
+
+      if (!success) {
+        setOptimisticSaved(!nextSaved);
+      }
     });
   }
 
@@ -41,8 +45,7 @@ export function SaveDevotionButton({
         aria-label={saved ? "Remove from saved devotions" : "Save devotion"}
         className={cn(
           "flex h-12 w-full min-w-0 items-center justify-center gap-1.5 border-l border-border px-1 text-xs transition-colors sm:h-11 sm:gap-2",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/60",
-          disabled
+          disabled || pending
             ? "cursor-default text-muted-foreground opacity-60"
             : "hover:bg-accent",
           saved

@@ -68,7 +68,7 @@ describe("Scripture metadata", () => {
 
     expect(
       buildScriptureReference({
-        book: "Psalm",
+        book: "Psalms",
         chapter: "23",
         verseStart: "1",
         verseEnd: "4",

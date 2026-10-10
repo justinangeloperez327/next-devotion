@@ -95,7 +95,7 @@ export const getCurrentUser = cache(async () => {
   }
 
   if (session.expiresAt <= new Date()) {
-    await database.session.delete({
+    await database.session.deleteMany({
       where: {
         id: session.id,
       },

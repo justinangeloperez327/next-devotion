@@ -53,7 +53,7 @@ export function JournalFilters({
           id="journal-visibility"
           name="visibility"
           defaultValue={visibility}
-          className="h-11 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus:border-primary/70 focus:ring-2 focus:ring-ring/20"
+          className="h-11 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground outline-none transition-colors focus-visible:border-primary/70"
         >
           <option value="all">All</option>
           <option value="public">Public</option>

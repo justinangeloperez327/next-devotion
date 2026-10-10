@@ -24,7 +24,7 @@ export function CommentForm({ devotionId }: CommentFormProps) {
     if (state.status === "success") {
       formRef.current?.reset();
     }
-  }, [state.status]);
+  }, [state.status, state.submissionId]);
 
   return (
     <form ref={formRef} action={formAction} className="grid gap-3">

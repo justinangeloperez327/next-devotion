@@ -1,3 +1,5 @@
+import type { DevotionVisibilityValue } from "@/lib/privacy/access";
+
 export type DevotionField =
   | "scriptureReference"
   | "scriptureText"
@@ -22,5 +24,5 @@ export type DevotionFormValues = {
   observation: string;
   application: string;
   prayer: string;
-  visibility: "PUBLIC" | "PRIVATE";
+  visibility: DevotionVisibilityValue;
 };

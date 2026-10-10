@@ -8,27 +8,55 @@ import { DevotionCard } from "@/components/feed/devotion-card";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import { isUuid } from "@/lib/id";
+import {
+  decodeDateIdCursor,
+  encodeDateIdCursor,
+} from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
 import { canViewDevotion } from "@/lib/privacy/access";
+
+const COMMENT_PAGE_SIZE = 20;
 
 type DevotionPageProps = {
   params: Promise<{
     id: string;
   }>;
+  searchParams: Promise<{
+    commentsAfter?: string | string[];
+    commentsBefore?: string | string[];
+  }>;
 };
+
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
 
 export const metadata: Metadata = {
   title: "Devotion",
 };
 
-export default async function DevotionPage({ params }: DevotionPageProps) {
+export default async function DevotionPage({
+  params,
+  searchParams,
+}: DevotionPageProps) {
   const user = await requireUser();
   const { id } = await params;
+  const query = await searchParams;
 
   if (!isUuid(id)) {
     notFound();
   }
 
+  const afterValue = firstParam(query.commentsAfter);
+  const beforeValue = afterValue
+    ? undefined
+    : firstParam(query.commentsBefore);
+  const afterCursor = decodeDateIdCursor(afterValue);
+  const beforeCursor = afterCursor
+    ? null
+    : decodeDateIdCursor(beforeValue);
+  const cursor = afterCursor ?? beforeCursor;
+  const movingNewer = Boolean(beforeCursor);
   const database = getPrisma();
 
   const devotion = await database.devotion.findUnique({
@@ -70,24 +98,6 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
         },
         take: 1,
       },
-      comments: {
-        orderBy: {
-          createdAt: "asc",
-        },
-        select: {
-          id: true,
-          userId: true,
-          body: true,
-          createdAt: true,
-          user: {
-            select: {
-              name: true,
-              username: true,
-              avatarUrl: true,
-            },
-          },
-        },
-      },
       _count: {
         select: {
           amens: true,
@@ -97,16 +107,77 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
     },
   });
 
-  if (!devotion) {
+  if (!devotion || !canViewDevotion(user.id, devotion)) {
     notFound();
   }
+
+  const cursorCondition = cursor
+    ? movingNewer
+      ? {
+          OR: [
+            { createdAt: { gt: cursor.createdAt } },
+            { createdAt: cursor.createdAt, id: { gt: cursor.id } },
+          ],
+        }
+      : {
+          OR: [
+            { createdAt: { lt: cursor.createdAt } },
+            { createdAt: cursor.createdAt, id: { lt: cursor.id } },
+          ],
+        }
+    : {};
+
+  const rows = await database.comment.findMany({
+    where: {
+      devotionId: devotion.id,
+      ...cursorCondition,
+    },
+    orderBy: movingNewer
+      ? [{ createdAt: "asc" }, { id: "asc" }]
+      : [{ createdAt: "desc" }, { id: "desc" }],
+    take: COMMENT_PAGE_SIZE + 1,
+    select: {
+      id: true,
+      userId: true,
+      body: true,
+      createdAt: true,
+      user: {
+        select: {
+          name: true,
+          username: true,
+          avatarUrl: true,
+        },
+      },
+    },
+  });
+
+  const hasExtra = rows.length > COMMENT_PAGE_SIZE;
+  const comments = rows.slice(0, COMMENT_PAGE_SIZE);
+
+  if (!movingNewer) {
+    comments.reverse();
+  }
+
+  const firstComment = comments[0];
+  const lastComment = comments[comments.length - 1];
+  const hasNewer = movingNewer ? hasExtra : Boolean(afterCursor);
+  const hasOlder = movingNewer ? Boolean(beforeCursor) : hasExtra;
+  const newerCursor =
+    lastComment && hasNewer
+      ? encodeDateIdCursor({
+          createdAt: lastComment.createdAt,
+          id: lastComment.id,
+        })
+      : undefined;
+  const olderCursor =
+    firstComment && hasOlder
+      ? encodeDateIdCursor({
+          createdAt: firstComment.createdAt,
+          id: firstComment.id,
+        })
+      : undefined;
 
   const isOwner = devotion.userId === user.id;
-
-  if (!canViewDevotion(user.id, devotion)) {
-    notFound();
-  }
-
   const VisibilityIcon = devotion.visibility === "PUBLIC" ? Globe2 : Lock;
 
   return (
@@ -143,7 +214,10 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
       <CommentSection
         devotionId={devotion.id}
         currentUserId={user.id}
-        comments={devotion.comments}
+        comments={comments}
+        totalCount={devotion._count.comments}
+        newerCursor={newerCursor}
+        olderCursor={olderCursor}
       />
     </main>
   );

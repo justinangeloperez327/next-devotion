@@ -40,11 +40,14 @@ export function UserAvatar({
       aria-hidden="true"
     >
       {avatarUrl ? (
-        <span
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url("${avatarUrl.replace(/"/g, "%22")}")`,
-          }}
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={avatarUrl}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          referrerPolicy="no-referrer"
+          className="absolute inset-0 size-full object-cover"
         />
       ) : (
         initials(name) || "ND"

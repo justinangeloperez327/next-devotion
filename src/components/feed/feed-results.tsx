@@ -4,9 +4,9 @@ import { EmptyState } from "@/components/states/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import {
-  decodeFeedCursor,
-  encodeFeedCursor,
-} from "@/lib/feed-pagination";
+  decodeDateIdCursor,
+  encodeDateIdCursor,
+} from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
 
 const PAGE_SIZE = 10;
@@ -19,8 +19,8 @@ type FeedResultsProps = {
 export async function FeedResults({ after, before }: FeedResultsProps) {
   const user = await requireUser();
   const database = getPrisma();
-  const afterCursor = decodeFeedCursor(after);
-  const beforeCursor = afterCursor ? null : decodeFeedCursor(before);
+  const afterCursor = decodeDateIdCursor(after);
+  const beforeCursor = afterCursor ? null : decodeDateIdCursor(before);
   const cursor = afterCursor ?? beforeCursor;
   const movingNewer = Boolean(beforeCursor);
 
@@ -144,14 +144,14 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
   const hasOlder = movingNewer ? Boolean(beforeCursor) : hasExtra;
 
   const newerCursor = hasNewer
-    ? encodeFeedCursor({
+    ? encodeDateIdCursor({
         createdAt: first.createdAt,
         id: first.id,
       })
     : undefined;
 
   const olderCursor = hasOlder
-    ? encodeFeedCursor({
+    ? encodeDateIdCursor({
         createdAt: last.createdAt,
         id: last.id,
       })

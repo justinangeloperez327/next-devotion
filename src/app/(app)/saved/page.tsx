@@ -13,6 +13,7 @@ import {
   encodeDateIdCursor,
 } from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
+import { firstSearchParam } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 import type { Prisma } from "@/generated/prisma/client";
 
@@ -29,15 +30,11 @@ type SavedPageProps = {
   }>;
 };
 
-function firstParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
-
 export default async function SavedPage({ searchParams }: SavedPageProps) {
   const user = await requireUser();
   const params = await searchParams;
-  const afterValue = firstParam(params.after);
-  const beforeValue = afterValue ? undefined : firstParam(params.before);
+  const afterValue = firstSearchParam(params.after);
+  const beforeValue = afterValue ? undefined : firstSearchParam(params.before);
   const afterCursor = decodeDateIdCursor(afterValue);
   const beforeCursor = afterCursor ? null : decodeDateIdCursor(beforeValue);
   const cursor = afterCursor ?? beforeCursor;

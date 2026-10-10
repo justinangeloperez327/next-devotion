@@ -23,9 +23,8 @@ import {
   type DevotionFormState,
   type DevotionFormValues,
 } from "@/lib/devotion/types";
+import type { DevotionVisibilityValue } from "@/lib/privacy/access";
 import { cn } from "@/lib/utils";
-
-type Visibility = "PUBLIC" | "PRIVATE";
 
 type DevotionComposerProps = {
   action: (
@@ -149,7 +148,7 @@ export function DevotionComposer({
   const [observation, setObservation] = useState(initialValues.observation);
   const [application, setApplication] = useState(initialValues.application);
   const [prayer, setPrayer] = useState(initialValues.prayer);
-  const [visibility, setVisibility] = useState<Visibility>(
+  const [visibility, setVisibility] = useState<DevotionVisibilityValue>(
     initialValues.visibility,
   );
 

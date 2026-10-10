@@ -21,7 +21,7 @@ export async function setAmenAction(
   });
 
   if (!allowed || !isUuid(devotionId)) {
-    return;
+    return false;
   }
 
   const database = getPrisma();
@@ -41,10 +41,11 @@ export async function setAmenAction(
   });
 
   if (!devotion || !canViewDevotion(user.id, devotion)) {
-    return;
+    return false;
   }
 
-  if (shouldHaveAmen) {
+  try {
+    if (shouldHaveAmen) {
     await database.amen.upsert({
       where: {
         userId_devotionId: {
@@ -58,13 +59,16 @@ export async function setAmenAction(
         devotionId,
       },
     });
-  } else {
-    await database.amen.deleteMany({
-      where: {
-        userId: user.id,
-        devotionId,
-      },
-    });
+    } else {
+      await database.amen.deleteMany({
+        where: {
+          userId: user.id,
+          devotionId,
+        },
+      });
+    }
+  } catch {
+    return false;
   }
 
   revalidatePath("/feed");
@@ -72,4 +76,6 @@ export async function setAmenAction(
   revalidatePath("/my-devotions");
   revalidatePath(`/devotions/${devotionId}`);
   revalidatePath(`/profile/${devotion.user.username}`);
+
+  return true;
 }

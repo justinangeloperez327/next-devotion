@@ -1,9 +1,9 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useOptimistic } from "react";
+import { useOptimistic, useTransition } from "react";
 
-import { toggleAmenAction } from "@/actions/amens";
+import { setAmenAction } from "@/actions/amens";
 import { cn } from "@/lib/utils";
 
 type AmenButtonProps = {
@@ -24,27 +24,36 @@ export function AmenButton({
   initialAmenCount,
   disabled = false,
 }: AmenButtonProps) {
-  const [optimistic, toggleOptimistic] = useOptimistic<AmenState, null>(
+  const [pending, startTransition] = useTransition();
+  const [optimistic, setOptimistic] = useOptimistic<AmenState, boolean>(
     {
       hasAmen: initialHasAmen,
       count: initialAmenCount,
     },
-    (state) => ({
-      hasAmen: !state.hasAmen,
-      count: Math.max(0, state.count + (state.hasAmen ? -1 : 1)),
+    (state, nextHasAmen) => ({
+      hasAmen: nextHasAmen,
+      count: Math.max(
+        0,
+        state.count +
+          (nextHasAmen === state.hasAmen ? 0 : nextHasAmen ? 1 : -1),
+      ),
     }),
   );
 
-  async function action() {
-    toggleOptimistic(null);
-    await toggleAmenAction(devotionId);
+  function handleClick() {
+    const nextHasAmen = !optimistic.hasAmen;
+
+    startTransition(async () => {
+      setOptimistic(nextHasAmen);
+      await setAmenAction(devotionId, nextHasAmen);
+    });
   }
 
   return (
-    <form action={action} className="contents">
       <button
-        type="submit"
-        disabled={disabled}
+        type="button"
+        onClick={handleClick}
+        disabled={disabled || pending}
         aria-pressed={optimistic.hasAmen}
         aria-label={
           optimistic.hasAmen
@@ -77,6 +86,5 @@ export function AmenButton({
           {optimistic.count}
         </span>
       </button>
-    </form>
   );
 }

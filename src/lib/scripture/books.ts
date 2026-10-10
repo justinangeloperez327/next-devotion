@@ -94,14 +94,15 @@ export function buildScriptureReference({
 
   const normalizedStart = verseStart?.trim();
   const normalizedEnd = verseEnd?.trim();
+  const displayBook = book === "Psalms" ? "Psalm" : book;
 
   if (!normalizedStart) {
-    return `${book} ${chapter}`;
+    return `${displayBook} ${chapter}`;
   }
 
   if (normalizedEnd && normalizedEnd !== normalizedStart) {
-    return `${book} ${chapter}:${normalizedStart}-${normalizedEnd}`;
+    return `${displayBook} ${chapter}:${normalizedStart}-${normalizedEnd}`;
   }
 
-  return `${book} ${chapter}:${normalizedStart}`;
+  return `${displayBook} ${chapter}:${normalizedStart}`;
 }

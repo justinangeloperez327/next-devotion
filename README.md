@@ -90,7 +90,7 @@ npx shadcn@latest add button
 
 ## Testing
 
-Unit tests cover validation, privacy rules, Scripture reference helpers, UUID validation, and feed/journal/saved cursor encoding.
+Unit tests cover validation, privacy rules, Scripture reference helpers, UUID validation, shared cursor encoding, and production security configuration.
 
 ```bash
 npm run test

@@ -15,7 +15,7 @@ test("authenticated user can create and delete a private devotion", async ({
 
   await page.goto("/login");
   await page.getByLabel("Email").fill(email!);
-  await page.getByLabel("Password").fill(password!);
+  await page.getByLabel("Password", { exact: true }).fill(password!);
   await page.getByRole("button", { name: "Log in" }).click();
 
   await expect(page).toHaveURL(/\/feed$/);

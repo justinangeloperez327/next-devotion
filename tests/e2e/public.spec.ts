@@ -63,6 +63,35 @@ test.describe("public experience", () => {
     ).toBeDisabled();
   });
 
+  test("register password fields are distinct and reveal independently", async ({
+    page,
+  }) => {
+    await page.goto("/register");
+
+    const password = page.getByLabel("Password", { exact: true });
+    const confirmPassword = page.getByLabel("Confirm password", { exact: true });
+
+    await password.fill("password123");
+    await confirmPassword.fill("password123");
+
+    await expect(password).toHaveAttribute("type", "password");
+    await expect(confirmPassword).toHaveAttribute("type", "password");
+
+    await page.getByRole("button", { name: "Show password", exact: true }).click();
+
+    await expect(password).toHaveAttribute("type", "text");
+    await expect(confirmPassword).toHaveAttribute("type", "password");
+
+    await page
+      .getByRole("button", {
+        name: "Show confirmation password",
+        exact: true,
+      })
+      .click();
+
+    await expect(confirmPassword).toHaveAttribute("type", "text");
+  });
+
   test("mobile navigation opens and exposes public routes", async (
     { page },
     testInfo,

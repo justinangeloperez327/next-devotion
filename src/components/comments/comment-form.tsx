@@ -1,6 +1,7 @@
 "use client";
 
 import { Send } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef } from "react";
 
 import { createCommentAction } from "@/actions/comments";
@@ -13,6 +14,7 @@ type CommentFormProps = {
 };
 
 export function CommentForm({ devotionId }: CommentFormProps) {
+  const router = useRouter();
   const action = createCommentAction.bind(null, devotionId);
   const [state, formAction, pending] = useActionState(
     action,
@@ -23,8 +25,9 @@ export function CommentForm({ devotionId }: CommentFormProps) {
   useEffect(() => {
     if (state.status === "success") {
       formRef.current?.reset();
+      router.replace(`/devotions/${devotionId}#comments`);
     }
-  }, [state.status, state.submissionId]);
+  }, [devotionId, router, state.status, state.submissionId]);
 
   return (
     <form ref={formRef} action={formAction} className="grid gap-3">

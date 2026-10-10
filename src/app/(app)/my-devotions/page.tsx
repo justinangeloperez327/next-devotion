@@ -15,9 +15,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import {
-  decodeJournalCursor,
-  encodeJournalCursor,
-} from "@/lib/journal-pagination";
+  decodeDateIdCursor,
+  encodeDateIdCursor,
+} from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 import type { Prisma } from "@/generated/prisma/client";
@@ -79,10 +79,10 @@ export default async function MyDevotionsPage({
   const visibility = parseVisibility(firstParam(params.visibility));
   const afterValue = firstParam(params.after);
   const beforeValue = afterValue ? undefined : firstParam(params.before);
-  const afterCursor = decodeJournalCursor(afterValue);
+  const afterCursor = decodeDateIdCursor(afterValue);
   const beforeCursor = afterCursor
     ? null
-    : decodeJournalCursor(beforeValue);
+    : decodeDateIdCursor(beforeValue);
   const cursor = afterCursor ?? beforeCursor;
   const movingNewer = Boolean(beforeCursor);
 
@@ -234,7 +234,7 @@ export default async function MyDevotionsPage({
 
   const newerCursor =
     first && hasNewer
-      ? encodeJournalCursor({
+      ? encodeDateIdCursor({
           createdAt: first.createdAt,
           id: first.id,
         })
@@ -242,7 +242,7 @@ export default async function MyDevotionsPage({
 
   const olderCursor =
     last && hasOlder
-      ? encodeJournalCursor({
+      ? encodeDateIdCursor({
           createdAt: last.createdAt,
           id: last.id,
         })

@@ -9,9 +9,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import {
-  decodeSavedCursor,
-  encodeSavedCursor,
-} from "@/lib/saved-pagination";
+  decodeDateIdCursor,
+  encodeDateIdCursor,
+} from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 import type { Prisma } from "@/generated/prisma/client";
@@ -38,8 +38,8 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
   const params = await searchParams;
   const afterValue = firstParam(params.after);
   const beforeValue = afterValue ? undefined : firstParam(params.before);
-  const afterCursor = decodeSavedCursor(afterValue);
-  const beforeCursor = afterCursor ? null : decodeSavedCursor(beforeValue);
+  const afterCursor = decodeDateIdCursor(afterValue);
+  const beforeCursor = afterCursor ? null : decodeDateIdCursor(beforeValue);
   const cursor = afterCursor ?? beforeCursor;
   const movingNewer = Boolean(beforeCursor);
 
@@ -55,7 +55,7 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
             {
               createdAt: cursor.createdAt,
               devotionId: {
-                gt: cursor.devotionId,
+                gt: cursor.id,
               },
             },
           ],
@@ -70,7 +70,7 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
             {
               createdAt: cursor.createdAt,
               devotionId: {
-                lt: cursor.devotionId,
+                lt: cursor.id,
               },
             },
           ],
@@ -165,17 +165,17 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
 
   const newerCursor =
     first && hasNewer
-      ? encodeSavedCursor({
+      ? encodeDateIdCursor({
           createdAt: first.createdAt,
-          devotionId: first.devotionId,
+          id: first.devotionId,
         })
       : undefined;
 
   const olderCursor =
     last && hasOlder
-      ? encodeSavedCursor({
+      ? encodeDateIdCursor({
           createdAt: last.createdAt,
-          devotionId: last.devotionId,
+          id: last.devotionId,
         })
       : undefined;
 

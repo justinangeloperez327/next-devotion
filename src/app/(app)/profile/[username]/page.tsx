@@ -8,14 +8,25 @@ import { EmptyState } from "@/components/states/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
+import { decodeDateIdCursor, encodeDateIdCursor } from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
+
+const PAGE_SIZE = 20;
 
 type ProfilePageProps = {
   params: Promise<{
     username: string;
   }>;
+  searchParams: Promise<{
+    after?: string | string[];
+    before?: string | string[];
+  }>;
 };
+
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
 
 export async function generateMetadata({
   params,
@@ -27,9 +38,19 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProfilePage({ params }: ProfilePageProps) {
+export default async function ProfilePage({
+  params,
+  searchParams,
+}: ProfilePageProps) {
   const viewer = await requireUser();
   const { username } = await params;
+  const query = await searchParams;
+  const afterValue = firstParam(query.after);
+  const beforeValue = afterValue ? undefined : firstParam(query.before);
+  const afterCursor = decodeDateIdCursor(afterValue);
+  const beforeCursor = afterCursor ? null : decodeDateIdCursor(beforeValue);
+  const cursor = afterCursor ?? beforeCursor;
+  const movingNewer = Boolean(beforeCursor);
   const database = getPrisma();
 
   const profile = await database.user.findUnique({
@@ -50,16 +71,33 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     notFound();
   }
 
-  const [devotions, devotionCount, amenCount, commentCount] = await Promise.all([
+  const cursorCondition = cursor
+    ? movingNewer
+      ? {
+          OR: [
+            { createdAt: { gt: cursor.createdAt } },
+            { createdAt: cursor.createdAt, id: { gt: cursor.id } },
+          ],
+        }
+      : {
+          OR: [
+            { createdAt: { lt: cursor.createdAt } },
+            { createdAt: cursor.createdAt, id: { lt: cursor.id } },
+          ],
+        }
+    : {};
+
+  const [rows, devotionCount, amenCount, commentCount] = await Promise.all([
     database.devotion.findMany({
       where: {
         userId: profile.id,
         visibility: "PUBLIC",
+        ...cursorCondition,
       },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: 20,
+      orderBy: movingNewer
+        ? [{ createdAt: "asc" }, { id: "asc" }]
+        : [{ createdAt: "desc" }, { id: "desc" }],
+      take: PAGE_SIZE + 1,
       select: {
         id: true,
         scriptureReference: true,
@@ -121,6 +159,26 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       },
     }),
   ]);
+
+  const hasExtra = rows.length > PAGE_SIZE;
+  const devotions = rows.slice(0, PAGE_SIZE);
+
+  if (movingNewer) {
+    devotions.reverse();
+  }
+
+  const first = devotions[0];
+  const last = devotions[devotions.length - 1];
+  const hasNewer = movingNewer ? hasExtra : Boolean(afterCursor);
+  const hasOlder = movingNewer ? Boolean(beforeCursor) : hasExtra;
+  const newerCursor =
+    first && hasNewer
+      ? encodeDateIdCursor({ createdAt: first.createdAt, id: first.id })
+      : undefined;
+  const olderCursor =
+    last && hasOlder
+      ? encodeDateIdCursor({ createdAt: last.createdAt, id: last.id })
+      : undefined;
 
   const isOwner = viewer.id === profile.id;
 
@@ -201,10 +259,31 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           />
         )}
 
-        {devotionCount > devotions.length ? (
-          <p className="mt-5 text-center text-xs text-muted-foreground">
-            Showing the 20 most recent public devotions.
-          </p>
+        {newerCursor || olderCursor ? (
+          <nav
+            className="mt-6 flex items-center justify-between gap-3 border-t border-border pt-5"
+            aria-label="Profile devotion pages"
+          >
+            {newerCursor ? (
+              <Link
+                href={`/profile/${profile.username}?before=${encodeURIComponent(newerCursor)}`}
+                className={buttonVariants({ variant: "secondary", size: "sm" })}
+              >
+                Newer
+              </Link>
+            ) : (
+              <span />
+            )}
+
+            {olderCursor ? (
+              <Link
+                href={`/profile/${profile.username}?after=${encodeURIComponent(olderCursor)}`}
+                className={buttonVariants({ variant: "secondary", size: "sm" })}
+              >
+                Older
+              </Link>
+            ) : null}
+          </nav>
         ) : null}
       </section>
     </main>

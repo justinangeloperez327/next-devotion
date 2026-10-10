@@ -107,6 +107,7 @@ export async function createCommentAction(
   return {
     status: "success",
     message: "Comment posted.",
+    submissionId: Date.now(),
   };
 }
 

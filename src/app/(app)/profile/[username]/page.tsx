@@ -178,6 +178,7 @@ export default async function ProfilePage({
       : undefined;
 
   const isOwner = viewer.id === profile.id;
+  const paginatedRequest = Boolean(afterValue || beforeValue);
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -245,14 +246,36 @@ export default async function ProfilePage({
         ) : (
           <EmptyState
             className="mt-5"
-            title="No public devotions yet."
-            description={
-              isOwner
-                ? "Your private journal remains private. Share a devotion publicly when you want it to appear here."
-                : "This person has not shared a public devotion yet."
+            title={
+              devotionCount === 0
+                ? "No public devotions yet."
+                : "No devotions on this page."
             }
-            actionHref={isOwner ? "/devotions/new" : undefined}
-            actionLabel={isOwner ? "Write devotion" : undefined}
+            description={
+              devotionCount === 0
+                ? isOwner
+                  ? "Your private journal remains private. Share a devotion publicly when you want it to appear here."
+                  : "This person has not shared a public devotion yet."
+                : "This profile may have changed since this page was opened."
+            }
+            actionHref={
+              devotionCount === 0
+                ? isOwner
+                  ? "/devotions/new"
+                  : undefined
+                : paginatedRequest
+                  ? `/profile/${profile.username}`
+                  : undefined
+            }
+            actionLabel={
+              devotionCount === 0
+                ? isOwner
+                  ? "Write devotion"
+                  : undefined
+                : paginatedRequest
+                  ? "Return to latest"
+                  : undefined
+            }
           />
         )}
 

@@ -44,7 +44,21 @@ export default async function SettingsPage() {
         />
       </section>
 
-      <section className="border-t border-border py-7">
+      <section
+        className="border-t border-border py-7"
+        aria-labelledby="privacy-settings-heading"
+      >
+        <div className="mb-6">
+          <h2
+            id="privacy-settings-heading"
+            className="text-base font-medium text-foreground"
+          >
+            Privacy
+          </h2>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+            Choose the default visibility for new devotions.
+          </p>
+        </div>
         <PrivacySettingsForm
           defaultVisibility={user.defaultDevotionVisibility}
         />

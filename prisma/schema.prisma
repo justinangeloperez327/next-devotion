@@ -95,7 +95,7 @@ model Comment {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   devotion Devotion @relation(fields: [devotionId], references: [id], onDelete: Cascade)
 
-  @@index([devotionId, createdAt])
+  @@index([devotionId, createdAt, id])
   @@index([userId, createdAt])
   @@map("comments")
 }

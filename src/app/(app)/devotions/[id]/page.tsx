@@ -111,6 +111,7 @@ export default async function DevotionPage({ params }: DevotionPageProps) {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <h1 className="sr-only">Devotion on {devotion.scriptureReference}</h1>
       <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <VisibilityIcon className="size-3.5" />

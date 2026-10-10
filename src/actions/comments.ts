@@ -13,6 +13,7 @@ import { consumeRateLimit } from "@/lib/security/rate-limit";
 function revalidateCommentViews(devotionId: string, username: string) {
   revalidatePath("/feed");
   revalidatePath("/saved");
+  revalidatePath("/my-devotions");
   revalidatePath(`/devotions/${devotionId}`);
   revalidatePath(`/profile/${username}`);
 }

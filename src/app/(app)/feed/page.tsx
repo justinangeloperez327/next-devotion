@@ -6,6 +6,7 @@ import { FeedListSkeleton } from "@/components/feed/feed-list-skeleton";
 import { FeedResults } from "@/components/feed/feed-results";
 import { FeedSidebar } from "@/components/feed/feed-sidebar";
 import { requireUser } from "@/lib/auth/session";
+import { firstSearchParam } from "@/lib/search-params";
 
 export const metadata: Metadata = {
   title: "Home Feed",
@@ -18,19 +19,11 @@ type FeedPageProps = {
   }>;
 };
 
-function firstParam(value: string | string[] | undefined) {
-  if (Array.isArray(value)) {
-    return value[0];
-  }
-
-  return value;
-}
-
 export default async function FeedPage({ searchParams }: FeedPageProps) {
   const user = await requireUser();
   const params = await searchParams;
-  const after = firstParam(params.after);
-  const before = after ? undefined : firstParam(params.before);
+  const after = firstSearchParam(params.after);
+  const before = after ? undefined : firstSearchParam(params.before);
   const paginationKey = after
     ? `after:${after}`
     : before

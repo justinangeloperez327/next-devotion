@@ -10,6 +10,7 @@ import { requireUser } from "@/lib/auth/session";
 import { formatRelativeDate } from "@/lib/date";
 import { decodeDateIdCursor, encodeDateIdCursor } from "@/lib/pagination";
 import { getPrisma } from "@/lib/prisma";
+import { firstSearchParam } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 
 const PAGE_SIZE = 20;
@@ -23,10 +24,6 @@ type ProfilePageProps = {
     before?: string | string[];
   }>;
 };
-
-function firstParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
 
 export async function generateMetadata({
   params,
@@ -45,8 +42,8 @@ export default async function ProfilePage({
   const viewer = await requireUser();
   const { username } = await params;
   const query = await searchParams;
-  const afterValue = firstParam(query.after);
-  const beforeValue = afterValue ? undefined : firstParam(query.before);
+  const afterValue = firstSearchParam(query.after);
+  const beforeValue = afterValue ? undefined : firstSearchParam(query.before);
   const afterCursor = decodeDateIdCursor(afterValue);
   const beforeCursor = afterCursor ? null : decodeDateIdCursor(beforeValue);
   const cursor = afterCursor ?? beforeCursor;

@@ -1,9 +1,9 @@
 "use client";
 
 import { Bookmark } from "lucide-react";
-import { useOptimistic } from "react";
+import { useOptimistic, useTransition } from "react";
 
-import { toggleSavedDevotionAction } from "@/actions/saved-devotions";
+import { setSavedDevotionAction } from "@/actions/saved-devotions";
 import { cn } from "@/lib/utils";
 
 type SaveDevotionButtonProps = {
@@ -17,21 +17,26 @@ export function SaveDevotionButton({
   initialSaved,
   disabled = false,
 }: SaveDevotionButtonProps) {
-  const [saved, setOptimisticSaved] = useOptimistic<boolean, null>(
+  const [pending, startTransition] = useTransition();
+  const [saved, setOptimisticSaved] = useOptimistic<boolean, boolean>(
     initialSaved,
-    (state) => !state,
+    (_state, nextSaved) => nextSaved,
   );
 
-  async function action() {
-    setOptimisticSaved(null);
-    await toggleSavedDevotionAction(devotionId);
+  function handleClick() {
+    const nextSaved = !saved;
+
+    startTransition(async () => {
+      setOptimisticSaved(nextSaved);
+      await setSavedDevotionAction(devotionId, nextSaved);
+    });
   }
 
   return (
-    <form action={action} className="contents">
       <button
-        type="submit"
-        disabled={disabled}
+        type="button"
+        onClick={handleClick}
+        disabled={disabled || pending}
         aria-pressed={saved}
         aria-label={saved ? "Remove from saved devotions" : "Save devotion"}
         className={cn(
@@ -50,6 +55,5 @@ export function SaveDevotionButton({
           {saved ? "Saved" : "Save"}
         </span>
       </button>
-    </form>
   );
 }

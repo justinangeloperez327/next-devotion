@@ -165,14 +165,35 @@ export function DevotionComposer({
     [scriptureReference, scriptureText, observation, application, prayer],
   );
 
-  function clearComposer() {
-    setScriptureReference("");
+  const hasChanges = useMemo(
+    () =>
+      scriptureReference !== initialValues.scriptureReference ||
+      scriptureText !== initialValues.scriptureText ||
+      observation !== initialValues.observation ||
+      application !== initialValues.application ||
+      prayer !== initialValues.prayer ||
+      visibility !== initialValues.visibility,
+    [
+      application,
+      initialValues,
+      observation,
+      prayer,
+      scriptureReference,
+      scriptureText,
+      visibility,
+    ],
+  );
+
+  function resetComposer() {
+    const resetValues = mode === "edit" ? initialValues : EMPTY_VALUES;
+
+    setScriptureReference(resetValues.scriptureReference);
     setScriptureInputKey((value) => value + 1);
-    setScriptureText("");
-    setObservation("");
-    setApplication("");
-    setPrayer("");
-    setVisibility(initialValues.visibility);
+    setScriptureText(resetValues.scriptureText);
+    setObservation(resetValues.observation);
+    setApplication(resetValues.application);
+    setPrayer(resetValues.prayer);
+    setVisibility(resetValues.visibility);
   }
 
   return (
@@ -267,6 +288,9 @@ export function DevotionComposer({
               <div className="flex justify-end">
                 <Counter value={observation} max={MAX_SECTION} />
               </div>
+              <Label htmlFor="observation" className="sr-only">
+                Observation
+              </Label>
               <Textarea
                 id="observation"
                 name="observation"
@@ -296,6 +320,9 @@ export function DevotionComposer({
               <div className="flex justify-end">
                 <Counter value={application} max={MAX_SECTION} />
               </div>
+              <Label htmlFor="application" className="sr-only">
+                Application
+              </Label>
               <Textarea
                 id="application"
                 name="application"
@@ -325,6 +352,9 @@ export function DevotionComposer({
               <div className="flex justify-end">
                 <Counter value={prayer} max={MAX_SECTION} />
               </div>
+              <Label htmlFor="prayer" className="sr-only">
+                Prayer
+              </Label>
               <Textarea
                 id="prayer"
                 name="prayer"
@@ -389,7 +419,7 @@ export function DevotionComposer({
                 aria-pressed={visibility === "PRIVATE"}
                 onClick={() => setVisibility("PRIVATE")}
                 className={cn(
-                  "rounded-md border p-4 text-left transition-colors",
+                  "min-h-24 rounded-md border p-4 text-left transition-colors",
                   visibility === "PRIVATE"
                     ? "border-primary/70 bg-primary/5"
                     : "border-border bg-background hover:bg-accent",
@@ -421,12 +451,12 @@ export function DevotionComposer({
           <Button
             type="button"
             variant="ghost"
-            onClick={clearComposer}
-            disabled={!hasContent || pending}
+            onClick={resetComposer}
+            disabled={(mode === "edit" ? !hasChanges : !hasContent) || pending}
             className="w-full gap-2 sm:w-auto"
           >
             <RotateCcw className="size-4" />
-            Clear
+            {mode === "edit" ? "Reset changes" : "Clear"}
           </Button>
 
           <div className="flex flex-col items-stretch gap-2 sm:items-end">

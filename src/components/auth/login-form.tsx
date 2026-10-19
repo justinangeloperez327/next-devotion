@@ -20,6 +20,7 @@ export function LoginForm() {
     <>
       <form
         action={formAction}
+        aria-busy={pending}
         className="grid gap-5"
         aria-describedby={state.message ? "login-status" : undefined}
       >
@@ -28,6 +29,7 @@ export function LoginForm() {
           <Input
             id="email"
             name="email"
+            defaultValue={state.values?.email ?? ""}
             type="email"
             autoComplete="email"
             placeholder="you@example.com"
@@ -72,7 +74,7 @@ export function LoginForm() {
             <p
               id="login-status"
               role="alert"
-              className="mt-3 text-center text-xs leading-5 text-destructive"
+              className="mt-3 rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm leading-6 text-destructive"
             >
               {state.message}
             </p>
@@ -94,3 +96,4 @@ export function LoginForm() {
     </>
   );
 }
+

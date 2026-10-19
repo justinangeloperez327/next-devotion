@@ -37,12 +37,14 @@
   --radius-sm: 0.375rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
-  --radius-xl: 0.625rem;
+  --radius-xl: 0.5rem;
   --font-sans: var(--font-geist-sans);
   --font-serif: var(--font-source-serif);
 }
 
 :root {
+  --font-geist-sans: "Segoe UI", Arial, sans-serif;
+  --font-source-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia;
   color-scheme: dark;
   --radius: 0.5rem;
 
@@ -67,7 +69,7 @@
   --accent: #292b29;
   --accent-foreground: #f1f0ea;
 
-  --destructive: #c86b68;
+  --destructive: #f09a96;
   --destructive-foreground: #171817;
 
   --border: #343734;
@@ -84,7 +86,7 @@
   --sidebar-ring: #c9b98a;
 
   --devotion-gold: #c9b98a;
-  --devotion-sage: #87927b;
+  --devotion-sage: #a4b398;
 }
 
 .dark {
@@ -140,3 +142,4 @@ input[type="password"]::-ms-clear {
     font-family: var(--font-source-serif), serif;
   }
 }
+

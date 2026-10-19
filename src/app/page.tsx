@@ -32,46 +32,28 @@ export default function Home() {
 
       <main id="main-content" tabIndex={-1}>
         <section className="border-b border-border">
-          <Container className="flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center py-20 text-center sm:py-28">
-            <p className="mb-6 text-xs font-medium tracking-[0.24em] text-primary uppercase">
-              Daily Scripture · Reflection · Community
-            </p>
-
-            <h1 className="max-w-4xl text-balance text-4xl font-medium tracking-[-0.035em] text-foreground sm:text-6xl lg:text-7xl">
-              Make time for what matters.
-            </h1>
-
-            <p className="mt-6 max-w-2xl text-balance text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-              Read Scripture, reflect on what it means, apply it to your life,
-              and share your daily devotion with a community growing in faith.
-            </p>
-
-            <div className="mt-9 flex w-full max-w-xs flex-col items-stretch gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:items-center">
-              <Link
-                href="/register"
-                className={cn(buttonVariants({ size: "lg" }), "w-full sm:min-w-44 sm:w-auto")}
-              >
-                Start your devotion
-              </Link>
-              <Link
-                href="/login"
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "lg" }),
-                  "w-full sm:min-w-32 sm:w-auto",
-                )}
-              >
-                Log in
-              </Link>
+          <Container className="grid gap-12 py-14 sm:py-20 lg:min-h-[42rem] lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
+            <div>
+              <p className="text-sm font-medium text-primary">Your daily Scripture journal</p>
+              <h1 className="mt-5 max-w-xl text-balance text-4xl font-medium leading-[1.12] tracking-tight sm:text-6xl">Make time for what matters.</h1>
+              <p className="mt-6 max-w-lg text-base leading-8 text-muted-foreground">Read Scripture. Notice what God is teaching you. Keep a personal record of your reflections, and share encouragement with your community.</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/register" className={cn(buttonVariants({ size: "lg" }), "min-h-11")}>Start your devotion</Link>
+                <Link href="/login" className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "min-h-11")}>Log in</Link>
+              </div>
+              <p className="mt-5 text-sm text-muted-foreground">Keep your devotions private or share them with others.</p>
             </div>
-
-            <div className="mt-20 w-full max-w-2xl border-t border-border pt-9 sm:mt-24">
-              <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">
-                Psalm 46:10
-              </p>
-              <blockquote className="scripture mt-4 text-balance text-2xl leading-relaxed text-foreground sm:text-3xl">
-                “Be still, and know that I am God.”
-              </blockquote>
-            </div>
+            <article aria-label="Example devotion" className="relative rounded-lg border border-border bg-card p-6 sm:p-9">
+              <div aria-hidden="true" className="absolute -top-px left-8 h-8 w-4 bg-primary" />
+              <div className="flex items-center justify-between gap-4 border-b border-border pb-5 pt-6 text-xs text-muted-foreground"><span>A moment in the Word</span><span>Example devotion</span></div>
+              <p className="mt-7 text-sm font-medium text-primary">Psalm 46:10</p>
+              <blockquote className="scripture mt-4 text-3xl leading-relaxed">“Be still, and know that I am God.”</blockquote>
+              <div className="mt-7 space-y-5 border-l border-primary/50 pl-5 text-sm leading-6">
+                <div><h2 className="font-medium">Observation</h2><p className="mt-1 text-muted-foreground">Stillness makes space to remember who God is.</p></div>
+                <div><h2 className="font-medium">Application</h2><p className="mt-1 text-muted-foreground">Pause before opening my notifications today.</p></div>
+                <div><h2 className="font-medium">Prayer</h2><p className="mt-1 text-muted-foreground">Lord, help me give You my attention.</p></div>
+              </div>
+            </article>
           </Container>
         </section>
 
@@ -169,3 +151,4 @@ export default function Home() {
     </div>
   );
 }
+

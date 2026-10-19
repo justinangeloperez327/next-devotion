@@ -20,6 +20,7 @@ export function RegisterForm() {
     <>
       <form
         action={formAction}
+        aria-busy={pending}
         className="grid gap-5"
         aria-describedby={state.message ? "register-status" : undefined}
       >
@@ -28,6 +29,7 @@ export function RegisterForm() {
           <Input
             id="name"
             name="name"
+            defaultValue={state.values?.name ?? ""}
             autoComplete="name"
             placeholder="Your name"
             aria-invalid={Boolean(state.errors?.name)}
@@ -48,6 +50,7 @@ export function RegisterForm() {
           <Input
             id="username"
             name="username"
+            defaultValue={state.values?.username ?? ""}
             autoComplete="username"
             autoCapitalize="none"
             spellCheck={false}
@@ -79,6 +82,7 @@ export function RegisterForm() {
           <Input
             id="email"
             name="email"
+            defaultValue={state.values?.email ?? ""}
             type="email"
             autoComplete="email"
             placeholder="you@example.com"
@@ -175,7 +179,7 @@ export function RegisterForm() {
             <p
               id="register-status"
               role="alert"
-              className="mt-3 text-center text-xs leading-5 text-destructive"
+              className="mt-3 rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm leading-6 text-destructive"
             >
               {state.message}
             </p>
@@ -197,3 +201,4 @@ export function RegisterForm() {
     </>
   );
 }
+

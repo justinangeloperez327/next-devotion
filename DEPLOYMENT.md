@@ -2,36 +2,17 @@
 
 Next Devotion is configured for manual Vercel releases. Automatic Git-triggered Vercel deployments are disabled in `vercel.json`.
 
-## 1. Finish the two repository artifacts
+## 1. Install and generate the client
 
-Use Node.js 24 locally.
-
-```bash
-node --version
-npm install
-```
-
-`npm install` must create `package-lock.json`. Commit the lockfile.
-
-Configure a PostgreSQL connection in `.env`:
-
-```env
-DATABASE_URL="postgresql://..."
-```
-
-Prisma Postgres on Vercel provides `DATABASE_URL` automatically when the database is connected to the project.
-
-Generate Prisma Client and create the initial migration against a development database:
+Use Node.js 24 (Node.js 26 is also supported):
 
 ```bash
+npm ci
 npm run db:generate
 npm run db:validate
-npm run db:migrate -- --name init
 ```
 
-Commit the generated `prisma/migrations/**/migration.sql` files.
-
-Do not create the initial development migration directly against the production database.
+Set `DATABASE_URL` to a PostgreSQL connection in your environment. The repository now includes the initial migration; do not generate a new initial migration.
 
 ## 2. Run repository preflight
 
@@ -75,12 +56,14 @@ Test-only variables such as `E2E_EMAIL`, `E2E_PASSWORD`, and `PLAYWRIGHT_BASE_UR
 
 ## 5. Apply production migrations
 
-Before the first production release, apply the committed migrations against the production database from a trusted local/administrative environment:
+For a new, empty PostgreSQL database, apply the committed migrations from a trusted administrative environment:
 
 ```bash
 npm run db:deploy
 npm run db:status
 ```
+
+For an existing database with tables or user data, back it up and compare its schema first. Do not reset it or blindly run the initial migration. If its schema exactly matches `20261019000000_initial_schema`, baseline that migration with `prisma migrate resolve --applied 20261019000000_initial_schema --config ./prisma7.config.ts`. If it differs, reconcile those differences before baselining. The initial migration includes `users`, `sessions`, and `rate_limit_buckets`; all three are required for authentication.
 
 Use the production `DATABASE_URL` for this operation. `db:status` should report that the database schema is up to date.
 
@@ -131,3 +114,14 @@ Also inspect Vercel runtime logs for database, Prisma, CSP, or Server Action err
 - [ ] `npm run check` passes
 - [ ] `npm run build` passes
 - [ ] production dependency audit reviewed
+
+
+## Authentication troubleshooting
+
+Both registration and login use PostgreSQL-backed rate limits before looking up an account. A missing `rate_limit_buckets` table can therefore break both flows even if `users` already exists. Check `/api/health` and the Vercel runtime logs. Authentication errors log only the operation and an error code, never credentials or connection strings. `P2021` commonly indicates a missing table; `P2022` a missing column; connection errors require checking `DATABASE_URL` and database availability. The health endpoint checks connectivity, not complete schema compatibility.
+
+Form messages distinguish incorrect credentials, duplicate accounts, request limits, and service failures. If account creation succeeds but automatic sign-in fails, the form tells the user to log in rather than register again. Successful redirects stay outside exception handlers.
+
+`ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_NAME` are not consumed by this repository. Adding those variables alone does not create an account. Use registration for an ordinary account; this change does not add administrator roles.
+
+Browser CI provisions an isolated PostgreSQL service, applies the committed migrations, and tests registration → session persistence → logout → invalid password → login on desktop and mobile. To run that test against your own disposable test database, set `E2E_AUTH_ENABLED=true`. Do not point it at production.

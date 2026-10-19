@@ -31,7 +31,7 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: npm install --no-fund
+        run: npm ci --no-fund
 
       - name: Generate Prisma Client
         run: npm run db:generate
@@ -52,10 +52,25 @@ jobs:
         run: npm run security:audit
 
   public-e2e:
-    name: Public browser tests
+    name: Browser and authentication tests
     needs: quality
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: next_devotion
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
+      E2E_AUTH_ENABLED: "true"
       DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/next_devotion?schema=public
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
@@ -68,10 +83,17 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run public browser tests
-        run: npm run test:e2e -- tests/e2e/public.spec.ts
+      - name: Generate Prisma Client
+        run: npm run db:generate
+
+      - name: Apply test database migrations
+        run: npm run db:deploy
+
+      - name: Run public and authentication browser tests
+        run: npm run test:e2e -- tests/e2e/public.spec.ts tests/e2e/auth-lifecycle.spec.ts
+

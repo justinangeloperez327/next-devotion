@@ -30,10 +30,10 @@ if (nodeMajor >= 24) {
 
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 
-if (packageJson.engines?.node === "24.x") {
-  pass("package.json requires Node.js 24.x");
+if (packageJson.engines?.node === "24.x || 26.x") {
+  pass("package.json supports Node.js 24.x and 26.x");
 } else {
-  fail("package.json must keep engines.node set to 24.x");
+  fail("package.json must keep engines.node set to 24.x || 26.x");
 }
 
 if (
@@ -102,3 +102,4 @@ if (errors.length > 0) {
 console.log(
   `Deployment preflight passed${warnings.length ? ` with ${warnings.length} warning(s)` : ""}.`,
 );
+

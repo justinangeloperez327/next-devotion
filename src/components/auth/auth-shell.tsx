@@ -1,7 +1,6 @@
 import Link from "next/link";
+import { ArrowLeft, BookOpen } from "lucide-react";
 import type { ReactNode } from "react";
-
-import { Container } from "@/components/layout/container";
 
 type AuthShellProps = {
   eyebrow: string;
@@ -10,74 +9,38 @@ type AuthShellProps = {
   children: ReactNode;
 };
 
-export function AuthShell({
-  eyebrow,
-  title,
-  description,
-  children,
-}: AuthShellProps) {
+export function AuthShell({ eyebrow, title, description, children }: AuthShellProps) {
   return (
     <main id="main-content" tabIndex={-1} className="min-h-svh bg-background">
-      <div className="grid min-h-svh lg:grid-cols-[0.95fr_1.05fr]">
-        <section className="relative hidden border-r border-border bg-sidebar lg:flex">
-          <div className="flex w-full flex-col justify-between px-10 py-10 xl:px-16 xl:py-12">
-            <Link
-              href="/"
-              className="w-fit text-sm font-semibold tracking-[0.18em] text-foreground uppercase"
-            >
-              Next Devotion
-            </Link>
-
-            <div className="max-w-xl">
-              <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">
-                Psalm 119:105
-              </p>
-              <blockquote className="scripture mt-5 text-4xl leading-[1.35] tracking-[-0.02em] text-foreground xl:text-5xl">
-                “Thy word is a lamp unto my feet, and a light unto my path.”
-              </blockquote>
-              <p className="mt-8 max-w-md text-sm leading-6 text-muted-foreground">
-                A quiet place to read Scripture, reflect honestly, apply what
-                you learn, and pray through your day.
-              </p>
+      <div className="grid min-h-svh lg:grid-cols-[1fr_1fr]">
+        <aside className="hidden flex-col justify-between border-r border-border bg-sidebar p-12 lg:flex xl:p-16">
+          <Link href="/" className="flex w-fit items-center gap-3 text-sm font-semibold">
+            <BookOpen className="size-5 text-primary" aria-hidden="true" /> Next Devotion
+          </Link>
+          <div className="my-16 max-w-lg">
+            <p className="mb-8 text-sm text-primary">A little stillness. A daily rhythm.</p>
+            <blockquote className="scripture text-4xl leading-[1.4] tracking-tight xl:text-5xl">
+              “Thy word is a lamp unto my feet, and a light unto my path.”
+            </blockquote>
+            <p className="mt-6 text-sm text-muted-foreground">Psalm 119:105 · KJV</p>
+            <div className="mt-12 border-t border-border pt-6">
+              <p className="text-sm leading-7 text-muted-foreground">Bring your attention back to Scripture. Keep the reflections you want to remember, and grow alongside others.</p>
             </div>
-
-            <p className="text-xs text-muted-foreground">
-              Read. Reflect. Apply. Pray.
-            </p>
           </div>
-        </section>
-
-        <section className="flex min-h-svh items-center">
-          <Container className="max-w-xl py-6 sm:px-8 sm:py-10 lg:px-12 xl:px-16">
-            <div className="mb-10 flex items-center justify-between gap-4 sm:mb-14 lg:hidden">
-              <Link
-                href="/"
-                className="truncate text-[13px] font-semibold tracking-[0.16em] text-foreground uppercase sm:text-sm sm:tracking-[0.18em]"
-              >
-                Next Devotion
-              </Link>
-              <Link
-                href="/"
-                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Back home
-              </Link>
-            </div>
-
-            <div className="w-full max-w-md">
-              <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">
-                {eyebrow}
-              </p>
-              <h1 className="mt-4 text-3xl font-medium tracking-[-0.035em] text-foreground sm:text-5xl">
-                {title}
-              </h1>
-              <p className="mt-4 text-sm leading-6 text-muted-foreground sm:text-base">
-                {description}
-              </p>
-
-              <div className="mt-9">{children}</div>
-            </div>
-          </Container>
+          <p className="text-xs text-muted-foreground">Scripture / Observation / Application / Prayer</p>
+        </aside>
+        <section className="flex flex-col px-6 py-6 sm:px-10 lg:px-14">
+          <Link href="/" className="flex min-h-11 w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="size-4" aria-hidden="true" /> Back home
+          </Link>
+          <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-10 sm:py-12">
+            <p className="mb-8 flex items-center gap-2 text-sm font-semibold lg:hidden"><BookOpen className="size-5 text-primary" aria-hidden="true" />Next Devotion</p>
+            <p className="text-sm font-medium text-primary">{eyebrow}</p>
+            <h1 className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">{title}</h1>
+            <p className="mt-4 text-sm leading-6 text-muted-foreground">{description}</p>
+            <div className="mt-8">{children}</div>
+          </div>
+          <p className="mx-auto pb-2 text-xs text-muted-foreground">Make room for time with God.</p>
         </section>
       </div>
     </main>

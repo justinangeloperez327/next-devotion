@@ -39,6 +39,9 @@ jobs:
       - name: Validate Prisma schema
         run: npm run db:validate
 
+      - name: Check release configuration
+        run: npm run deployment:check
+
       - name: Lint
         run: npm run lint
 

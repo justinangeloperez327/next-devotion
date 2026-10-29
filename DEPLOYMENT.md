@@ -34,7 +34,7 @@ Recommended project settings:
 - Framework Preset: Next.js
 - Root Directory: repository root
 - Node.js: 24.x
-- Build Command: use the repository `npm run build`
+- Build Command: use the committed `vercel.json` command: `npm run db:deploy && npm run build`
 - Install Command: use npm (after the lockfile is committed, Vercel can use the lockfile automatically)
 - Output Directory: leave unset
 
@@ -67,7 +67,7 @@ For an existing database with tables or user data, back it up and compare its sc
 
 Use the production `DATABASE_URL` for this operation. `db:status` should report that the database schema is up to date.
 
-Database migrations are deliberately not executed by the Vercel application build.
+Vercel now runs `npm run db:deploy` before `npm run build` through `vercel.json`. Manual deployment remains required. A failed migration stops the build; no reset or automatic baseline is attempted. Standalone `npm run build` remains database-independent for quality checks.
 
 ## 6. Deploy manually
 
@@ -77,11 +77,13 @@ Use the Vercel dashboard's Deploy action or the Vercel CLI:
 vercel --prod
 ```
 
-The application build runs:
+The Vercel build runs:
 
 ```bash
-prisma generate --config ./prisma7.config.ts && next build
+npm run db:deploy && npm run build
 ```
+
+The second command generates Prisma Client and builds Next.js. Check the build log for successful migration application. If Prisma reports an existing non-empty schema or a failed migration, inspect and reconcile it using the existing-database instructions above; do not reset it.
 
 ## 7. Production smoke check
 

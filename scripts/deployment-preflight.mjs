@@ -73,6 +73,12 @@ if (migrationFiles.length > 0) {
 if (existsSync("vercel.json")) {
   const vercel = JSON.parse(readFileSync("vercel.json", "utf8"));
 
+  if (vercel.buildCommand === "npm run db:deploy && npm run build") {
+    pass("Vercel applies committed migrations before building");
+  } else {
+    fail("Vercel buildCommand must apply migrations before building");
+  }
+
   if (vercel.git?.deploymentEnabled === false) {
     pass("Automatic Vercel Git deployments are disabled");
   } else {

@@ -27,7 +27,7 @@ test("register, persist session, log out, reject wrong password, and log in agai
   await page.getByLabel("Email", { exact: true }).fill(email);
   await page.getByLabel("Password", { exact: true }).fill("Wrong-password-123");
   await page.getByRole("button", { name: "Log in", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("incorrect");
+  await expect(page.locator("#login-status")).toContainText("incorrect");
   await expect(page.getByLabel("Email", { exact: true })).toHaveValue(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Log in", exact: true }).click();

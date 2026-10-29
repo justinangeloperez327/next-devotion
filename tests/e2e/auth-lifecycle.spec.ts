@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { randomUUID } from "node:crypto";
 
 test.setTimeout(90_000);
@@ -60,7 +60,7 @@ test("register, persist session, log out, reject wrong password, and log in agai
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
-    await page.screenshot({ path: testInfo.outputPath(`devotion-${theme}.png`), fullPage: true });
+    await page.screenshot({ path: testInfo.outputPath(`devotion-${theme}.png`), fullPage: true, caret: "initial" });
   }
   await page.goto("/feed");
   const card = page.locator("article").filter({ has: page.getByRole("link", { name: "Psalm 46:10", exact: true }) }).first();

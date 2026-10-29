@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const publicPages = ["/", "/login", "/register", "/about", "/contact"];
 
@@ -14,9 +14,9 @@ for (const theme of ["light", "dark"] as const) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
     await page.goto("/");
-    await page.screenshot({ path: testInfo.outputPath(`home-${theme}.png`), fullPage: true });
+    await page.screenshot({ path: testInfo.outputPath(`home-${theme}.png`), fullPage: true, caret: "initial" });
     await page.goto("/register");
-    await page.screenshot({ path: testInfo.outputPath(`register-${theme}.png`), fullPage: true });
+    await page.screenshot({ path: testInfo.outputPath(`register-${theme}.png`), fullPage: true, caret: "initial" });
     await page.reload();
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
   });

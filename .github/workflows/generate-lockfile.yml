@@ -16,8 +16,6 @@ jobs:
           node-version: 24
       - name: Generate npm lockfile
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - name: Refresh vulnerable compatible URI dependency
-        run: npm update fast-uri --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Commit lockfile
         run: |
           git add package-lock.json

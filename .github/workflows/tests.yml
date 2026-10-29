@@ -36,6 +36,9 @@ jobs:
       - name: Generate Prisma Client
         run: npm run db:generate
 
+      - name: Validate Prisma schema
+        run: npm run db:validate
+
       - name: Lint
         run: npm run lint
 
@@ -94,6 +97,17 @@ jobs:
       - name: Apply test database migrations
         run: npm run db:deploy
 
+      - name: Check applied migration status
+        run: npm run db:status
+
       - name: Run public and authentication browser tests
         run: npm run test:e2e -- tests/e2e/public.spec.ts tests/e2e/auth-lifecycle.spec.ts
 
+      - name: Upload browser failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: browser-test-diagnostics
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7

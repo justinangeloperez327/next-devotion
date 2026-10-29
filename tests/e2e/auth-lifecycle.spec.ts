@@ -33,3 +33,29 @@ test("register, persist session, log out, reject wrong password, and log in agai
   await page.getByRole("button", { name: "Log in", exact: true }).click();
   await expect(page).toHaveURL(/\/feed$/);
 });
+
+test("registration works without JavaScript and submits a valid origin", async ({ browser, baseURL }, testInfo) => {
+  test.skip(process.env.E2E_AUTH_ENABLED !== "true", "Requires an isolated migrated test database.");
+  test.skip(testInfo.project.name !== "chromium", "One progressive-enhancement regression is sufficient.");
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
+  try {
+    const page = await context.newPage();
+    const username = `test${randomUUID().replaceAll("-", "").slice(0, 20)}`;
+    await page.goto("/register");
+    await page.getByLabel("Name", { exact: true }).fill("No Script Reader");
+    await page.getByLabel("Username", { exact: true }).fill(username);
+    await page.getByLabel("Email", { exact: true }).fill(`${username}@example.com`);
+    await page.getByLabel("Password", { exact: true }).fill("Test-password-123");
+    await page.getByLabel("Confirm password", { exact: true }).fill("Test-password-123");
+    const origin = new URL(page.url()).origin;
+    const requestPromise = page.waitForRequest((request) =>
+      request.method() === "POST" && new URL(request.url()).pathname === "/register",
+    );
+    await page.getByRole("button", { name: "Create account", exact: true }).click();
+    const request = await requestPromise;
+    expect(await request.headerValue("origin")).toBe(origin);
+    await expect(page).toHaveURL(/\/feed$/);
+  } finally {
+    await context.close();
+  }
+});

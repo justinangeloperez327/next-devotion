@@ -87,7 +87,7 @@ export function LoginForm() {
           New to Next Devotion?{" "}
           <Link
             href="/register"
-            className="font-medium text-primary transition-colors hover:text-primary/80"
+            className="font-medium text-primary transition-colors hover:underline"
           >
             Create an account
           </Link>

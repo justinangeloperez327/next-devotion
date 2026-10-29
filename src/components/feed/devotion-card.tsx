@@ -100,7 +100,7 @@ export function DevotionCard({
         <div className="border-l-2 border-primary/70 pl-4">
           <Link
             href={`/devotions/${id}`}
-            className="text-xs font-medium text-primary transition-colors hover:text-primary/80"
+            className="text-xs font-medium text-primary transition-colors hover:underline"
           >
             {scriptureReference}
           </Link>

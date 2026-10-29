@@ -28,7 +28,7 @@ export function AppErrorState({
           <AlertTriangle className="size-5" />
         </div>
 
-        <p className="mt-6 text-xs font-medium tracking-[0.18em] text-primary uppercase">
+        <p className="mt-6 text-xs font-medium text-primary">
           Unable to continue
         </p>
         <h1 className="mt-3 text-2xl font-medium tracking-[-0.02em] text-foreground sm:text-3xl">

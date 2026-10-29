@@ -39,9 +39,9 @@ export default function AboutPage() {
 
       <main id="main-content" tabIndex={-1}>
         <section className="border-b border-border">
-          <Container className="grid gap-12 py-20 sm:py-28 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <Container className="grid gap-12 py-14 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
             <div>
-              <p className="text-xs font-medium tracking-[0.22em] text-primary uppercase">
+              <p className="text-xs font-medium text-primary">
                 About Next Devotion
               </p>
               <h1 className="mt-5 max-w-xl text-balance text-4xl font-medium tracking-[-0.035em] text-foreground sm:text-6xl">
@@ -61,9 +61,9 @@ export default function AboutPage() {
         </section>
 
         <section>
-          <Container className="grid gap-14 py-20 sm:py-24 lg:grid-cols-[0.7fr_1.3fr]">
+          <Container className="grid gap-14 py-14 sm:py-20 lg:grid-cols-[0.7fr_1.3fr]">
             <div>
-              <p className="text-xs font-medium tracking-[0.2em] text-devotion-sage uppercase">
+              <p className="text-xs font-medium text-devotion-sage">
                 The practice
               </p>
               <h2 className="mt-4 text-3xl font-medium tracking-[-0.025em] text-foreground">
@@ -80,7 +80,7 @@ export default function AboutPage() {
                     index > 0 && "border-t border-border",
                   )}
                 >
-                  <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+                  <p className="text-xs font-medium text-primary">
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <div>
@@ -100,7 +100,7 @@ export default function AboutPage() {
         <section className="border-y border-border bg-sidebar">
           <Container className="grid gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">
+              <p className="text-xs font-medium text-primary">
                 Why community matters
               </p>
               <h2 className="mt-4 max-w-xl text-3xl font-medium tracking-[-0.025em] text-foreground sm:text-4xl">

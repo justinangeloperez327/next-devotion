@@ -131,8 +131,8 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
             ? "The feed may have changed since this page was opened."
             : "Your community feed will begin filling as people share their daily Scripture reflections."
         }
-        actionHref={paginatedRequest ? "/feed" : undefined}
-        actionLabel={paginatedRequest ? "Return to latest" : undefined}
+        actionHref={paginatedRequest ? "/feed" : "/devotions/new"}
+        actionLabel={paginatedRequest ? "Return to latest" : "Write your first devotion"}
       />
     );
   }
@@ -160,7 +160,7 @@ export async function FeedResults({ after, before }: FeedResultsProps) {
   return (
     <>
       <div className="flex items-center justify-between pt-2">
-        <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground uppercase">
+        <p className="text-xs font-medium text-muted-foreground">
           Recent devotions
         </p>
         <p className="text-xs text-muted-foreground">

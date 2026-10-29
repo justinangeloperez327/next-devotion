@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useOptimistic, useTransition } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 
 import { setAmenAction } from "@/actions/amens";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,7 @@ export function AmenButton({
   initialAmenCount,
   disabled = false,
 }: AmenButtonProps) {
+  const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
   const [optimistic, setOptimistic] = useOptimistic<AmenState, boolean>(
     {
@@ -43,17 +44,21 @@ export function AmenButton({
   function handleClick() {
     const nextHasAmen = !optimistic.hasAmen;
 
+    setError("");
     startTransition(async () => {
       setOptimistic(nextHasAmen);
-      const success = await setAmenAction(devotionId, nextHasAmen);
+      let success = false;
+      try { success = await setAmenAction(devotionId, nextHasAmen); } catch { /* Restore the prior state and offer a retry. */ }
 
       if (!success) {
+        setError("Amen could not be updated. Try again.");
         setOptimistic(!nextHasAmen);
       }
     });
   }
 
   return (
+    <div className="min-w-0">
       <button
         type="button"
         onClick={handleClick}
@@ -89,5 +94,7 @@ export function AmenButton({
           {optimistic.count}
         </span>
       </button>
+      {error ? <p role="alert" className="px-2 pb-2 text-xs text-destructive">{error}</p> : null}
+    </div>
   );
 }

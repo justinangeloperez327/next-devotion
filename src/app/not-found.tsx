@@ -13,7 +13,7 @@ export default function NotFound() {
       <main id="main-content" tabIndex={-1}>
         <Container className="flex min-h-[calc(100svh-4rem)] items-center py-16 sm:py-24">
           <section className="w-full max-w-2xl border-y border-border py-10">
-            <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">
+            <p className="text-xs font-medium text-primary">
               404
             </p>
             <h1 className="mt-4 text-3xl font-medium tracking-[-0.03em] text-foreground sm:text-5xl">

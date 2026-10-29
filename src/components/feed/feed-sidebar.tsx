@@ -8,11 +8,11 @@ export function FeedSidebar() {
   return (
     <aside className="space-y-4">
       <section className="rounded-lg border border-border bg-sidebar p-5">
-        <div className="flex items-center gap-2 text-xs font-medium tracking-[0.16em] text-primary uppercase">
+        <div className="flex items-center gap-2 text-xs font-medium text-primary">
           <BookOpenText className="size-4" />
           Featured Scripture
         </div>
-        <p className="mt-4 text-xs font-medium tracking-[0.15em] text-muted-foreground uppercase">
+        <p className="mt-4 text-xs font-medium text-muted-foreground">
           Psalm 46:10
         </p>
         <blockquote className="scripture mt-3 text-xl leading-8 text-foreground">
@@ -25,7 +25,7 @@ export function FeedSidebar() {
       </section>
 
       <section className="rounded-lg border border-border bg-card p-5">
-        <div className="flex items-center gap-2 text-xs font-medium tracking-[0.16em] text-devotion-sage uppercase">
+        <div className="flex items-center gap-2 text-xs font-medium text-devotion-sage">
           <CalendarDays className="size-4" />
           Daily rhythm
         </div>

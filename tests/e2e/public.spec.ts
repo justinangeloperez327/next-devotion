@@ -60,7 +60,7 @@ test.describe("public experience", () => {
       page.getByRole("button", {
         name: "Send message",
       }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
   });
 
   test("register password fields are distinct and reveal independently", async ({

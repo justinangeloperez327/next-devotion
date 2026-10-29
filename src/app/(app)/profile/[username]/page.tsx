@@ -195,7 +195,7 @@ export default async function ProfilePage({
       <section className="pt-8" aria-labelledby="profile-devotions-heading">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground uppercase">
+            <p className="text-xs font-medium text-muted-foreground">
               Public journal
             </p>
             <h2

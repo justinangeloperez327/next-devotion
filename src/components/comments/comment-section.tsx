@@ -110,7 +110,7 @@ export function CommentSection({
                       </time>
                     </div>
 
-                    <p className="mt-2 whitespace-pre-line break-words text-sm leading-6 text-foreground/90">
+                    <p className="mt-2 whitespace-pre-line reading-content text-base leading-7 text-foreground/90">
                       {comment.body}
                     </p>
                   </div>
@@ -118,7 +118,7 @@ export function CommentSection({
                   {canDelete ? (
                     <details className="relative shrink-0">
                       <summary
-                        className="flex size-10 cursor-pointer list-none items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-destructive sm:size-8 [&::-webkit-details-marker]:hidden"
+                        className="flex size-11 cursor-pointer list-none items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-destructive [&::-webkit-details-marker]:hidden"
                         aria-label="Delete comment"
                       >
                         <Trash2 className="size-3.5" />

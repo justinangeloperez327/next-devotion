@@ -63,7 +63,7 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
       <div className="grid gap-2">
         <div className="flex items-center justify-between gap-3">
           <Label htmlFor="profile-bio">Bio</Label>
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             Up to 280 characters
           </span>
         </div>

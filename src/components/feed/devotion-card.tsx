@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { MessageCircle, MoreHorizontal } from "lucide-react";
+import { MessageCircle, ArrowUpRight } from "lucide-react";
 
+import { devotionPreview } from "@/lib/devotion/preview";
 import { AmenButton } from "@/components/feed/amen-button";
 import { SaveDevotionButton } from "@/components/feed/save-devotion-button";
 import { UserAvatar } from "@/components/user/user-avatar";
 
 type DevotionCardProps = {
   id: string;
+  preview?: boolean;
   author: {
     name: string;
     username: string;
@@ -35,10 +37,10 @@ function DevotionSection({
 }) {
   return (
     <section>
-      <h3 className="text-[11px] font-medium tracking-[0.16em] text-muted-foreground uppercase">
+      <h3 className="text-xs font-medium text-muted-foreground">
         {label}
       </h3>
-      <p className="mt-2 whitespace-pre-line text-sm leading-7 text-foreground/90 sm:text-[15px]">
+      <p className="mt-2 reading-content whitespace-pre-line text-base leading-7 text-foreground">
         {children}
       </p>
     </section>
@@ -47,6 +49,7 @@ function DevotionSection({
 
 export function DevotionCard({
   id,
+  preview = true,
   author,
   time,
   scriptureReference,
@@ -90,35 +93,34 @@ export function DevotionCard({
           </p>
         </div>
 
-        <Link
-          href={`/devotions/${id}`}
-          aria-label="View devotion"
-          className="flex size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:size-8"
-        >
-          <MoreHorizontal className="size-4" />
-        </Link>
+
       </header>
 
       <div className="px-4 pb-5 pt-5 sm:px-5">
         <div className="border-l-2 border-primary/70 pl-4">
           <Link
             href={`/devotions/${id}`}
-            className="text-xs font-medium tracking-[0.16em] text-primary uppercase transition-colors hover:text-primary/80"
+            className="text-xs font-medium text-primary transition-colors hover:text-primary/80"
           >
             {scriptureReference}
           </Link>
           {scriptureText ? (
-            <blockquote className="scripture mt-3 text-xl leading-8 text-foreground sm:text-[22px]">
-              “{scriptureText}”
+            <blockquote className="reading-content scripture mt-3 text-xl leading-8 text-foreground sm:text-[22px]">
+              “{preview ? devotionPreview(scriptureText, 300) : scriptureText}”
             </blockquote>
           ) : null}
         </div>
 
-        <div className="mt-7 space-y-7">
-          <DevotionSection label="Observation">{observation}</DevotionSection>
-          <DevotionSection label="Application">{application}</DevotionSection>
-          <DevotionSection label="Prayer">{prayer}</DevotionSection>
+        <div className="mt-6 space-y-5">
+          <DevotionSection label="Observation">{preview ? devotionPreview(observation, 240) : observation}</DevotionSection>
+          <DevotionSection label="Application">{preview ? devotionPreview(application, 180) : application}</DevotionSection>
+          <DevotionSection label="Prayer">{preview ? devotionPreview(prayer, 180) : prayer}</DevotionSection>
         </div>
+        {preview ? (
+          <Link href={`/devotions/${id}`} className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary hover:underline">
+            Read devotion <ArrowUpRight className="size-4" aria-hidden="true" />
+          </Link>
+        ) : null}
       </div>
 
       <footer className="grid grid-cols-3 border-t border-border">
@@ -134,7 +136,7 @@ export function DevotionCard({
           className="flex h-12 min-w-0 items-center justify-center gap-1.5 border-l border-border px-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:h-11 sm:gap-2"
         >
           <MessageCircle className="size-4" />
-          <span className="hidden sm:inline">Comments</span>
+          <span>Comments</span>
           <span>{commentCount}</span>
         </Link>
         <SaveDevotionButton

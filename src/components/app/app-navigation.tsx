@@ -25,7 +25,7 @@ const baseItems = [
   },
   {
     href: "/my-devotions",
-    label: "My Devotions",
+    label: "My devotions",
     icon: BookOpenText,
   },
   {
@@ -63,7 +63,7 @@ export function DesktopNavigation({ username }: AppNavigationProps) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex h-10 items-center gap-3 rounded-md px-3 text-sm transition-colors",
+              "flex h-11 items-center gap-3 rounded-md px-3 text-sm transition-colors",
               active
                 ? "bg-sidebar-accent text-foreground"
                 : "text-muted-foreground hover:bg-sidebar-accent/70 hover:text-foreground",
@@ -86,7 +86,7 @@ export function DesktopNavigation({ username }: AppNavigationProps) {
         href="/settings"
         aria-current={isActive(pathname, "/settings") ? "page" : undefined}
         className={cn(
-          "flex h-10 items-center gap-3 rounded-md px-3 text-sm transition-colors",
+          "flex h-11 items-center gap-3 rounded-md px-3 text-sm transition-colors",
           isActive(pathname, "/settings")
             ? "bg-sidebar-accent text-foreground"
             : "text-muted-foreground hover:bg-sidebar-accent/70 hover:text-foreground",
@@ -154,7 +154,7 @@ export function MobileNavigation({ username }: AppNavigationProps) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative flex min-h-16 min-w-0 flex-col items-center justify-center gap-1 px-1 text-[10px] transition-colors",
+                "relative flex min-h-16 min-w-0 flex-col items-center justify-center gap-1 px-1 text-xs transition-colors",
                 active ? "text-foreground" : "text-muted-foreground",
               )}
             >

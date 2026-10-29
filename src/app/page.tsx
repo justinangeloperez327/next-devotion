@@ -58,9 +58,9 @@ export default function Home() {
         </section>
 
         <section aria-labelledby="devotion-practice">
-          <Container className="py-20 sm:py-24">
+          <Container className="py-14 sm:py-20">
             <div className="max-w-2xl">
-              <p className="text-xs font-medium tracking-[0.2em] text-primary uppercase">
+              <p className="text-xs font-medium text-primary">
                 A simple daily practice
               </p>
               <h2
@@ -87,7 +87,7 @@ export default function Home() {
                     index > 0 && "lg:border-l lg:border-border",
                   )}
                 >
-                  <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+                  <p className="text-xs font-medium text-primary">
                     {String(index + 1).padStart(2, "0")} · {step.label}
                   </p>
                   <p className="mt-4 text-sm leading-6 text-muted-foreground">
@@ -102,7 +102,7 @@ export default function Home() {
         <section className="border-t border-border bg-sidebar">
           <Container className="grid gap-10 py-16 sm:py-20 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
             <div>
-              <p className="text-xs font-medium tracking-[0.2em] text-devotion-sage uppercase">
+              <p className="text-xs font-medium text-devotion-sage">
                 A devotion worth keeping
               </p>
               <h2 className="mt-4 max-w-xl text-3xl font-medium tracking-[-0.025em] text-foreground sm:text-4xl">
@@ -115,7 +115,7 @@ export default function Home() {
             </div>
 
             <article className="border-l-2 border-primary/70 pl-6 sm:pl-8">
-              <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+              <p className="text-xs font-medium text-primary">
                 John 15:5
               </p>
               <p className="scripture mt-3 text-xl leading-8 text-foreground sm:text-2xl">
@@ -124,7 +124,7 @@ export default function Home() {
 
               <div className="mt-7 space-y-6 text-sm leading-6 text-muted-foreground">
                 <div>
-                  <p className="mb-2 text-xs font-medium tracking-[0.16em] text-foreground uppercase">
+                  <p className="mb-2 text-xs font-medium text-foreground">
                     Observation
                   </p>
                   <p>
@@ -133,7 +133,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div>
-                  <p className="mb-2 text-xs font-medium tracking-[0.16em] text-foreground uppercase">
+                  <p className="mb-2 text-xs font-medium text-foreground">
                     Application
                   </p>
                   <p>

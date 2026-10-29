@@ -1,7 +1,7 @@
 "use client";
 
 import { Bookmark } from "lucide-react";
-import { useOptimistic, useTransition } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 
 import { setSavedDevotionAction } from "@/actions/saved-devotions";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ export function SaveDevotionButton({
   initialSaved,
   disabled = false,
 }: SaveDevotionButtonProps) {
+  const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
   const [saved, setOptimisticSaved] = useOptimistic<boolean, boolean>(
     initialSaved,
@@ -26,17 +27,21 @@ export function SaveDevotionButton({
   function handleClick() {
     const nextSaved = !saved;
 
+    setError("");
     startTransition(async () => {
       setOptimisticSaved(nextSaved);
-      const success = await setSavedDevotionAction(devotionId, nextSaved);
+      let success = false;
+      try { success = await setSavedDevotionAction(devotionId, nextSaved); } catch { /* Restore the prior state and offer a retry. */ }
 
       if (!success) {
+        setError("Your saved devotion could not be updated. Try again.");
         setOptimisticSaved(!nextSaved);
       }
     });
   }
 
   return (
+    <div className="min-w-0">
       <button
         type="button"
         onClick={handleClick}
@@ -58,5 +63,7 @@ export function SaveDevotionButton({
           {saved ? "Saved" : "Save"}
         </span>
       </button>
+      {error ? <p role="alert" className="px-2 pb-2 text-xs text-destructive">{error}</p> : null}
+    </div>
   );
 }

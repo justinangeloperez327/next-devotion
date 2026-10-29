@@ -52,7 +52,7 @@ function Counter({ value, max }: { value: string; max: number }) {
   return (
     <span
       className={cn(
-        "text-[11px] text-muted-foreground",
+        "text-xs text-muted-foreground",
         value.length > max * 0.9 && "text-primary",
       )}
     >
@@ -93,7 +93,7 @@ function EditorSection({
   return (
     <section className="border-t border-border pt-7 first:border-t-0 first:pt-0">
       <div className="grid gap-4 sm:grid-cols-[3.5rem_minmax(0,1fr)]">
-        <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+        <p className="text-xs font-medium text-primary">
           {number}
         </p>
         <div>
@@ -121,10 +121,10 @@ function PreviewSection({
 
   return (
     <section>
-      <p className="text-[11px] font-medium tracking-[0.16em] text-muted-foreground uppercase">
+      <p className="text-xs font-medium text-muted-foreground">
         {label}
       </p>
-      <p className="mt-2 whitespace-pre-line text-sm leading-7 text-foreground/90">
+      <p className="mt-2 reading-content whitespace-pre-line text-base leading-7 text-foreground/90">
         {value}
       </p>
     </section>
@@ -204,7 +204,7 @@ export function DevotionComposer({
         <div className="border-b border-border px-4 py-5 sm:px-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+              <p className="text-xs font-medium text-primary">
                 {mode === "create" ? "New Devotion" : "Edit Devotion"}
               </p>
               <h1 className="mt-2 text-2xl font-medium tracking-[-0.02em] text-foreground sm:text-3xl">
@@ -470,7 +470,7 @@ export function DevotionComposer({
             </Button>
             {state.message ? (
               <p
-                className="text-[11px] text-destructive"
+                className="text-xs text-destructive"
                 role="alert"
                 aria-live="polite"
                 aria-atomic="true"
@@ -478,7 +478,7 @@ export function DevotionComposer({
                 {state.message}
               </p>
             ) : (
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {visibility === "PUBLIC"
                   ? "This devotion will be visible in the community feed."
                   : "This devotion will stay in your private journal."}
@@ -488,23 +488,23 @@ export function DevotionComposer({
         </div>
       </div>
 
-      <aside className="xl:sticky xl:top-20">
+      <aside className="hidden xl:sticky xl:top-20 xl:block">
         <div className="rounded-lg border border-border bg-sidebar">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <div className="flex items-center gap-2">
               <BookOpenText className="size-4 text-primary" />
-              <p className="text-xs font-medium tracking-[0.16em] text-foreground uppercase">
+              <p className="text-xs font-medium text-foreground">
                 Preview
               </p>
             </div>
-            <span className="text-[11px] text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               {visibility === "PUBLIC" ? "Public" : "Private"}
             </span>
           </div>
 
           <div className="p-5">
             <div className="border-l-2 border-primary/70 pl-4">
-              <p className="text-xs font-medium tracking-[0.16em] text-primary uppercase">
+              <p className="text-xs font-medium text-primary">
                 {scriptureReference.trim() || "Scripture reference"}
               </p>
               <blockquote
@@ -538,7 +538,7 @@ export function DevotionComposer({
         </div>
 
         <div className="mt-4 border-l-2 border-devotion-sage pl-4">
-          <p className="text-xs font-medium tracking-[0.16em] text-devotion-sage uppercase">
+          <p className="text-xs font-medium text-devotion-sage">
             Writing reminder
           </p>
           <p className="mt-2 text-xs leading-5 text-muted-foreground">

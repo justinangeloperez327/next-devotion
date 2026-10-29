@@ -194,6 +194,7 @@ export default async function DevotionPage({
       </div>
 
       <DevotionCard
+        preview={false}
         id={devotion.id}
         author={devotion.user}
         time={formatRelativeDate(devotion.createdAt)}

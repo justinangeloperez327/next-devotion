@@ -9,7 +9,7 @@ export function PublicFooter() {
         <div className="flex items-center gap-5">
           <Link
             href="/"
-            className="font-medium tracking-[0.12em] text-foreground uppercase"
+            className="font-medium text-foreground"
           >
             Next Devotion
           </Link>

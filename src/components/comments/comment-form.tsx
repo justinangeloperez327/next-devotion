@@ -2,11 +2,13 @@
 
 import { Send } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 
 import { createCommentAction } from "@/actions/comments";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import type { CommentFormState } from "@/lib/comment/types";
 import { initialCommentFormState } from "@/lib/comment/types";
 
 type CommentFormProps = {
@@ -15,9 +17,14 @@ type CommentFormProps = {
 
 export function CommentForm({ devotionId }: CommentFormProps) {
   const router = useRouter();
+  const [body, setBody] = useState("");
   const action = createCommentAction.bind(null, devotionId);
   const [state, formAction, pending] = useActionState(
-    action,
+    async (previousState: CommentFormState, data: FormData) => {
+      const result = await action(previousState, data);
+      if (result.status === "success") setBody("");
+      return result;
+    },
     initialCommentFormState,
   );
   const formRef = useRef<HTMLFormElement>(null);
@@ -30,10 +37,14 @@ export function CommentForm({ devotionId }: CommentFormProps) {
   }, [devotionId, router, state.status, state.submissionId]);
 
   return (
-    <form ref={formRef} action={formAction} className="grid gap-3">
+    <form ref={formRef} action={formAction} className="grid gap-3" aria-busy={pending}>
+      <Label htmlFor="comment-body">Your comment</Label>
       <Textarea
         id="comment-body"
         name="body"
+        value={body}
+        onChange={(event) => setBody(event.target.value)}
+        readOnly={pending}
         aria-label="Comment"
         maxLength={2000}
         placeholder="Add to the reflection..."
@@ -64,7 +75,7 @@ export function CommentForm({ devotionId }: CommentFormProps) {
 
         <Button type="submit" size="sm" disabled={pending} className="w-full gap-2 sm:w-auto">
           <Send className="size-3.5" />
-          {pending ? "Posting..." : "Comment"}
+          {pending ? "Posting..." : "Post comment"}
         </Button>
       </div>
     </form>

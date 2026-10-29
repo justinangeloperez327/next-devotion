@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
-test("register, persist session, log out, reject wrong password, and log in again", async ({ page, context }) => {
+test.setTimeout(90_000);
+
+test("register, persist session, log out, reject wrong password, and log in again", async ({ page, context }, testInfo) => {
   test.skip(process.env.E2E_AUTH_ENABLED !== "true", "Requires an isolated migrated test database.");
   const username = `test${randomUUID().replaceAll("-", "").slice(0, 20)}`;
   const email = `${username}@example.com`;
@@ -32,6 +34,47 @@ test("register, persist session, log out, reject wrong password, and log in agai
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Log in", exact: true }).click();
   await expect(page).toHaveURL(/\/feed$/);
+  // Exercise the redesigned authenticated screens and reading/comment flow.
+  const fullObservation = "A reflection worth remembering. ".repeat(20) + "The complete reflection ends here.";
+  await page.goto("/devotions/new");
+  await page.getByRole("button", { name: "Manual", exact: true }).click();
+  await page.getByLabel("Reference", { exact: true }).fill("Psalm 46:10");
+  await page.getByLabel("Observation", { exact: true }).fill(fullObservation);
+  await page.getByLabel("Application", { exact: true }).fill("Pause and reflect before starting the day.");
+  await page.getByLabel("Prayer", { exact: true }).fill("Lord, help me listen to Your Word.");
+  await page.getByRole("button", { name: "Public", exact: true }).click();
+  await page.getByRole("button", { name: "Post devotion", exact: true }).click();
+  await expect(page).toHaveURL(/\/devotions\/[0-9a-f-]+$/i);
+  const devotionURL = page.url();
+  await expect(page.getByText(fullObservation, { exact: true })).toBeVisible();
+  const comment = `An encouraging comment ${username}`;
+  await page.getByRole("textbox", { name: "Comment", exact: true }).fill(comment);
+  await page.getByRole("button", { name: "Post comment", exact: true }).click();
+  await expect(page.locator("#comments article").filter({ hasText: comment })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Comment", exact: true })).toHaveValue("");
+
+  for (const theme of ["light", "dark"]) {
+    await page.getByRole("combobox", { name: "Color theme" }).first().selectOption(theme);
+    for (const path of ["/feed", "/my-devotions", "/saved", `/profile/${username}`, "/settings", "/devotions/new", devotionURL]) {
+      await page.goto(path);
+      await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
+    await page.screenshot({ path: testInfo.outputPath(`devotion-${theme}.png`), fullPage: true });
+  }
+  await page.goto("/feed");
+  const card = page.locator("article").filter({ has: page.getByRole("link", { name: "Psalm 46:10", exact: true }) }).first();
+  await expect(card.getByText(fullObservation, { exact: true })).toHaveCount(0);
+  await card.getByRole("link", { name: "Read devotion", exact: true }).click();
+  await expect(page.getByText(fullObservation, { exact: true })).toBeVisible();
+  const commentRow = page.locator("#comments article").filter({ hasText: comment });
+  await commentRow.getByLabel("Delete comment", { exact: true }).click();
+  await commentRow.getByRole("button", { name: "Delete comment", exact: true }).click();
+  await expect(page.locator("#comments article").filter({ hasText: comment })).toHaveCount(0);
+  await page.getByText("Delete", { exact: true }).click();
+  await page.getByRole("button", { name: "Delete permanently", exact: true }).click();
+  await expect(page).toHaveURL(/\/my-devotions$/);
+
 });
 
 test("registration works without JavaScript and submits a valid origin", async ({ browser, baseURL }, testInfo) => {

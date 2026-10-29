@@ -252,7 +252,7 @@ export default async function MyDevotionsPage({
     <main className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="flex flex-col gap-5 border-b border-border pb-7 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+          <p className="text-xs font-medium text-primary">
             My Devotions
           </p>
           <h1 className="mt-2 text-3xl font-medium tracking-[-0.025em] text-foreground">
@@ -275,13 +275,13 @@ export default async function MyDevotionsPage({
 
       <dl className="grid grid-cols-3 divide-x divide-border border-b border-border">
         <div className="py-4 pr-4">
-          <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+          <dt className="text-xs font-medium text-muted-foreground">
             All
           </dt>
           <dd className="mt-1 text-xl font-medium text-foreground">{total}</dd>
         </div>
         <div className="px-4 py-4">
-          <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+          <dt className="text-xs font-medium text-muted-foreground">
             Public
           </dt>
           <dd className="mt-1 text-xl font-medium text-foreground">
@@ -289,7 +289,7 @@ export default async function MyDevotionsPage({
           </dd>
         </div>
         <div className="py-4 pl-4">
-          <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+          <dt className="text-xs font-medium text-muted-foreground">
             Private
           </dt>
           <dd className="mt-1 text-xl font-medium text-foreground">
@@ -303,7 +303,7 @@ export default async function MyDevotionsPage({
       </div>
 
       <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
-        <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
+        <p className="text-xs font-medium text-muted-foreground">
           Journal entries
         </p>
         <p className="text-xs text-muted-foreground">
@@ -331,7 +331,7 @@ export default async function MyDevotionsPage({
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <VisibilityIcon className="size-3.5 text-muted-foreground" />
-                      <span className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+                      <span className="text-xs font-medium text-muted-foreground">
                         {devotion.visibility === "PUBLIC"
                           ? "Public"
                           : "Private"}

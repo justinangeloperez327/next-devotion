@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PenLine, Settings, UserRound } from "lucide-react";
 import type { ReactNode } from "react";
 
+import { ThemeControl } from "@/components/theme/theme-control";
 import { logoutAction } from "@/actions/auth";
 import {
   DesktopNavigation,
@@ -30,7 +31,7 @@ export function AppShell({ user, children }: AppShellProps) {
         <div className="grid h-14 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 sm:h-16 sm:px-6 lg:grid-cols-[240px_minmax(0,1fr)_auto] lg:px-0">
           <Link
             href="/feed"
-            className="truncate text-[13px] font-semibold tracking-[0.16em] text-foreground uppercase sm:text-sm sm:tracking-[0.18em] lg:border-r lg:border-sidebar-border lg:px-5"
+            className="truncate text-[13px] font-semibold text-foreground sm:text-sm sm:lg:border-r lg:border-sidebar-border lg:px-5"
           >
             Next Devotion
           </Link>
@@ -42,11 +43,12 @@ export function AppShell({ user, children }: AppShellProps) {
           </div>
 
           <div className="flex items-center gap-2 lg:pr-5">
+            <ThemeControl />
             <Link
               href="/devotions/new"
               className={cn(
                 buttonVariants({ size: "sm" }),
-                "hidden gap-2 sm:inline-flex",
+                "hidden gap-2 md:inline-flex",
               )}
             >
               <PenLine className="size-4" />
@@ -54,7 +56,7 @@ export function AppShell({ user, children }: AppShellProps) {
             </Link>
 
             <details className="group relative">
-              <summary aria-label="Open account menu" className="flex h-11 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-card px-2.5 text-sm text-foreground transition-colors hover:bg-accent sm:h-9 [&::-webkit-details-marker]:hidden">
+              <summary aria-label="Open account menu" className="flex h-11 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-card px-2.5 text-sm text-foreground transition-colors hover:bg-accent sm:h-11 [&::-webkit-details-marker]:hidden">
                 <UserAvatar
                   name={user.name}
                   avatarUrl={user.avatarUrl}

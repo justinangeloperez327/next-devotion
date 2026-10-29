@@ -27,12 +27,6 @@ export function FeedComposer({ name, avatarUrl }: FeedComposerProps) {
         </div>
       </div>
 
-      <Link
-        href="/devotions/new"
-        className="mt-4 flex min-h-12 w-full items-center rounded-md border border-input bg-background px-4 text-left text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:bg-accent hover:text-foreground"
-      >
-        What are you reflecting on today?
-      </Link>
 
       <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">

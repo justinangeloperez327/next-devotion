@@ -180,7 +180,7 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
     <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="flex flex-col gap-5 border-b border-border pb-7 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-xs font-medium tracking-[0.18em] text-primary uppercase">
+          <div className="flex items-center gap-2 text-xs font-medium text-primary">
             <Bookmark className="size-3.5" />
             Saved
           </div>
@@ -211,7 +211,7 @@ export default async function SavedPage({ searchParams }: SavedPageProps) {
           <div className="space-y-5">
             {savedRows.map((saved) => (
               <div key={saved.devotionId}>
-                <p className="mb-2 text-[11px] text-muted-foreground">
+                <p className="mb-2 text-xs text-muted-foreground">
                   Saved {formatRelativeDate(saved.createdAt)}
                 </p>
                 <DevotionCard

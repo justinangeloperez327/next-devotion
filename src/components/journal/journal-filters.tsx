@@ -25,7 +25,7 @@ export function JournalFilters({
       <div className="grid gap-2">
         <label
           htmlFor="journal-search"
-          className="text-xs font-medium tracking-[0.12em] text-muted-foreground uppercase"
+          className="text-xs font-medium text-muted-foreground"
         >
           Search journal
         </label>
@@ -45,7 +45,7 @@ export function JournalFilters({
       <div className="grid gap-2">
         <label
           htmlFor="journal-visibility"
-          className="text-xs font-medium tracking-[0.12em] text-muted-foreground uppercase"
+          className="text-xs font-medium text-muted-foreground"
         >
           Visibility
         </label>

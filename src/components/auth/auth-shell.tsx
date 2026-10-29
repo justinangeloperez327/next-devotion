@@ -1,3 +1,4 @@
+import { ThemeControl } from "@/components/theme/theme-control";
 import Link from "next/link";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import type { ReactNode } from "react";
@@ -30,10 +31,13 @@ export function AuthShell({ eyebrow, title, description, children }: AuthShellPr
           <p className="text-xs text-muted-foreground">Scripture / Observation / Application / Prayer</p>
         </aside>
         <section className="flex flex-col px-6 py-6 sm:px-10 lg:px-14">
+          <div className="flex items-center justify-between gap-3">
           <Link href="/" className="flex min-h-11 w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="size-4" aria-hidden="true" /> Back home
           </Link>
-          <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-10 sm:py-12">
+          <ThemeControl />
+          </div>
+          <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-8 sm:py-10">
             <p className="mb-8 flex items-center gap-2 text-sm font-semibold lg:hidden"><BookOpen className="size-5 text-primary" aria-hidden="true" />Next Devotion</p>
             <p className="text-sm font-medium text-primary">{eyebrow}</p>
             <h1 className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">{title}</h1>

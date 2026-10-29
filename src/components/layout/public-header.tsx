@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
+import { ThemeControl } from "@/components/theme/theme-control";
 import { Container } from "@/components/layout/container";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,15 +19,17 @@ export function PublicHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-background">
-      <Container className="flex h-16 items-center justify-between">
+      <Container className="flex h-16 items-center justify-between gap-2">
         <Link
           href="/"
-          className="text-sm font-semibold tracking-[0.18em] text-foreground uppercase"
+          className="text-sm font-semibold text-foreground"
           onClick={() => setOpen(false)}
         >
           Next Devotion
         </Link>
 
+        <div className="ml-auto flex items-center gap-2">
+        <ThemeControl />
         <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
           {navigation.map((item) => (
             <Link
@@ -67,6 +70,7 @@ export function PublicHeader() {
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
+        </div>
       </Container>
 
       {open ? (

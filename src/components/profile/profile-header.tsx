@@ -66,7 +66,7 @@ export function ProfileHeader({
             ) : null}
           </div>
 
-          <p className="mt-5 max-w-2xl whitespace-pre-line text-sm leading-6 text-foreground/90">
+          <p className="mt-5 max-w-2xl reading-content whitespace-pre-line text-base leading-7 text-foreground/90">
             {profile.bio?.trim() ||
               (isOwner
                 ? "Add a short bio in Settings to introduce yourself to the community."
@@ -82,7 +82,7 @@ export function ProfileHeader({
 
       <dl className="mt-7 grid grid-cols-3 divide-x divide-border border-y border-border text-center sm:text-left">
         <div className="px-2 py-4 sm:pr-4 sm:pl-0">
-          <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+          <dt className="text-xs font-medium text-muted-foreground">
             Devotions
           </dt>
           <dd className="mt-1 text-xl font-medium text-foreground">
@@ -90,7 +90,7 @@ export function ProfileHeader({
           </dd>
         </div>
         <div className="px-2 py-4 sm:px-4">
-          <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+          <dt className="text-xs font-medium text-muted-foreground">
             Amens
           </dt>
           <dd className="mt-1 text-xl font-medium text-foreground">
@@ -98,7 +98,7 @@ export function ProfileHeader({
           </dd>
         </div>
         <div className="px-2 py-4 sm:pr-0 sm:pl-4">
-          <dt className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+          <dt className="text-xs font-medium text-muted-foreground">
             Comments
           </dt>
           <dd className="mt-1 text-xl font-medium text-foreground">

@@ -35,7 +35,7 @@ export default async function FeedPage({ searchParams }: FeedPageProps) {
       <div className="grid gap-6 xl:grid-cols-[minmax(0,720px)_300px] xl:justify-center">
         <div className="min-w-0 space-y-5">
           <div>
-            <p className="text-xs font-medium tracking-[0.18em] text-primary uppercase">
+            <p className="text-xs font-medium text-primary">
               Home Feed
             </p>
             <h1 className="mt-2 text-2xl font-medium tracking-[-0.02em] text-foreground sm:text-3xl">
@@ -53,7 +53,7 @@ export default async function FeedPage({ searchParams }: FeedPageProps) {
             fallback={
               <>
                 <div className="flex items-center justify-between pt-2">
-                  <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground uppercase">
+                  <p className="text-xs font-medium text-muted-foreground">
                     Recent devotions
                   </p>
                   <p className="text-xs text-muted-foreground">Loading…</p>

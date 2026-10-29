@@ -18,10 +18,19 @@ describe("production security configuration", () => {
 
     expect(headers.get("X-Content-Type-Options")).toBe("nosniff");
     expect(headers.get("X-Frame-Options")).toBe("DENY");
-    expect(headers.get("Referrer-Policy")).toBe("no-referrer");
+    expect(headers.get("Referrer-Policy")).toBe("strict-origin-when-cross-origin");
     expect(headers.get("Cross-Origin-Opener-Policy")).toBe("same-origin");
     expect(headers.get("Cross-Origin-Resource-Policy")).toBe("same-origin");
     expect(headers.get("Permissions-Policy")).toContain("camera=()");
+  });
+
+  it("preserves request origin for progressive-enhancement auth forms in both environments", () => {
+    for (const production of [false, true]) {
+      expect(asMap(getSecurityHeaders(production)).get("Referrer-Policy")).toBe("strict-origin-when-cross-origin");
+    }
+    expect(nextConfig.allowedDevOrigins).toEqual(["127.0.0.1"]);
+    // Keep CSRF validation intact; never allowlist the opaque null origin.
+    expect(nextConfig.experimental?.serverActions?.allowedOrigins).toBeUndefined();
   });
 
   it("adds transport and content security policy in production", () => {

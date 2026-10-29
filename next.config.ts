@@ -41,7 +41,7 @@ export function getSecurityHeaders(production: boolean) {
   },
   {
     key: "Referrer-Policy",
-    value: "no-referrer",
+    value: "strict-origin-when-cross-origin",
   },
   {
     key: "Permissions-Policy",
@@ -62,6 +62,8 @@ export function getSecurityHeaders(production: boolean) {
 const securityHeaders = getSecurityHeaders(isProduction);
 
 const nextConfig: NextConfig = {
+  // Permit only the loopback host used by the browser test server.
+  allowedDevOrigins: ["127.0.0.1"],
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   experimental: {

@@ -388,6 +388,8 @@ export function DevotionComposer({
             >
               <button
                 type="button"
+                aria-label="Public"
+                aria-describedby="public-visibility-description"
                 aria-pressed={visibility === "PUBLIC"}
                 onClick={() => setVisibility("PUBLIC")}
                 className={cn(
@@ -408,13 +410,15 @@ export function DevotionComposer({
                   />
                   Public
                 </span>
-                <span className="mt-2 block text-xs leading-5 text-muted-foreground">
+                <span id="public-visibility-description" className="mt-2 block text-xs leading-5 text-muted-foreground">
                   Appears in the community feed and on your public profile.
                 </span>
               </button>
 
               <button
                 type="button"
+                aria-label="Private"
+                aria-describedby="private-visibility-description"
                 aria-pressed={visibility === "PRIVATE"}
                 onClick={() => setVisibility("PRIVATE")}
                 className={cn(
@@ -435,7 +439,7 @@ export function DevotionComposer({
                   />
                   Private
                 </span>
-                <span className="mt-2 block text-xs leading-5 text-muted-foreground">
+                <span id="private-visibility-description" className="mt-2 block text-xs leading-5 text-muted-foreground">
                   Saved only to your personal devotion journal.
                 </span>
               </button>
